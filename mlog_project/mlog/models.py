@@ -1,3 +1,4 @@
+from typing_extensions import TypeGuard
 from django.db import models
 from django.db.models.base import Model
 from accounts.models import User
@@ -21,7 +22,7 @@ class SubGenre(models.Model):
 class Artist(models.Model):
     artist_name=models.CharField(max_length=30)
     genre=models.ManyToManyField(Genre)
-    subgenre=models.ManyToManyField(SubGenre)
+    subgenre=models.ManyToManyField(SubGenre,blank=True)
 
     def __str__(self):
         return self.artist_name
@@ -31,7 +32,7 @@ class Song(models.Model):
     song_name=models.CharField(max_length=30)
     artist=models.ManyToManyField(Artist)
     genre=models.ManyToManyField(Genre)
-    subgenre=models.ManyToManyField(SubGenre)
+    subgenre=models.ManyToManyField(SubGenre,blank=True)
 
 
     def __str__(self):
