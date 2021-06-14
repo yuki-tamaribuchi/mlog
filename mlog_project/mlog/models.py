@@ -29,7 +29,7 @@ class Artist(models.Model):
 
 class Song(models.Model):
     song_name=models.CharField(max_length=30)
-    artist=models.ForeignKey(Artist,on_delete=models.CASCADE)
+    artist=models.ManyToManyField(Artist)
     genre=models.ManyToManyField(Genre)
     subgenre=models.ManyToManyField(SubGenre)
 
