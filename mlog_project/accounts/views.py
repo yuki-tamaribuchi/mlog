@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from django.contrib.auth.views import LoginView as auth_login_view
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import SignUpForm
+from .forms import SignUpForm, UserUpdateForm
 from .models import User
 
 
@@ -31,3 +31,12 @@ class UserDetailView(DetailView):
 
 	def get_object(self):
 		return get_object_or_404(User,username=self.kwargs['username'])
+
+
+class UserUpdateView(LoginRequiredMixin,UpdateView):
+	model=User
+	template_name='accounts/userupdate.html'
+	form_class=UserUpdateForm
+	
+	def get_object(self):
+		return get_object_or_404(User,username=self.request.user.username)
