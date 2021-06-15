@@ -18,6 +18,7 @@ class SignUpView(CreateView):
 
 class LoginView(auth_login_view):
 	template_name='accounts/login.html'
+	redirect_authenticated_user=True
 
 
 class UserDetailView(DetailView):
