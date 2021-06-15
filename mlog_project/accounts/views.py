@@ -20,6 +20,10 @@ class LoginView(auth_login_view):
 	template_name='accounts/login.html'
 	redirect_authenticated_user=True
 
+	def get_success_url(self):
+		return reverse_lazy('accounts:detail',kwargs={'username':self.request.user.username})
+		
+
 
 class UserDetailView(DetailView):
 	model=User
