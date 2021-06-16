@@ -7,7 +7,7 @@ from django.contrib.auth.views import LoginView as auth_login_view
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import SignUpForm, UserUpdateForm
-from .models import User
+from .models import User, Follow
 from mlog.models import Entry
 
 
@@ -35,6 +35,8 @@ class UserDetailView(DetailView):
 	def get_context_data(self, **kwargs):
 		context=super().get_context_data(**kwargs)
 		context['entries']=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('-id')
+		context['follow_count']=Follow.objects.filter(user__username=self.kwargs['username']).count()
+		context['follower_count']=Follow.objects.filter(follower__username=self.kwargs['username']).count()
 
 		return context
 
