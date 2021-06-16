@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import SignUpForm, UserUpdateForm
 from .models import User
+from mlog.models import Entry
 
 
 class SignUpView(CreateView):
@@ -22,7 +23,6 @@ class LoginView(auth_login_view):
 
 	def get_success_url(self):
 		return reverse_lazy('accounts:detail',kwargs={'username':self.request.user.username})
-		
 
 
 class UserDetailView(DetailView):
@@ -31,6 +31,12 @@ class UserDetailView(DetailView):
 
 	def get_object(self):
 		return get_object_or_404(User,username=self.kwargs['username'])
+
+	def get_context_data(self, **kwargs):
+		context=super().get_context_data(**kwargs)
+		context['entries']=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('-id')
+
+		return context
 
 
 class UserUpdateView(LoginRequiredMixin,UpdateView):
