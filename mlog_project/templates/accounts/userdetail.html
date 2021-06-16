@@ -10,6 +10,14 @@
 			{% else %}
 			<p>自己紹介が入力されていません。</p>
 			{% endif %}
+			<h2>投稿</h2>
+			{% if entries %}
+			{% for entry in entries %}
+			<p>{{entry.title}} (曲:{{entry.song.song_name}} / {{entry.song.artist}})</p>
+			{% endfor %}
+			{% else %}
+			表示する記事がありません。
+			{% endif %}
 		</div>
 	</div>
 </div>
