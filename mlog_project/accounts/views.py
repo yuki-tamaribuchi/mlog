@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import CreateView, DetailView, UpdateView, View
 from django.urls import reverse_lazy
@@ -5,6 +6,7 @@ from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from django.contrib.auth.views import LoginView as auth_login_view
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.list import ListView
 
 from .forms import SignUpForm, UserUpdateForm
 from .models import User, Follow
@@ -75,3 +77,25 @@ class FollowProcess(LoginRequiredMixin,View):
 			Follow.objects.create(user=user,follower=follow_user)
 
 		return redirect(self.request.META['HTTP_REFERER'])
+
+
+class FollowListView(ListView):
+	model=Follow
+	template_name='accounts/followlist.html'
+	context_object_name='follows'
+
+	def get_queryset(self):
+		try:
+			qs=Follow.objects.filter(user__username=self.kwargs['username'])
+			#queryset=get_object_or_404(Follow,user__username=self.kwargs['username'])
+			print(qs)
+		except ObjectDoesNotExist:
+			qs=Follow.objects.none()
+		return qs
+	
+	def get_context_data(self, **kwargs):
+		context=super().get_context_data(**kwargs)
+		this_page_user=get_object_or_404(User,username=self.kwargs['username'])
+		context['this_page_username']=this_page_user.username
+		context['this_page_handle']=this_page_user.handle
+		return context
