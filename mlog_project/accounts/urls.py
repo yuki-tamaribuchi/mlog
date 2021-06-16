@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView
 
-from .views import SignUpView, LoginView, UserDetailView, UserUpdateView, FollowProcess
+from .views import SignUpView, LoginView, UserDetailView, UserUpdateView, FollowProcess, FollowListView
 
 app_name='accounts'
 urlpatterns=[
@@ -11,4 +11,5 @@ urlpatterns=[
 	path('detail/<str:username>/', UserDetailView.as_view(), name='detail'),
 	path('update/', UserUpdateView.as_view(), name='update'),
 	path('follow/', FollowProcess.as_view(), name='follow'),
+	path('follow/<str:username>/', FollowListView.as_view(), name='followlist'),
 ]
