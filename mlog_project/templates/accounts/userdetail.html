@@ -13,6 +13,12 @@
 
 			<p>{{follow_count}}フォロー | {{follower_count}}フォロワー</p>
 
+			<form action="{% url 'accounts:follow' %}" method="POST">
+				{% csrf_token %}
+				<input type="hidden" name='username' value="{{user.username}}">
+				<input type="submit" value="フォローする">
+			</form>
+
 			<h2>投稿</h2>
 			{% if entries %}
 			{% for entry in entries %}
