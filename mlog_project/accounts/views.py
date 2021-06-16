@@ -53,6 +53,8 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
 	def get_object(self):
 		return get_object_or_404(User,username=self.request.user.username)
 
+	def get_success_url(self):
+		return reverse_lazy('accounts:detail',kwargs={'username':self.request.user.username})
 
 class FollowProcess(LoginRequiredMixin,View):
 
