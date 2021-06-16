@@ -14,11 +14,15 @@
 			<p><a href="{% url 'accounts:followlist' detail_user.username %}">{{follow_count}}フォロー</a> | <a href="{% url 'accounts:followerlist' detail_user.username %}"> {{follower_count}}フォロワー</a></p>
 
 			{% if not is_myself %}
-			<form action="{% url 'accounts:follow' %}" method="POST">
-				{% csrf_token %}
-				<input type="hidden" name='username' value="{{detail_user.username}}">
-				<input type="submit" value="{% if is_following %}フォローをやめる{% else %}フォローする{% endif %}">
-			</form>
+				{% if user.username %}
+				<form action="{% url 'accounts:follow' %}" method="POST">
+					{% csrf_token %}
+					<input type="hidden" name='username' value="{{detail_user.username}}">
+					<input type="submit" value="{% if is_following %}フォローをやめる{% else %}フォローする{% endif %}">
+				</form>
+				{% else %}
+				<a href="{% url 'accounts:login' %}"><input type="button" value="フォローする"></a>
+				{% endif %}
 			{% endif %}
 
 			<h2>投稿</h2>
