@@ -28,6 +28,7 @@ class LoginView(auth_login_view):
 class UserDetailView(DetailView):
 	model=User
 	template_name='accounts/userdetail.html'
+	context_object_name='detail_user'
 
 	def get_object(self):
 		return get_object_or_404(User,username=self.kwargs['username'])
