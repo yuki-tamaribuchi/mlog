@@ -8,7 +8,7 @@
 
 			{% if follows %}
 			{% for follow in follows%}
-			<p>{{follow.follower.handle}}({{follow.follower}})</p>
+			<p><a href='{% url 'accounts:detail' follow.follower %}'>{{follow.follower.handle}}({{follow.follower}})</a></p>
 			{% endfor %}
 			{% else %}
 			フォローしている人はいません
