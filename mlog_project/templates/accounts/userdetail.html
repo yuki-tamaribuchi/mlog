@@ -16,7 +16,7 @@
 			<form action="{% url 'accounts:follow' %}" method="POST">
 				{% csrf_token %}
 				<input type="hidden" name='username' value="{{user.username}}">
-				<input type="submit" value="フォローする">
+				<input type="submit" value="{% if is_following %}フォローをやめる{% else %}フォローする{% endif %}">
 			</form>
 
 			<h2>投稿</h2>
