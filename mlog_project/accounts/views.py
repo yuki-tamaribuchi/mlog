@@ -38,6 +38,10 @@ class UserDetailView(DetailView):
 		context['follow_count']=Follow.objects.filter(user__username=self.kwargs['username']).count()
 		context['follower_count']=Follow.objects.filter(follower__username=self.kwargs['username']).count()
 
+		user=get_object_or_404(User, username=self.request.user.username)	
+		follow_user=get_object_or_404(User, username=self.kwargs['username'])
+		context['is_following']=Follow.objects.filter(user__username=user.username,follower__username=follow_user.username).exists()
+		
 		return context
 
 
