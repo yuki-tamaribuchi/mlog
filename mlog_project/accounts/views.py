@@ -40,6 +40,8 @@ class UserDetailView(DetailView):
 
 		user=get_object_or_404(User, username=self.request.user.username)	
 		follow_user=get_object_or_404(User, username=self.kwargs['username'])
+		context['is_myself']=(user==follow_user)
+		print(context['is_myself'])
 		context['is_following']=Follow.objects.filter(user__username=user.username,follower__username=follow_user.username).exists()
 		
 		return context
