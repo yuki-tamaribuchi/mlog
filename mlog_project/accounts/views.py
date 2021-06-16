@@ -56,17 +56,17 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
 
 class FollowProcess(LoginRequiredMixin,View):
 
-	def post(self, requst,*args,**kwargs):
+	def post(self,*args,**kwargs):
 		user=get_object_or_404(User, username=self.request.user.username)	
-		follow_user=get_object_or_404(User, username=requst.POST['username'])
+		follow_user=get_object_or_404(User, username=self.request.POST['username'])
 		following=Follow.objects.filter(user__username=user.username,follower__username=follow_user.username)
 
 		if user==follow_user:
-			return redirect(requst.META['HTTP_REFERER'])
+			return redirect(self.request.META['HTTP_REFERER'])
 		
 		if following.exists():
 			following.delete()
 		else:
 			Follow.objects.create(user=user,follower=follow_user)
 
-		return redirect(requst.META['HTTP_REFERER'])
+		return redirect(self.request.META['HTTP_REFERER'])
