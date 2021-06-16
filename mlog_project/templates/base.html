@@ -17,7 +17,7 @@
 				<a class="nav-link text-white" href="{% url 'accounts:detail' user.username %}">ログイン中:{{user.handle}} ({{user.username}})</a>
 			</li>
 			<li class="nav-item list-inline-item">
-				<a class="nav-link text-white" href="{% url 'accounts:login' %}">アカウント管理</a>
+				<a class="nav-link text-white" href="{% url 'accounts:update' %}">アカウント管理</a>
 			</li>
 			<li class="nav-item list-inline-item">
 				<a class="nav-link text-white" href="{% url 'accounts:logout' %}">ログアウト</a>
