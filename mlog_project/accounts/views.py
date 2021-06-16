@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.shortcuts import redirect, render, get_object_or_404
+from django.views.generic import CreateView, DetailView, UpdateView, View
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
@@ -48,3 +48,21 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
 	
 	def get_object(self):
 		return get_object_or_404(User,username=self.request.user.username)
+
+
+class FollowProcess(LoginRequiredMixin,View):
+
+	def post(self, requst,*args,**kwargs):
+		user=get_object_or_404(User, username=self.request.user.username)	
+		follow_user=get_object_or_404(User, username=requst.POST['username'])
+		following=Follow.objects.filter(user__username=user.username,follower__username=follow_user.username)
+
+		if user==follow_user:
+			return redirect(requst.META['HTTP_REFERER'])
+		
+		if following.exists():
+			following.delete()
+		else:
+			Follow.objects.create(user=user,follower=follow_user)
+
+		return redirect(requst.META['HTTP_REFERER'])
