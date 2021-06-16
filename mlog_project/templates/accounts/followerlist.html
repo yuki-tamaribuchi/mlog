@@ -8,7 +8,7 @@
 
 			{% if followers %}
 			{% for follower in followers%}
-			<p>{{follower.user.handle}}({{follower.user.username}})</p>
+			<p><a href='{% url 'accounts:detail' follower.user.username%}'>{{follower.user.handle}}({{follower.user.username}})</a></p>
 			{% endfor %}
 			{% else %}
 			フォロワーはいません
