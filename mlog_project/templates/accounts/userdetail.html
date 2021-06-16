@@ -11,7 +11,7 @@
 			<p>自己紹介が入力されていません。</p>
 			{% endif %}
 
-			<p>{{follow_count}}フォロー | {{follower_count}}フォロワー</p>
+			<p><a href="{% url 'accounts:followlist' detail_user.username %}">{{follow_count}}フォロー</a> | <a href="{% url 'accounts:followerlist' detail_user.username %}"> {{follower_count}}フォロワー</a></p>
 
 			{% if not is_myself %}
 			<form action="{% url 'accounts:follow' %}" method="POST">
