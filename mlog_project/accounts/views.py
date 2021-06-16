@@ -99,3 +99,23 @@ class FollowListView(ListView):
 		context['this_page_username']=this_page_user.username
 		context['this_page_handle']=this_page_user.handle
 		return context
+
+
+class FollowerListView(ListView):
+	model=Follow
+	template_name='accounts/followerlist.html'
+	context_object_name='followers'
+
+	def get_queryset(self):
+		try:
+			qs=Follow.objects.filter(follower__username=self.kwargs['username'])
+		except ObjectDoesNotExist:
+			qs=Follow.objects.none()
+		return qs
+	
+	def get_context_data(self, **kwargs):
+		context=super().get_context_data(**kwargs)
+		this_page_user=get_object_or_404(User,username=self.kwargs['username'])
+		context['this_page_username']=this_page_user.username
+		context['this_page_handle']=this_page_user.handle
+		return context
