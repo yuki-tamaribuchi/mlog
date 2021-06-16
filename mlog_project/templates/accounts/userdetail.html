@@ -4,9 +4,9 @@
 <div class="container">
 	<div class="row">
 		<div class="col mt-5">
-			<h1>{{user.handle}} ({{user.username}})</h1>
-			{% if user.biograph %}
-			<p>{{user.biograph}}</p>
+			<h1>{{detail_user.handle}} ({{detail_user.username}})</h1>
+			{% if detail_user.biograph %}
+			<p>{{detail_user.biograph}}</p>
 			{% else %}
 			<p>自己紹介が入力されていません。</p>
 			{% endif %}
@@ -16,7 +16,7 @@
 			{% if not is_myself %}
 			<form action="{% url 'accounts:follow' %}" method="POST">
 				{% csrf_token %}
-				<input type="hidden" name='username' value="{{user.username}}">
+				<input type="hidden" name='username' value="{{detail_user.username}}">
 				<input type="submit" value="{% if is_following %}フォローをやめる{% else %}フォローする{% endif %}">
 			</form>
 			{% endif %}
