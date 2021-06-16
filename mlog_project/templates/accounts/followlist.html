@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title%} {{this_page_handle}} ({{this_page_username}})のフォロー一覧 | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col mt-5">
+			<h1>{{this_page_handle}}のフォロー一覧</h1>
+
+			{% if follows %}
+			{% for follow in follows%}
+			<p>{{follow.follower.handle}}({{follow.follower}})</p>
+			{% endfor %}
+			{% else %}
+			フォローしている人はいません
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock content %}
