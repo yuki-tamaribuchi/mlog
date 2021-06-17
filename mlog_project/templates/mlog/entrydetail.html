@@ -11,6 +11,8 @@
 		<p><a href="{% url 'mlog:likelist' entry.id %}">Like:{{like}}</a></p>
 		<p><a href="{% url 'mlog:commentlist' entry.id %}">Comment:{{comment}}</a></p>
 
+		<p><a href="{% url 'mlog:commentcreate' entry.id %}">コメントする</a></p>
+
 		<form action="{% url 'mlog:likeprocess' %}" method="POST">
 			{% csrf_token %}
 			<input type="hidden" name='pk' value="{{entry.id}}">
