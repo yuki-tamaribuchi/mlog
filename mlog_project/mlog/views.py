@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.shortcuts import redirect, render, get_object_or_404
+from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Entry, Like, Comment
@@ -45,5 +45,28 @@ class EntryDetailView(DetailView):
 		context=super().get_context_data(**kwargs)
 		context['like']=Like.objects.filter(entry=self.kwargs['pk']).count()
 		context['comment']=Comment.objects.filter(entry=self.kwargs['pk']).count()
+		
+		try:
+			context['like_status']=Like.objects.filter(user__username=self.request.user.username,entry=self.kwargs['pk'])
+		except ObjectDoesNotExist:
+			context['like_status']=Like.objects.none()
 
 		return context
+
+
+class LikeProcess(LoginRequiredMixin,View):
+
+	def post(self, *args, **kwargs):
+		try:
+			like_status=Like.objects.filter(user__username=self.request.user.username,entry=self.request.POST['pk'])
+		except ObjectDoesNotExist:
+			like_status=Like.objects.none()
+
+		if like_status:
+			like_status.delete()
+		else:
+			user=User.objects.get(username=self.request.user.username)
+			entry=Entry.objects.get(id=self.request.POST['pk'])
+			Like.objects.create(user=user,entry=entry)
+
+		return redirect(self.request.META['HTTP_REFERER'])
