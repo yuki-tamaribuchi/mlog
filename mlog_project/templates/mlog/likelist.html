@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title%} Likeリスト | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class "row mt-5">
+        <h1><a href="{% url 'mlog:detail' entry.id %}">{{entry.title}}</a>へのLike</h1>
+	    {% if like_list%}
+            {% for like in like_list %}
+            <p><a href="{% url 'accounts:detail' like.user %}">{{like.user}}</a></p>
+            {% endfor %}
+        {% else %}
+        Likeはありません。
+        {% endif %}
+	</div>
+</div>
+{% endblock content %}
