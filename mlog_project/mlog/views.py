@@ -1,10 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.shortcuts import redirect, render, get_object_or_404
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, View, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 from .models import Artist, Entry, Like, Comment
+from .forms import EntryCreateForm
 from accounts.models import User, Follow
 
 
@@ -114,3 +116,14 @@ class ArtistDetailView(DetailView):
 		context=super().get_context_data(**kwargs)
 		context['entries']=Entry.objects.filter(song__artist__artist_name_id=self.kwargs['artist_name_id'])
 		return context
+
+class EntryCreateView(CreateView):
+	form_class=EntryCreateForm
+	template_name='mlog/entrycreate.html'
+
+	def form_valid(self, form):
+		form.instance.writer_id=User.objects.get(username=self.request.user.username).id
+		return super().form_valid(form)
+
+	def get_success_url(self):
+		return reverse_lazy('mlog:detail',kwargs={'pk':self.object.id})
