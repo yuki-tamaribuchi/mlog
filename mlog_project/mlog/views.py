@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.shortcuts import render
-from django.views.generic import ListView
+from django.shortcuts import render, get_list_or_404
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Entry
@@ -33,3 +33,11 @@ class TimelineView(LoginRequiredMixin, ListView):
 		except ObjectDoesNotExist:
 			qs=Entry.objects.none()
 		return qs
+
+
+class EntryDetailView(DetailView):
+	model=Entry
+	template_name='mlog/entrydetail.html'
+
+	def get_object(self):
+		return get_list_or_404(Entry,id=self.kwargs['pk'])
