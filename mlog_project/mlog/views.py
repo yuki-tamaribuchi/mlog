@@ -70,3 +70,19 @@ class LikeProcess(LoginRequiredMixin,View):
 			Like.objects.create(user=user,entry=entry)
 
 		return redirect(self.request.META['HTTP_REFERER'])
+
+
+class CommentListView(ListView):
+	template_name='mlog/commentlist.html'
+
+	def get_queryset(self):
+		try:
+			qs=Comment.objects.filter(id=self.kwargs['pk'])
+		except ObjectDoesNotExist:
+			qs=Comment.objects.none()
+		return qs
+
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['entry']=Entry.objects.get(id=self.kwargs['pk'])
+		return context
