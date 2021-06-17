@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from .models import Artist, Entry, Like, Comment
-from .forms import EntryCreateForm
+from .forms import EntryCreateForm, CommentCreateForm
 from accounts.models import User, Follow
 
 
@@ -127,3 +127,16 @@ class EntryCreateView(LoginRequiredMixin,CreateView):
 
 	def get_success_url(self):
 		return reverse_lazy('mlog:detail',kwargs={'pk':self.object.id})
+
+
+class CommentCreateView(LoginRequiredMixin,CreateView):
+	form_class=CommentCreateForm
+	template_name='mlog/commentcreate.html'
+
+	def form_valid(self, form):
+		form.instance.user_id=User.objects.get(username=self.request.user.username).id
+		form.instance.entry_id=self.kwargs['pk']
+		return super().form_valid(form)
+
+	def get_success_url(self):
+		return reverse_lazy('mlog:commentlist',kwargs={'pk':self.kwargs['pk']})
