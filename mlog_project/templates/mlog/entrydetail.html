@@ -8,7 +8,7 @@
 		{{entry.content}}
 
 		<p>Date:{{entry.date}}</p>
-		<p>Like:{{like}}</p>
+		<p><a href="{% url 'mlog:likelist' entry.id %}">Like:{{like}}</a></p>
 		<p><a href="{% url 'mlog:commentlist' entry.id %}">Comment:{{comment}}</a></p>
 
 		<form action="{% url 'mlog:likeprocess' %}" method="POST">
