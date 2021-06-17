@@ -23,6 +23,8 @@ class Artist(models.Model):
     artist_name=models.CharField(max_length=30)
     genre=models.ManyToManyField(Genre)
     subgenre=models.ManyToManyField(SubGenre,blank=True)
+    artist_name_id=models.CharField(max_length=30,null=True)
+    artist_biograph=models.TextField(max_length=200,blank=True)
 
     def __str__(self):
         return self.artist_name
