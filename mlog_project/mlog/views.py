@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Entry
+from .models import Entry, Like, Comment
 from accounts.models import User, Follow
 
 
@@ -40,3 +40,10 @@ class EntryDetailView(DetailView):
 
 	def get_object(self):
 		return get_object_or_404(Entry,id=self.kwargs['pk'])
+
+	def get_context_data(self, **kwargs):
+		context=super().get_context_data(**kwargs)
+		context['like']=Like.objects.filter(entry=self.kwargs['pk']).count()
+		context['comment']=Comment.objects.filter(entry=self.kwargs['pk']).count()
+
+		return context

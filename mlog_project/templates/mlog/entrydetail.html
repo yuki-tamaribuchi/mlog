@@ -4,8 +4,12 @@
 <div class="container">
 	<div class "row mt-5">
 		<h1>{{entry.title}}</h1>
-		<p>written by {{entry.writer}}</p>
+		<p>written by <a href="{% url 'accounts:detail' entry.writer %}">{{entry.writer}}</a></p>
 		{{entry.content}}
+
+		<p>Date:{{entry.date}}</p>
+		<p>Like:{{like}}</p>
+		<p>Comment:{{comment}}</p>
 	</div>
 </div>
 {% endblock content %}
