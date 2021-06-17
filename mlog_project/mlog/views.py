@@ -86,3 +86,19 @@ class CommentListView(ListView):
 		context= super().get_context_data(**kwargs)
 		context['entry']=Entry.objects.get(id=self.kwargs['pk'])
 		return context
+
+
+class LikeListView(ListView):
+	template_name='mlog/likelist.html'
+
+	def get_queryset(self):
+		try:
+			qs=Like.objects.filter(entry=self.kwargs['pk'])
+		except ObjectDoesNotExist:
+			qs=Like.objects.none()
+		return qs
+		
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['entry']=Entry.objects.get(id=self.kwargs['pk'])
+		return context
