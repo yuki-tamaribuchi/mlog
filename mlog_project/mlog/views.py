@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Entry, Like, Comment
+from .models import Artist, Entry, Like, Comment
 from accounts.models import User, Follow
 
 
@@ -106,3 +106,6 @@ class LikeListView(ListView):
 
 class ArtistDetailView(DetailView):
 	template_name='mlog/artistdetail.html'
+
+	def get_object(self):
+		return get_object_or_404(Artist,artist_name_id=self.kwargs['artist_name_id'])
