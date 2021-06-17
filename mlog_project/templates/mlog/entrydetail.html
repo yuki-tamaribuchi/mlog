@@ -10,6 +10,13 @@
 		<p>Date:{{entry.date}}</p>
 		<p>Like:{{like}}</p>
 		<p>Comment:{{comment}}</p>
+
+		<form action="{% url 'mlog:likeprocess' %}" method="POST">
+			{% csrf_token %}
+			<input type="hidden" name='pk' value="{{entry.id}}">
+			<input type="submit" value="{% if like_status %}Unlike{% else %}Like{% endif %}">
+		</form>
+
 	</div>
 </div>
 {% endblock content %}
