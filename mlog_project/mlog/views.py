@@ -117,7 +117,7 @@ class ArtistDetailView(DetailView):
 		context['entries']=Entry.objects.filter(song__artist__artist_name_id=self.kwargs['artist_name_id'])
 		return context
 
-class EntryCreateView(CreateView):
+class EntryCreateView(LoginRequiredMixin,CreateView):
 	form_class=EntryCreateForm
 	template_name='mlog/entrycreate.html'
 
