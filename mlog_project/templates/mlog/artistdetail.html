@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title%}{{artist.artist_name}} | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class "row mt-5">
+        <h1>{{artist.artist_name}}</h1>
+	</div>
+</div>
+{% endblock content %}
