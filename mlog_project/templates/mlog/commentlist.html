@@ -11,6 +11,9 @@
         {% else %}
         コメントはありません。
         {% endif %}
+
+         <p><a href="{% url 'mlog:commentcreate' entry.id %}">コメントする</a></p>
+
 	</div>
 </div>
 {% endblock content %}
