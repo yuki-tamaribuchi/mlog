@@ -4,6 +4,21 @@
 <div class="container">
 	<div class "row mt-5">
         <h1>{{artist.artist_name}}</h1>
+		<h2>Biograph</h2>
+		{% if artist.artist_biograph %}
+		{{artist.artist_biograph}}
+		{% else %}
+		<p>紹介はありません。</p>
+		{% endif %}
+
+		<h2>記事一覧</h2>
+		{% if entries %}
+			{% for entry in entries %}
+			<p><a href="{% url 'mlog:detail' entry.id %}">{{entry.title}} </a>by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}({{entry.writer.username}})</a></p>
+			{% endfor %}
+		{% else %}
+		<p>記事はありません。</p>
+		{% endif %}
 	</div>
 </div>
 {% endblock content %}
