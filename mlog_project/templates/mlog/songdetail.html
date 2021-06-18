@@ -5,6 +5,11 @@
 	<div class "row mt-5">
 		<h1>{{song.song_name}}</h1>
 
+		<h2>アーティスト</h2>
+		<p>{% for artist in song.artist.all %}
+		<a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}} </a>
+		{% endfor %}</p>
+
 		<h2>この曲の記事一覧</h2>
 		{% for entry in entries %}
 		<p><a href="{% url 'mlog:detail' entry.id %}">{{entry.title}}</a> by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}({{entry.writer.username}})</a></p>
