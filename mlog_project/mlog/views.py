@@ -5,8 +5,8 @@ from django.views.generic import ListView, DetailView, View, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
-from .models import Artist, Entry, Like, Comment
-from .forms import EntryCreateForm, CommentCreateForm
+from .models import Artist, Entry, Like, Comment, Song
+from .forms import EntryCreateForm, CommentCreateForm, SongCreateForm, ArtsitCreateForm
 from accounts.models import User, Follow
 
 
@@ -139,3 +139,8 @@ class CommentCreateView(LoginRequiredMixin,CreateView):
 
 	def get_success_url(self):
 		return reverse_lazy('mlog:commentlist',kwargs={'pk':self.kwargs['pk']})
+
+
+class SongCreateView(CreateView):
+	form_class=SongCreateForm
+	template_name='mlog/songcreate.html'
