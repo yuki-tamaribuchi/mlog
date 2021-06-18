@@ -155,3 +155,15 @@ class ArtistCreateView(CreateView):
 
 	def get_success_url(self):
 		return reverse_lazy('mlog:artistdetail',kwargs={'artist_name_id':self.object.artist_name_id})
+
+
+class SongDetailView(DetailView):
+	model=Song
+	template_name='mlog/songdetail.html'
+	
+
+
+	def get_context_data(self, **kwargs):
+		context=super().get_context_data(**kwargs)
+		context['entries']=Entry.objects.filter(song=self.kwargs['pk'])
+		return context
