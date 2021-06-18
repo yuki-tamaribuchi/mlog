@@ -146,7 +146,7 @@ class SongCreateView(CreateView):
 	template_name='mlog/songcreate.html'
 
 	def get_success_url(self):
-		return reverse_lazy('mlog:top')
+		return reverse_lazy('mlog:songdetail',kwargs={'pk':self.object.id})
 
 
 class ArtistCreateView(CreateView):
