@@ -145,7 +145,13 @@ class SongCreateView(CreateView):
 	form_class=SongCreateForm
 	template_name='mlog/songcreate.html'
 
+	def get_success_url(self):
+		return reverse_lazy('mlog:top')
+
 
 class ArtistCreateView(CreateView):
 	form_class=ArtsitCreateForm
 	template_name='mlog/artistcreate.html'
+
+	def get_success_url(self):
+		return reverse_lazy('mlog:artistdetail',kwargs={'artist_name_id':self.object.artist_name_id})
