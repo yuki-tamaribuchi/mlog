@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% block title%}投稿 | {{block.super}}{% endblock title %}
+{% block title%}曲登録 | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
 	<div class "row mt-5">
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
-		<input type="submit" value="投稿">
+		<input type="submit" value="登録">
 		</form>
 	</div>
 </div>
