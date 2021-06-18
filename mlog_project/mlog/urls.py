@@ -13,6 +13,6 @@ urlpatterns=[
 	path('artist/<str:artist_name_id>/', ArtistDetailView.as_view(), name='artistdetail'),
 	path('create/', EntryCreateView.as_view(), name='entrycreate'),
 	path('commentcreate/<int:pk>/', CommentCreateView.as_view(), name='commentcreate'),
-	path('song/create/', SongCreateView.as_view(), name='songcreate'),
+	path('create/song/', SongCreateView.as_view(), name='songcreate'),
 	path('create/artist/', ArtistCreateView.as_view(), name='artistcreate')
 ]
