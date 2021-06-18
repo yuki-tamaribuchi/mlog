@@ -144,3 +144,8 @@ class CommentCreateView(LoginRequiredMixin,CreateView):
 class SongCreateView(CreateView):
 	form_class=SongCreateForm
 	template_name='mlog/songcreate.html'
+
+
+class ArtistCreateView(CreateView):
+	form_class=ArtsitCreateForm
+	template_name='mlog/artistcreate.html'
