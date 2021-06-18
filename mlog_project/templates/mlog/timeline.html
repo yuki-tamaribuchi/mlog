@@ -7,7 +7,7 @@
 		{% for entry in entry_list %}
 		<p>{{entry.title}} by {{entry.writer.handle}} 
 			(Song:{{entry.song.song_name}} 
-			by {% for artist in entry.song.artist.all %}{{artist.artist_name}} {% endfor %})</p>
+			by {% for artist in entry.song.artist.all %}<a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}} </a>{% endfor %})</p>
 		{% endfor %}
 	{% else %}
 	<p>エントリーはありません。</p>
