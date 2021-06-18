@@ -31,7 +31,6 @@ class TimelineView(LoginRequiredMixin, ListView):
 		
 		try:
 			qs=Entry.objects.filter(writer__username__in=follows)
-			print(qs)
 		except ObjectDoesNotExist:
 			qs=Entry.objects.none()
 		return qs
