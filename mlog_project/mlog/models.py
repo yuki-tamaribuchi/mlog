@@ -38,7 +38,8 @@ class Song(models.Model):
 
 
     def __str__(self):
-        return '%s by %s'%(self.song_name,self.artist)
+        names=[name.artist_name for name in self.artist.all()]
+        return '%s by %s'%(self.song_name,str(names))
 
 
 class Entry(models.Model):
