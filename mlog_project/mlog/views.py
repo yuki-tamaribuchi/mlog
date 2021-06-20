@@ -170,7 +170,9 @@ class SongDetailView(DetailView):
 		return context
 
 
-class EntryUpdateView(UpdateView):
-	model=Entry
+class EntryUpdateView(LoginRequiredMixin, UpdateView):
 	template_name='mlog/entryupdate.html'
 	fields=('title','content','song')
+
+	def get_object(self):
+		return get_object_or_404(Entry,writer__username=self.request.user.username,id=self.kwargs['pk'])
