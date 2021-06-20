@@ -12,7 +12,7 @@
 				<p>{{entry.content}}</p>
 				<p>{{entry.song}}</p>
                 <input type="submit" value="削除">
-                <a href=""><input type="button" value="キャンセル"></a>
+                <a href="{% url 'mlog:detail' entry.id %}"><input type="button" value="キャンセル"></a>
             </form>
         </div>
     </div>
