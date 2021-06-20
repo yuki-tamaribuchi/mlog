@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.shortcuts import redirect, render, get_object_or_404
-from django.views.generic import ListView, DetailView, View, CreateView
+from django.views.generic import ListView, DetailView, View, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
@@ -176,3 +176,13 @@ class EntryUpdateView(LoginRequiredMixin, UpdateView):
 
 	def get_object(self):
 		return get_object_or_404(Entry,writer__username=self.request.user.username,id=self.kwargs['pk'])
+
+
+class EntryDeleteView(LoginRequiredMixin, DeleteView):
+	template_name='mlog/entrydelete_confirm.html'
+
+	def get_object(self):
+		return get_object_or_404(Entry, writer__username=self.request.user.username,id=self.kwargs['pk'])
+
+	def get_success_url(self):
+		return reverse_lazy('accounts:detail',kwargs={'username':self.request.user.username})
