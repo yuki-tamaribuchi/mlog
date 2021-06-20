@@ -22,6 +22,10 @@
 			<input type="submit" value="{% if like_status %}Unlike{% else %}Like{% endif %}">
 		</form>
 
+		{% if entry.writer.username == user.username %}
+		<a href="{% url 'mlog:entrydelete' entry.id %}"><input type="button" value="削除する"></a>
+		{% endif %}
+
 	</div>
 </div>
 {% endblock content %}
