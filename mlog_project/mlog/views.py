@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import ListView, DetailView, View, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.views.generic.edit import UpdateView
 
 from .models import Artist, Entry, Like, Comment, Song
 from .forms import EntryCreateForm, CommentCreateForm, SongCreateForm, ArtsitCreateForm
@@ -167,3 +168,9 @@ class SongDetailView(DetailView):
 		context=super().get_context_data(**kwargs)
 		context['entries']=Entry.objects.filter(song=self.kwargs['pk'])
 		return context
+
+
+class EntryUpdateView(UpdateView):
+	model=Entry
+	template_name='mlog/entryupdate.html'
+	fields=('title','content','song')
