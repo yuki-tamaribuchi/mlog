@@ -197,4 +197,16 @@ class PopupSongCreateView(SongCreateView):
 			'object_pk':song.pk,
 			'function_name':'add_song'
 		}
-		return render(self.request,'mlog/popupsongcreate_close.html',context)
+		return render(self.request,'mlog/close.html',context)
+
+
+class PopupArtistCreateView(ArtistCreateView):
+
+	def form_valid(self, form):
+		artist=form.save()
+		context={
+			'object_name':str(artist),
+			'object_pk':artist.pk,
+			'function_name':'add_artist'
+		}
+		return render(self.request,'mlog/close.html',context)
