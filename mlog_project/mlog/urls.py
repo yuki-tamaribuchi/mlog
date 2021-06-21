@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import SongCreateView, TopView, TimelineView, EntryDetailView, LikeProcess, CommentListView, LikeListView, ArtistDetailView, EntryCreateView, CommentCreateView, SongCreateView, ArtistCreateView, SongDetailView, EntryUpdateView, EntryDeleteView, PopupSongCreateView, PopupArtistCreateView
+from .views import SongCreateView, TopView, TimelineView, EntryDetailView, LikeProcess, CommentListView, LikeListView, ArtistDetailView, EntryCreateView, CommentCreateView, SongCreateView, ArtistCreateView, SongDetailView, EntryUpdateView, EntryDeleteView, PopupSongCreateView, PopupArtistCreateView, GenreCreateView
 
 app_name='mlog'
 urlpatterns=[
@@ -20,4 +20,5 @@ urlpatterns=[
 	path('delete/entry/<int:pk>/', EntryDeleteView.as_view(), name='entrydelete'),
 	path('popup/song_create/', PopupSongCreateView.as_view(), name='popupsongcreate'),
 	path('popup/artist_create', PopupArtistCreateView.as_view(), name='popupartistcreate'),
+	path('create/genre/', GenreCreateView.as_view(), name='genrecreate'),
 ]

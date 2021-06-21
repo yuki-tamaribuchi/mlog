@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 
 from .models import Artist, Entry, Like, Comment, Song
-from .forms import EntryCreateForm, CommentCreateForm, SongCreateForm, ArtsitCreateForm
+from .forms import EntryCreateForm, CommentCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
 from accounts.models import User, Follow
 
 
@@ -210,3 +210,12 @@ class PopupArtistCreateView(ArtistCreateView):
 			'function_name':'add_artist'
 		}
 		return render(self.request,'mlog/close.html',context)
+
+
+class GenreCreateView(CreateView):
+	form_class=GenreCreateForm
+	template_name='mlog/genrecreate.html'
+
+
+	def get_success_url(self):
+		return reverse_lazy('mlog:entrycreate')
