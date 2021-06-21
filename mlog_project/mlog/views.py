@@ -219,3 +219,15 @@ class GenreCreateView(CreateView):
 
 	def get_success_url(self):
 		return reverse_lazy('mlog:entrycreate')
+
+
+class PopupGenreCreateView(GenreCreateView):
+
+	def form_valid(self, form):
+		genre=form.save()
+		context={
+			'object_name':str(genre),
+			'object_pk':genre.pk,
+			'function_name':'add_genre'
+		}
+		return render(self.request,'mlog/close.html',context)

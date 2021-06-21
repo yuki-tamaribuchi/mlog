@@ -8,6 +8,18 @@
 		{{form.as_p}}
 		<input type="submit" value="登録">
 		</form>
+		<a href="javascript:void(0)" onclick="window.open('{% url 'mlog:popupgenrecreate' %}','subwin_genre')">ジャンルを追加</a>
 	</div>
 </div>
+<script>
+	function add_genre(name,pk){
+		var select=document.getElementById('id_genre');
+		var option=document.createElement('option');
+		option.setAttribute('value',pk);
+		option.innerHTML=name;
+
+		select.add(option,0);
+		select.options[0].selected=true;
+	}
+</script>
 {% endblock content %}
