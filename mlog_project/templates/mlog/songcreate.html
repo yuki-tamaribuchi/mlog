@@ -2,7 +2,7 @@
 {% block title%}曲登録 | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
-	<div class "row mt-5">
+	<div class="row mt-5">
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}

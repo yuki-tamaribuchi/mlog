@@ -186,3 +186,15 @@ class EntryDeleteView(LoginRequiredMixin, DeleteView):
 
 	def get_success_url(self):
 		return reverse_lazy('accounts:detail',kwargs={'username':self.request.user.username})
+
+
+class PopupSongCreateView(SongCreateView):
+
+	def form_valid(self, form):
+		song=form.save()
+		context={
+			'object_name':str(song),
+			'object_pk':song.pk,
+			'function_name':'add_song'
+		}
+		return render(self.request,'mlog/popupsongcreate_close.html',context)
