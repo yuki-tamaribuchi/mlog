@@ -247,3 +247,8 @@ class ArtistSearchListView(ListView):
 		return Artist.objects.filter(
 			Q(artist_name__icontains=keyword) | Q(artist_name_id__icontains=keyword)
 		)
+
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['keyword']=self.request.GET['keyword']
+		return context

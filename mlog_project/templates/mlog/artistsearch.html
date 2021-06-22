@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-{% block title%}  | {{block.super}}{% endblock title %}
+{% block title%} 「{{keyword}}」の検索結果 | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
 	<div class "row mt-5">
+    「{{keyword}}」の検索結果
 	{% if artist_list %}
 		{% for artist in artist_list%}
         <p><a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}}</a></p>
