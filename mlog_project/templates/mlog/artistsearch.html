@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title%}  | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class "row mt-5">
+	{% if artist_list %}
+		{% for artist in artist_list%}
+        <p><a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}}</a></p>
+        {% endfor %}
+	{% else %}
+	<p>検索結果はありません。</p>
+	{% endif %}
+
+	</div>
+</div>
+{% endblock content %}

@@ -1,3 +1,4 @@
+from typing import List
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.shortcuts import redirect, render, get_object_or_404
@@ -5,6 +6,7 @@ from django.views.generic import ListView, DetailView, View, CreateView, DeleteV
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
+from django.db.models import Q
 
 from .models import Artist, Entry, Like, Comment, Song
 from .forms import EntryCreateForm, CommentCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
@@ -231,3 +233,17 @@ class PopupGenreCreateView(GenreCreateView):
 			'function_name':'add_genre'
 		}
 		return render(self.request,'mlog/close.html',context)
+
+
+class ArtistSearchListView(ListView):
+	template_name='mlog/artistsearch.html'
+
+	def get_queryset(self):
+		keyword=self.request.GET['keyword']
+
+		if not keyword:
+			return Artist.objects.none()
+
+		return Artist.objects.filter(
+			Q(artist_name__icontains=keyword) | Q(artist_name_id__icontains=keyword)
+		)
