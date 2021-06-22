@@ -252,3 +252,22 @@ class ArtistSearchListView(ListView):
 		context= super().get_context_data(**kwargs)
 		context['keyword']=self.request.GET['keyword']
 		return context
+
+
+class SongSearchListView(ListView):
+	template_name='mlog/songsearch.html'
+
+	def get_queryset(self):
+		keyword=self.request.GET['keyword']
+
+		if not keyword:
+			return Song.objects.none()
+
+		return Song.objects.filter(
+			Q(song_name__icontains=keyword)
+		)
+		
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['keyword']=self.request.GET['keyword']
+		return context
