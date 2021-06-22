@@ -15,6 +15,17 @@
 	<nav class="navbar navbar-dark bg-dark">
 		<a class="navbar-brand text-white" href="{% if user.username %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}"">mlog</a>
 		<div class="dropdown">
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownSearchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+			<div class="dropdown-menu" aria-labelledby="dropdownSearchButton">
+				<form method="GET">
+					<input type="search" placeholder="検索" name="keyword">
+					<input type="submit" value="アーティストを検索" formaction="{% url 'mlog:artistsearch'%}">
+					<input type="submit" value="曲を検索" formaction="{% url 'mlog:songsearch'%}">
+				</form>
+				
+			</div>
+		</div>
+		<div class="dropdown">
 			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
 				{% if user.id %}
