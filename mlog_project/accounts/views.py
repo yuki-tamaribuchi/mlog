@@ -17,8 +17,9 @@ from mlog.models import Entry
 class SignUpView(CreateView):
 	form_class=SignUpForm
 	template_name='accounts/signup.html'
-	success_url='/'
 
+	def get_success_url(self):
+		return reverse_lazy('accounts:detail',kwargs={'username':self.object.username})
 
 class LoginView(auth_login_view):
 	template_name='accounts/login.html'
