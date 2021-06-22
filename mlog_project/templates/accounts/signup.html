@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col mt-5">
-			<form method="post" action="{% url 'accounts:signup' %}">
+			<form method="post" action="{% url 'accounts:signup' %}" enctype="multipart/form-data">
 				{% csrf_token %}
 				<table>
 					<tr>
@@ -26,6 +26,10 @@
 					<tr>
 						<td>{{form.biograph.label_tag}}</td>
 						<td>{{form.biograph}}</td>
+					</tr>
+					<tr>
+						<td>{{form.profile_image.label_tag}}</td>
+						<td>{{form.profile_image}}</td>
 					</tr>
 				</table>
 				<input type="submit" value="サインアップ"/>
