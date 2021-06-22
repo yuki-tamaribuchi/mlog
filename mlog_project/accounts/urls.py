@@ -1,7 +1,15 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView
 
-from .views import SignUpView, LoginView, UserDetailView, UserUpdateView, FollowProcess, FollowListView, FollowerListView
+from .views import (SignUpView, 
+					LoginView, 
+					UserDetailView, 
+					UserUpdateView, 
+					FollowProcess, 
+					FollowListView, 
+					FollowerListView,
+					UserSearchListView,
+)
 
 app_name='accounts'
 urlpatterns=[
@@ -13,4 +21,5 @@ urlpatterns=[
 	path('follow/', FollowProcess.as_view(), name='follow'),
 	path('follow/<str:username>/', FollowListView.as_view(), name='followlist'),
 	path('follower/<str:username>/', FollowerListView.as_view(), name='followerlist'),
+	path('search', UserSearchListView.as_view(), name='usersearch'),
 ]

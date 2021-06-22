@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.views import LoginView as auth_login_view
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
+from django.db.models import Q
 
 from .forms import SignUpForm, UserUpdateForm
 from .models import User, Follow
@@ -118,4 +119,23 @@ class FollowerListView(ListView):
 		this_page_user=get_object_or_404(User,username=self.kwargs['username'])
 		context['this_page_username']=this_page_user.username
 		context['this_page_handle']=this_page_user.handle
+		return context
+
+
+class UserSearchListView(ListView):
+	template_name='accounts/usersearch.html'
+
+	def get_queryset(self):
+		keyword=self.request.GET['keyword']
+		
+		if not keyword:
+			return User.objects.none()
+
+		return User.objects.filter(
+			Q(username__icontains=keyword) | Q(handle__icontains=keyword)
+		)
+
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['keyword']=self.request.GET['keyword']
 		return context
