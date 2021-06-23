@@ -14,15 +14,17 @@ from .models import User, Follow
 from mlog.models import Entry
 
 
-PROFILE_IMAGE_SMALL={
-	'height':100,
-	'width':100
+PROFILE_IMAGE_SIZE={
+	'SM':{
+		'HEIGHT':100,
+		'WIDTH':100
+	},
+	'MID':{
+		'HEIGHT':250,
+		'WIDTH':250
+	}
 }
 
-PROFILE_IMAGE_MID={
-	'height':250,
-	'width':250
-}
 
 
 class SignUpView(CreateView):
@@ -53,8 +55,7 @@ class UserDetailView(DetailView):
 		context['entries']=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('-id')
 		context['follow_count']=Follow.objects.filter(user__username=self.kwargs['username']).count()
 		context['follower_count']=Follow.objects.filter(follower__username=self.kwargs['username']).count()
-		context['profile_image_size_height']=PROFILE_IMAGE_MID['height']
-		context['profile_image_size_width']=PROFILE_IMAGE_MID['width']
+		context['profile_image_size']=PROFILE_IMAGE_SIZE['MID']
 
 		if self.request.user.username:
 			user=get_object_or_404(User, username=self.request.user.username)	
@@ -113,8 +114,7 @@ class FollowListView(ListView):
 		this_page_user=get_object_or_404(User,username=self.kwargs['username'])
 		context['this_page_username']=this_page_user.username
 		context['this_page_handle']=this_page_user.handle
-		context['profile_image_size_height']=PROFILE_IMAGE_SMALL['height']
-		context['profile_image_size_width']=PROFILE_IMAGE_SMALL['width']
+		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
 		return context
 
 
@@ -135,8 +135,7 @@ class FollowerListView(ListView):
 		this_page_user=get_object_or_404(User,username=self.kwargs['username'])
 		context['this_page_username']=this_page_user.username
 		context['this_page_handle']=this_page_user.handle
-		context['profile_image_size_height']=PROFILE_IMAGE_SMALL['height']
-		context['profile_image_size_width']=PROFILE_IMAGE_SMALL['width']
+		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
 		return context
 
 
