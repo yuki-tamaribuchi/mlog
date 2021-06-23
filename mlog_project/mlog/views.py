@@ -13,6 +13,18 @@ from .forms import EntryCreateForm, CommentCreateForm, SongCreateForm, ArtsitCre
 from accounts.models import User, Follow
 
 
+PROFILE_IMAGE_SIZE={
+	'SM':{
+		'HEIGHT':100,
+		'WIDTH':100
+	},
+	'MID':{
+		'HEIGHT':250,
+		'WIDTH':250
+	}
+}
+
+
 class TopView(ListView):
 	model=Entry
 	template_name='mlog/topview.html'
@@ -23,6 +35,11 @@ class TopView(ListView):
 		except ObjectDoesNotExist:
 			qs=Entry.objects.none()
 		return qs
+
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
+		return context
 
 
 class TimelineView(LoginRequiredMixin, ListView):
@@ -38,6 +55,11 @@ class TimelineView(LoginRequiredMixin, ListView):
 			qs=Entry.objects.none()
 		return qs
 
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
+		return context
+
 
 class EntryDetailView(DetailView):
 	template_name='mlog/entrydetail.html'
@@ -49,6 +71,7 @@ class EntryDetailView(DetailView):
 		context=super().get_context_data(**kwargs)
 		context['like']=Like.objects.filter(entry=self.kwargs['pk']).count()
 		context['comment']=Comment.objects.filter(entry=self.kwargs['pk']).count()
+		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
 		
 		try:
 			context['like_status']=Like.objects.filter(user__username=self.request.user.username,entry=self.kwargs['pk'])
@@ -89,6 +112,7 @@ class CommentListView(ListView):
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
 		context['entry']=Entry.objects.get(id=self.kwargs['pk'])
+		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
 		return context
 
 
@@ -105,6 +129,7 @@ class LikeListView(ListView):
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
 		context['entry']=Entry.objects.get(id=self.kwargs['pk'])
+		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
 		return context
 
 
