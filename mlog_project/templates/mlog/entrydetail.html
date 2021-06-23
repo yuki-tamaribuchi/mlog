@@ -8,7 +8,7 @@
 		{{entry.content}}
 
 		<p>Date:{{entry.date}}</p>
-
+		<p>Featured song:<a href="{% url 'mlog:songdetail' entry.song.id %}">{{entry.song.song_name}}</a></p>
 		<p>Featured artist:{% for artist in entry.song.artist.all %}<a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}} </a> {% endfor %}</p>
 
 		<p><a href="{% url 'mlog:likelist' entry.id %}">Like:{{like}}</a></p>
