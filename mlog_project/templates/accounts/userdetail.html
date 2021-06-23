@@ -5,6 +5,7 @@
 	<div class="row">
 		<div class="col mt-5">
 			<h1>{{detail_user.handle}} ({{detail_user.username}})</h1>
+			<img src="/media/{{detail_user.profile_image}}" height="{{profile_image_size_height}}" width="profile_image_size_width" />
 			{% if detail_user.biograph %}
 			<p>{{detail_user.biograph}}</p>
 			{% else %}
