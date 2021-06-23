@@ -18,8 +18,7 @@ class User(AbstractUser):
 	biograph=models.TextField(max_length=200,blank=True)
 	profile_image=models.ImageField(
 		upload_to=get_image_path,
-		blank=True,
-		
+		default='accounts/images/profile/default/default.jpg'
 		)
 
 
