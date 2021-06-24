@@ -71,11 +71,8 @@ class Comment(models.Model):
 
 
 class ReadHistory(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     entry=models.ForeignKey(Entry,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return '%s read %s'%(self.user.username,self.entry.title)
 
 
 class ArtistCheckedHistory(models.Model):

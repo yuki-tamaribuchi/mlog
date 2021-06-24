@@ -70,6 +70,8 @@ class EntryDetailView(DetailView):
 		if self.request.user.username:
 			current_user=User.objects.get(username=self.request.user.username)
 			ReadHistory.objects.create(user=current_user,entry=current_entry)
+		else:
+			ReadHistory.objects.create(entry=current_entry)
 
 		return current_entry
 
