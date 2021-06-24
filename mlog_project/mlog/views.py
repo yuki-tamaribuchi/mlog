@@ -86,6 +86,8 @@ class EntryDetailView(DetailView):
 		except ObjectDoesNotExist:
 			context['like_status']=Like.objects.none()
 
+		context['view_count']=ReadHistory.objects.filter(entry__id=self.kwargs['pk']).count()
+
 		return context
 
 
