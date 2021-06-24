@@ -76,3 +76,11 @@ class ReadHistory(models.Model):
 
     def __str__(self):
         return '%s read %s'%(self.user.username,self.entry.title)
+
+
+class ArtistCheckedHistory(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    artist=models.ForeignKey(Artist,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '%s checked %s'%(self.user.username,self.artist.artist_name)
