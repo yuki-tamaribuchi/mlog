@@ -340,7 +340,7 @@ class FavoriteArtistProcess(LoginRequiredMixin,View):
 		return redirect(self.request.META['HTTP_REFERER'])
 
 
-class LikeEntryListView(LoginRequiredMixin,ListView):
+class LikeEntryListView(ListView):
 	template_name='mlog/userlikelist.html'
 
 	def get_queryset(self):
