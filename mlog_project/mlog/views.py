@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
 
-from .models import Artist, Entry, Like, Comment, Song
+from .models import Artist, Entry, Like, Comment, Song, ReadHistory
 from .forms import EntryCreateForm, CommentCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
 from accounts.models import User, Follow
 
@@ -65,7 +65,13 @@ class EntryDetailView(DetailView):
 	template_name='mlog/entrydetail.html'
 
 	def get_object(self):
-		return get_object_or_404(Entry,id=self.kwargs['pk'])
+		current_entry=get_object_or_404(Entry,id=self.kwargs['pk'])
+
+		if self.request.user.username:
+			current_user=User.objects.get(username=self.request.user.username)
+			ReadHistory.objects.create(user=current_user,entry=current_entry)
+
+		return current_entry
 
 	def get_context_data(self, **kwargs):
 		context=super().get_context_data(**kwargs)
