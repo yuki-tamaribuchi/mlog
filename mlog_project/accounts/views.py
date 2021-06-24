@@ -11,7 +11,7 @@ from django.db.models import Q
 
 from .forms import SignUpForm, UserUpdateForm
 from .models import User, Follow
-from mlog.models import Entry, Like
+from mlog.models import Entry, Like, Artist, FavoriteArtist
 
 
 PROFILE_IMAGE_SIZE={
@@ -156,4 +156,18 @@ class UserSearchListView(ListView):
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
 		context['keyword']=self.request.GET['keyword']
+		return context
+
+
+class UserFavoriteArtistListView(ListView):
+	template_name='accounts/userfavoriteartistlist.html'
+
+	def get_queryset(self):
+		fav_artist=FavoriteArtist.objects.filter(user__username=self.kwargs['username']).values('artist__id')
+		qs=Artist.objects.filter(id__in=fav_artist)
+		return qs
+	
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['detail_user']=User.objects.get(username=self.kwargs['username'])
 		return context

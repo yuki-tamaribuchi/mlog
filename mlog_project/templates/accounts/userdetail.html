@@ -36,7 +36,7 @@
 			{% endif %}
 
 			<p><a href="{% url 'mlog:likeentrylist' detail_user.username %}">ライクした記事({{liked_entry_count}})</a></p>
-			<p><a href="{% url 'mlog:favoriteartist' detail_user.username %}">お気に入りアーティスト一覧</a></p>
+			<p><a href="{% url 'accounts:favoriteartist' detail_user.username %}">お気に入りアーティスト一覧</a></p>
 		</div>
 	</div>
 </div>

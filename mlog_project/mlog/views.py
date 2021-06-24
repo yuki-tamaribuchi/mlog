@@ -368,17 +368,3 @@ class ArtistFavoriteUserListView(ListView):
 		context['detail_artist']=Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
 		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
 		return context
-
-
-class UserFavoriteArtistListView(ListView):
-	template_name='mlog/userfavoriteartistlist.html'
-
-	def get_queryset(self):
-		fav_artist=FavoriteArtist.objects.filter(user__username=self.kwargs['username']).values('artist__id')
-		qs=Artist.objects.filter(id__in=fav_artist)
-		return qs
-	
-	def get_context_data(self, **kwargs):
-		context= super().get_context_data(**kwargs)
-		context['detail_user']=User.objects.get(username=self.kwargs['username'])
-		return context

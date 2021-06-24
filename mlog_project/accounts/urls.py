@@ -9,6 +9,7 @@ from .views import (SignUpView,
 					FollowListView, 
 					FollowerListView,
 					UserSearchListView,
+					UserFavoriteArtistListView,
 )
 
 app_name='accounts'
@@ -22,4 +23,5 @@ urlpatterns=[
 	path('follow/<str:username>/', FollowListView.as_view(), name='followlist'),
 	path('follower/<str:username>/', FollowerListView.as_view(), name='followerlist'),
 	path('search', UserSearchListView.as_view(), name='usersearch'),
+	path('detail/<str:username>/favoriteartist/', UserFavoriteArtistListView.as_view(), name='favoriteartist'),
 ]
