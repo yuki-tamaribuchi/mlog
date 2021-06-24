@@ -20,7 +20,8 @@ from .views import (SongCreateView,
 					GenreCreateView, 
 					PopupGenreCreateView, 
 					ArtistSearchListView, 
-					SongSearchListView
+					SongSearchListView,
+					FavoriteArtistProcess,
 				)
 
 app_name='mlog'
@@ -45,4 +46,5 @@ urlpatterns=[
 	path('popup/genre_create',PopupGenreCreateView.as_view(),name='popupgenrecreate'),
 	path('search/artist', ArtistSearchListView.as_view(), name='artistsearch'),
 	path('search/song', SongSearchListView.as_view(), name='songsearch'),
+	path('favprocess/', FavoriteArtistProcess.as_view(), name='favprocess'),
 ]

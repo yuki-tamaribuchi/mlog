@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
 
-from .models import Artist, ArtistCheckedHistory, Entry, Like, Comment, Song, ReadHistory
+from .models import Artist, ArtistCheckedHistory, Entry, Like, Comment, Song, ReadHistory, FavoriteArtist
 from .forms import EntryCreateForm, CommentCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
 from accounts.models import User, Follow
 
@@ -158,6 +158,13 @@ class ArtistDetailView(DetailView):
 	def get_context_data(self, **kwargs):
 		context=super().get_context_data(**kwargs)
 		context['entries']=Entry.objects.filter(song__artist__artist_name_id=self.kwargs['artist_name_id'])
+
+		if self.request.user.username:
+			try:
+				context['fav_status']=FavoriteArtist.objects.get(user__username=self.request.user.username,artist__artist_name_id=self.kwargs['artist_name_id'])
+			except ObjectDoesNotExist:
+				context['fav_status']=FavoriteArtist.objects.none()
+
 		return context
 
 class EntryCreateView(LoginRequiredMixin,CreateView):
@@ -312,3 +319,22 @@ class SongSearchListView(ListView):
 		context= super().get_context_data(**kwargs)
 		context['keyword']=self.request.GET['keyword']
 		return context
+
+
+class FavoriteArtistProcess(LoginRequiredMixin,View):
+
+	def post(self,*args,**kwargs):
+
+		user=User.objects.get(username=self.request.user.username)
+		artist=Artist.objects.get(artist_name_id=self.request.POST['artist_name_id'])
+
+		try:
+			fav_status=FavoriteArtist.objects.get(user=user,artist=artist)
+		except ObjectDoesNotExist:
+			fav_status=FavoriteArtist.objects.none()
+		
+		if fav_status:
+			fav_status.delete()
+		else:
+			FavoriteArtist.objects.create(user=user,artist=artist)
+		return redirect(self.request.META['HTTP_REFERER'])

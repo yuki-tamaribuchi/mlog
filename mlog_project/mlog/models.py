@@ -1,6 +1,7 @@
 from typing_extensions import TypeGuard
 from django.db import models
 from django.db.models.base import Model
+from django.db.models.fields.related import OneToOneField
 from accounts.models import User
 
 
@@ -81,3 +82,11 @@ class ArtistCheckedHistory(models.Model):
 
     def __str__(self):
         return '%s checked %s'%(self.user.username,self.artist.artist_name)
+
+
+class FavoriteArtist(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    artist=models.ForeignKey(Artist,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '%s favorite artist is %s'%(self.user.username,self.artist.artist_name)
