@@ -353,3 +353,18 @@ class LikeEntryListView(ListView):
 		context['detail_user']=User.objects.get(username=self.kwargs['username'])
 		return context
 
+
+class ArtistFavoriteUserListView(ListView):
+	template_name='mlog/artistfavoriteuserlist.html'
+	context_object_name='fav_users'
+
+	def get_queryset(self):
+		fav_user=FavoriteArtist.objects.filter(artist__artist_name_id=self.kwargs['artist_name_id']).values('user__id')
+		qs=User.objects.filter(id__in=fav_user)
+		return qs
+
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['detail_artist']=Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
+		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
+		return context
