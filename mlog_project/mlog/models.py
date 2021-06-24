@@ -66,6 +66,9 @@ class Comment(models.Model):
     entry=models.ForeignKey(Entry,on_delete=models.CASCADE)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
 
+    def __str__(self):
+        return '%s comment to %s'%(self.user.username,self.entry.title)
+
 
 class ReadHistory(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
