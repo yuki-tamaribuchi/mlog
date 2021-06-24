@@ -11,7 +11,7 @@ from django.db.models import Q
 
 from .forms import SignUpForm, UserUpdateForm
 from .models import User, Follow
-from mlog.models import Entry
+from mlog.models import Entry, Like
 
 
 PROFILE_IMAGE_SIZE={
@@ -56,6 +56,7 @@ class UserDetailView(DetailView):
 		context['follow_count']=Follow.objects.filter(user__username=self.kwargs['username']).count()
 		context['follower_count']=Follow.objects.filter(follower__username=self.kwargs['username']).count()
 		context['profile_image_size']=PROFILE_IMAGE_SIZE['MID']
+		context['liked_entry_count']=Like.objects.filter(user__username=self.kwargs['username']).count()
 
 		if self.request.user.username:
 			user=get_object_or_404(User, username=self.request.user.username)	

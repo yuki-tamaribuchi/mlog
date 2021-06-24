@@ -34,6 +34,8 @@
 			{% else %}
 			表示する記事がありません。
 			{% endif %}
+
+			<p><a href="{% url 'mlog:likeentrylist' detail_user.username %}">ライクした記事({{liked_entry_count}})</a></p>
 		</div>
 	</div>
 </div>

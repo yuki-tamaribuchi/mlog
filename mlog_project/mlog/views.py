@@ -338,3 +338,18 @@ class FavoriteArtistProcess(LoginRequiredMixin,View):
 		else:
 			FavoriteArtist.objects.create(user=user,artist=artist)
 		return redirect(self.request.META['HTTP_REFERER'])
+
+
+class LikeEntryListView(LoginRequiredMixin,ListView):
+	template_name='mlog/userlikelist.html'
+
+	def get_queryset(self):
+		liked_entry=Like.objects.filter(user__username=self.kwargs['username']).values('entry__id')
+		qs=Entry.objects.filter(id__in=liked_entry)
+		return qs
+
+	def get_context_data(self,**kwargs):
+		context= super().get_context_data(**kwargs)
+		context['detail_user']=User.objects.get(username=self.kwargs['username'])
+		return context
+

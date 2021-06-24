@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title%} {{detail_user.handle}} ({{detail_user.username}})がライクした記事一覧 | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class "row mt-5">
+	{% if entry_list %}
+		{% for entry in entry_list %}
+		<p><a href="{% url 'mlog:detail' entry.id %}">{{entry.title}}</a> by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}</a>
+			(Song:<a href="{% url 'mlog:songdetail' entry.song.id %}">{{entry.song.song_name}}</a>
+			by {% for artist in entry.song.artist.all %}<a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}} </a>{% endfor %})</p>
+		{% endfor %}
+	{% else %}
+	<p>エントリーはありません。</p>
+	{% endif %}
+
+	</div>
+</div>
+{% endblock content %}
