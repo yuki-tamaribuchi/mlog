@@ -10,13 +10,24 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+	<style>
+		.navbar {
+			position: relative;
+		}
+		.brand {
+			position: absolute;
+			left:50%;
+			margin-left: -50px !important;
+			display:block;
+		}
+	</style>
 </head>
 <body>
 	<nav class="navbar navbar-dark bg-dark">
-		<a class="navbar-brand text-white" href="{% if user.username %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}"">mlog</a>
-		<div class="dropdown">
+		<a class="navbar-brand brand text-white" href="{% if user.username %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}"">mlog</a>
+		<div class="dropdown ms-auto">
 			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownSearchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
-			<div class="dropdown-menu" aria-labelledby="dropdownSearchButton">
+			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownSearchButton">
 				<form method="GET">
 					<input type="search" placeholder="検索" name="keyword">
 					<input type="submit" value="アーティストを検索" formaction="{% url 'mlog:artistsearch'%}">
