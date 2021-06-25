@@ -25,6 +25,14 @@ PROFILE_IMAGE_SIZE={
 }
 
 
+class RootRedirectView(View):
+	def get(self,request):
+		if request.user.username:
+			return redirect('mlog:timeline')
+		else:
+			return redirect('mlog:top')
+
+
 class TopView(ListView):
 	model=Entry
 	template_name='mlog/topview.html'
