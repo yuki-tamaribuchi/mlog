@@ -31,6 +31,7 @@
 			{% for entry in entries %}
 			<p><a href="{% url 'mlog:detail' entry.id %}">{{entry.title}}</a> (曲:<a href="{% url 'mlog:songdetail' entry.song.id %}">{{entry.song.song_name}}</a> / {% for artist in entry.song.artist.all %}<a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}}</a>{% endfor %}) </p>
 			{% endfor %}
+			<p><a href="{% url 'accounts:userentrylist' detail_user.username %}">もっと見る</a></p>
 			{% else %}
 			表示する記事がありません。
 			{% endif %}

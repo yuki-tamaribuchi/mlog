@@ -52,7 +52,7 @@ class UserDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context=super().get_context_data(**kwargs)
-		context['entries']=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('-id')
+		context['entries']=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
 		context['follow_count']=Follow.objects.filter(user__username=self.kwargs['username']).count()
 		context['follower_count']=Follow.objects.filter(follower__username=self.kwargs['username']).count()
 		context['profile_image_size']=PROFILE_IMAGE_SIZE['MID']
