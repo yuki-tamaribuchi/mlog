@@ -28,6 +28,7 @@ PROFILE_IMAGE_SIZE={
 class TopView(ListView):
 	model=Entry
 	template_name='mlog/topview.html'
+	paginate_by=10
 
 	def get_queryset(self):
 		try:

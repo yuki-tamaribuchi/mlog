@@ -3,16 +3,31 @@
 {% block content %}
 <div class="container">
 	<div class "row mt-5">
-	{% if entry_list %}
-		{% for entry in entry_list %}
-		<p><a href="{% url 'mlog:detail' entry.id %}">{{entry.title}}</a> by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}</a> 
-			(Song:<a href="{% url 'mlog:songdetail' entry.song.id %}">{{entry.song.song_name}}</a> 
-			by {% for artist in entry.song.artist.all %}<a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}} </a>{% endfor %})</p>
-		{% endfor %}
-	{% else %}
-	<p>エントリーはありません。</p>
-	{% endif %}
+		{% if entry_list %}
+			{% for entry in entry_list %}
+			<p><a href="{% url 'mlog:detail' entry.id %}">{{entry.title}}</a> by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}</a> 
+				(Song:<a href="{% url 'mlog:songdetail' entry.song.id %}">{{entry.song.song_name}}</a> 
+				by {% for artist in entry.song.artist.all %}<a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}} </a>{% endfor %})</p>
+			{% endfor %}
+		{% else %}
+		<p>エントリーはありません。</p>
+		{% endif %}
 
+		<div class="pagination">
+			<span class="step-links">
+				{% if page_obj.has_previous %}
+					<a href="?page=1">&laquo; first</a>
+					<a href="?page={{page_obj.previous_page_number}}">previous</a>
+				{% endif %}
+				<span class="current">
+					Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}.
+				</span>
+				{% if page_obj.has_next %}
+				<a href="?page={{page_obj.next_page_number}}">next</a>
+				<a href="?page={{page_obj.paginator.num_pages}}">last &raquo;</a>
+				{% endif %}
+			</span>
+		</div>
 	</div>
 </div>
 {% endblock content %}
