@@ -171,3 +171,17 @@ class UserFavoriteArtistListView(ListView):
 		context= super().get_context_data(**kwargs)
 		context['detail_user']=User.objects.get(username=self.kwargs['username'])
 		return context
+
+
+class UserEntryListView(ListView):
+	model=Entry
+	template_name='mlog/userentrylist.html'
+
+	def get_queryset(self):
+		qs=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('id').reverse()
+		return qs
+
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['detail_user']=User.objects.get(username=self.kwargs['username'])
+		return context

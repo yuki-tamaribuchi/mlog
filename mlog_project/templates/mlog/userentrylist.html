@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title%} {{detail_user.handle}} ({{detail_user.username}})の投稿一覧 | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col mt-5">
+			<h2><a href="{% url 'accounts:detail' detail_user.username %}">{{detail_user.handle}}</a>の投稿</h2>
+			{% if entry_list %}
+			{% for entry in entry_list %}
+			<p><a href="{% url 'mlog:detail' entry.id %}">{{entry.title}}</a> (曲:<a href="{% url 'mlog:songdetail' entry.song.id %}">{{entry.song.song_name}}</a> / {% for artist in entry.song.artist.all %}<a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}}</a>{% endfor %}) </p>
+			{% endfor %}
+			{% else %}
+			表示する記事がありません。
+			{% endif %}
+
+		</div>
+	</div>
+</div>
+{% endblock content %}
