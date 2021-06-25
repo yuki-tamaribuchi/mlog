@@ -176,6 +176,7 @@ class UserFavoriteArtistListView(ListView):
 class UserEntryListView(ListView):
 	model=Entry
 	template_name='mlog/userentrylist.html'
+	paginate_by=20
 
 	def get_queryset(self):
 		qs=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('id').reverse()
