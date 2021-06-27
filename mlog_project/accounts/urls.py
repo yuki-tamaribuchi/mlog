@@ -28,6 +28,6 @@ urlpatterns=[
 	path('search', UserSearchListView.as_view(), name='usersearch'),
 	path('detail/<str:username>/favoriteartist/', UserFavoriteArtistListView.as_view(), name='favoriteartist'),
 	path('detail/<str:username>/entry/', UserEntryListView.as_view(), name='userentrylist'),
-	path('password/change/', UserPasswordChangeView.as_view(), name='passwordchange'),
+	path('password/', UserPasswordChangeView.as_view(), name='password'),
 	path('password/changed/', UserPasswordChangeDoneView.as_view(), name='passwordchanged')
 ]
