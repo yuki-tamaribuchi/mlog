@@ -4,12 +4,12 @@ from django.views.generic import CreateView, DetailView, UpdateView, View
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
-from django.contrib.auth.views import LoginView as auth_login_view
+from django.contrib.auth.views import LoginView as auth_login_view, PasswordChangeView, PasswordChangeDoneView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from django.db.models import Q
 
-from .forms import SignUpForm, UserUpdateForm
+from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
 from .models import User, Follow
 from mlog.models import Entry, Like, Artist, FavoriteArtist
 
@@ -186,3 +186,13 @@ class UserEntryListView(ListView):
 		context= super().get_context_data(**kwargs)
 		context['detail_user']=User.objects.get(username=self.kwargs['username'])
 		return context
+
+
+class UserPasswordChangeView(PasswordChangeView):
+	template_name='accounts/passwordchange.html'
+	form_class=UserPasswordChangeForm
+	success_url=reverse_lazy('accounts:passwordchanged')
+
+
+class UserPasswordChangeDoneView(PasswordChangeDoneView):
+	template_name='accounts/passwordchangedone.html'

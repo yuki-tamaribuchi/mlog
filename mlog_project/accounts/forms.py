@@ -1,7 +1,7 @@
 from django.forms import fields
 from .models import User
 from django import forms
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm, UserChangeForm, PasswordChangeForm
 
 class SignUpForm(UserCreationForm):
 	class Meta:
@@ -13,3 +13,9 @@ class UserUpdateForm(UserChangeForm):
 	class Meta:
 		model=User
 		fields=('handle','biograph','profile_image')
+
+
+class UserPasswordChangeForm(PasswordChangeForm):
+	class Meta:
+		model=User
+		fields='__all__'
