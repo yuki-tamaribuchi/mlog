@@ -4,7 +4,8 @@ from django.views.generic import CreateView, DetailView, UpdateView, View
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
-from django.contrib.auth.views import LoginView as auth_login_view, PasswordChangeView, PasswordChangeDoneView
+from django.contrib.auth.views import LoginView as auth_login_view, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
+from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from django.db.models import Q
@@ -196,3 +197,23 @@ class UserPasswordChangeView(PasswordChangeView):
 
 class UserPasswordChangeDoneView(PasswordChangeDoneView):
 	template_name='accounts/passwordchangedone.html'
+
+
+class UserPasswordResetView(PasswordResetView):
+	template_name='accounts/password_reset.html'
+	form_class=PasswordResetForm
+	success_url=reverse_lazy('accounts:passwordresetdone')
+	email_template_name='accounts/password_reset_email.html'
+
+
+class UserPasswordResetDoneView(PasswordResetDoneView):
+	template_name='accounts/password_reset_done.html'
+	
+
+class UserPasswordResetConfirmView(PasswordResetConfirmView):
+	template_name='accounts/password_reset_confirm.html'
+	success_url=reverse_lazy('accounts:passwordresetcomplete')
+
+
+class UserPasswordResetCompleteView(PasswordResetCompleteView):
+	template_name='accounts/password_reset_complete.html'
