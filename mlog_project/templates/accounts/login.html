@@ -8,6 +8,8 @@
 				{% csrf_token %}
 				{{form.as_p}}
 				<input type="submit" value="ログイン">
+
+				<p><a href="{% url 'accounts:passwordreset' %}">パスワードを忘れた</a></p>
 			</form>
 		</div>
 	</div>
