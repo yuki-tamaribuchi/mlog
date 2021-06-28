@@ -42,7 +42,7 @@ class FavoriteArtistProcess(LoginRequiredMixin,View):
 
 
 class ArtistFavoriteUserListView(ListView):
-	template_name='mlog/artistfavoriteuserlist.html'
+	template_name='favorite_artists/artistfavoriteuserlist.html'
 	context_object_name='fav_users'
 
 	def get_queryset(self):
@@ -58,7 +58,7 @@ class ArtistFavoriteUserListView(ListView):
 
 
 class UserFavoriteArtistListView(ListView):
-	template_name='accounts/userfavoriteartistlist.html'
+	template_name='favorite_artists/userfavoriteartistlist.html'
 
 	def get_queryset(self):
 		fav_artist=FavoriteArtist.objects.filter(user__username=self.kwargs['username']).values('artist__id')
