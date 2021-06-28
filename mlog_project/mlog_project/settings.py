@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'accounts',
     'mlog',
     'search',
+    'comments',
 ]
 
 MIDDLEWARE = [

@@ -9,9 +9,10 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
 
-from .models import Artist, ArtistCheckedHistory, Entry, Genre, Like, Comment, Song, ReadHistory, FavoriteArtist
-from .forms import EntryCreateForm, CommentCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
+from .models import Artist, ArtistCheckedHistory, Entry, Genre, Like, Song, ReadHistory, FavoriteArtist
+from .forms import EntryCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
 from accounts.models import User, Follow
+from comments.models import Comment
 
 
 PROFILE_IMAGE_SIZE={
@@ -87,8 +88,8 @@ class EntryDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context=super().get_context_data(**kwargs)
-		context['like']=Like.objects.filter(entry=self.kwargs['pk']).count()
-		context['comment']=Comment.objects.filter(entry=self.kwargs['pk']).count()
+		context['like_count']=Like.objects.filter(entry=self.kwargs['pk']).count()
+		context['comment_count']=Comment.objects.filter(entry=self.kwargs['pk']).count()
 		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
 		
 		try:
@@ -117,23 +118,6 @@ class LikeProcess(LoginRequiredMixin,View):
 			Like.objects.create(user=user,entry=entry)
 
 		return redirect(self.request.META['HTTP_REFERER'])
-
-
-class CommentListView(ListView):
-	template_name='mlog/commentlist.html'
-
-	def get_queryset(self):
-		try:
-			qs=Comment.objects.filter(id=self.kwargs['pk'])
-		except ObjectDoesNotExist:
-			qs=Comment.objects.none()
-		return qs
-
-	def get_context_data(self, **kwargs):
-		context= super().get_context_data(**kwargs)
-		context['entry']=Entry.objects.get(id=self.kwargs['pk'])
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
-		return context
 
 
 class LikeListView(ListView):
@@ -187,19 +171,6 @@ class EntryCreateView(LoginRequiredMixin,CreateView):
 
 	def get_success_url(self):
 		return reverse_lazy('mlog:detail',kwargs={'pk':self.object.id})
-
-
-class CommentCreateView(LoginRequiredMixin,CreateView):
-	form_class=CommentCreateForm
-	template_name='mlog/commentcreate.html'
-
-	def form_valid(self, form):
-		form.instance.user_id=User.objects.get(username=self.request.user.username).id
-		form.instance.entry_id=self.kwargs['pk']
-		return super().form_valid(form)
-
-	def get_success_url(self):
-		return reverse_lazy('mlog:commentlist',kwargs={'pk':self.kwargs['pk']})
 
 
 class SongCreateView(CreateView):

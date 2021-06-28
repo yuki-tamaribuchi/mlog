@@ -24,4 +24,5 @@ urlpatterns = [
     path('accounts/', include('accounts.urls'), name='accounts'),
     path('', include('mlog.urls'), name='mlog'),
     path('search/', include('search.urls'), name='search'),
+    path('comments/', include('comments.urls'), name='comments'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
