@@ -382,3 +382,16 @@ class ArtistFavoriteUserListView(ListView):
 class GenreListView(ListView):
 	model=Genre
 	template_name='mlog/genre_list.html'
+
+
+class ArtistByGenreListView(ListView):
+	template_name='mlog/artist_by_genre_list.html'
+
+	def get_queryset(self):
+		qs=Artist.objects.filter(genre__genre_name=self.kwargs['genre_name'])
+		return qs
+
+	def get_context_data(self, **kwargs):
+		context= super().get_context_data(**kwargs)
+		context['genre']=Genre.objects.get(genre_name=self.kwargs['genre_name'])
+		return context

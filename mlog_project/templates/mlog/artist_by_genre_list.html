@@ -3,12 +3,12 @@
 {% block content %}
 <div class="container">
 	<div class "row mt-5">
-	{% if genre_list %}
-		{% for genre in genre_list %}
-		<p><a href="{% url 'mlog:artist_by_genre' genre.genre_name %}">{{genre.genre_name}}</a></p>
+	{% if artist_list %}
+		{% for artist in artist_list %}
+		<p><a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}}</a></p>
 		{% endfor %}
 	{% else %}
-	<p>ジャンルが登録されていません。</p>
+	<p>{{genre.genre_name}}に登録されいるアーティストはいません。</p>
 	{% endif %}
 	</div>
 </div>

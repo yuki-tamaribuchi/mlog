@@ -27,6 +27,7 @@ from .views import (
 					LikeEntryListView,
 					ArtistFavoriteUserListView,
 					GenreListView,
+					ArtistByGenreListView,
 				)
 
 app_name='mlog'
@@ -56,4 +57,5 @@ urlpatterns=[
 	path('detail/<str:username>/like/', LikeEntryListView.as_view(), name='likeentrylist'),
 	path('artist/<str:artist_name_id>/favoriteuser/', ArtistFavoriteUserListView.as_view(), name='favoriteuser'),
 	path('genre/', GenreListView.as_view(), name='genre_list'),
+	path('genre/<str:genre_name>/artist/', ArtistByGenreListView.as_view(), name='artist_by_genre'),
 ]
