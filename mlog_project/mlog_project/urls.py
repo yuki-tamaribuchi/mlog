@@ -25,4 +25,5 @@ urlpatterns = [
     path('', include('mlog.urls'), name='mlog'),
     path('search/', include('search.urls'), name='search'),
     path('comments/', include('comments.urls'), name='comments'),
+    path('likes/', include('likes.urls'), name='likes')
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

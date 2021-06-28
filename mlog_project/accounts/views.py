@@ -12,7 +12,8 @@ from django.db.models import Q
 
 from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
 from .models import User, Follow
-from mlog.models import Entry, Like, Artist, FavoriteArtist
+from mlog.models import Entry, Artist, FavoriteArtist
+from likes.models import Like
 
 
 PROFILE_IMAGE_SIZE={

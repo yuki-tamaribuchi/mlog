@@ -12,13 +12,13 @@
 		<p>Featured song:<a href="{% url 'mlog:songdetail' entry.song.id %}">{{entry.song.song_name}}</a></p>
 		<p>Featured artist:{% for artist in entry.song.artist.all %}<a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}} </a> {% endfor %}</p>
 
-		<p><a href="{% url 'mlog:likelist' entry.id %}">Like:{{like_count}}</a></p>
+		<p><a href="{% url 'likes:entry_list' entry.id %}">Like:{{like_count}}</a></p>
 		<p><a href="{% url 'comments:list' entry.id %}">Comment:{{comment_count}}</a></p>
 		<p>Views:{{view_count}}</p>
 
 		<a href="{% url 'comments:create' entry.id %}"><input type="button" value="コメントする"></a>
 
-		<form action="{% url 'mlog:likeprocess' %}" method="POST">
+		<form action="{% url 'likes:process' %}" method="POST">
 			{% csrf_token %}
 			<input type="hidden" name='pk' value="{{entry.id}}">
 			<input type="submit" value="{% if like_status %}Unlike{% else %}Like{% endif %}">

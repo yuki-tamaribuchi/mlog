@@ -9,10 +9,11 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
 
-from .models import Artist, ArtistCheckedHistory, Entry, Genre, Like, Song, ReadHistory, FavoriteArtist
+from .models import Artist, ArtistCheckedHistory, Entry, Genre, Song, ReadHistory, FavoriteArtist
 from .forms import EntryCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
 from accounts.models import User, Follow
 from comments.models import Comment
+from likes.models import Like
 
 
 PROFILE_IMAGE_SIZE={
@@ -99,41 +100,6 @@ class EntryDetailView(DetailView):
 
 		context['view_count']=ReadHistory.objects.filter(entry__id=self.kwargs['pk']).count()
 
-		return context
-
-
-class LikeProcess(LoginRequiredMixin,View):
-
-	def post(self, *args, **kwargs):
-		try:
-			like_status=Like.objects.filter(user__username=self.request.user.username,entry=self.request.POST['pk'])
-		except ObjectDoesNotExist:
-			like_status=Like.objects.none()
-
-		if like_status:
-			like_status.delete()
-		else:
-			user=User.objects.get(username=self.request.user.username)
-			entry=Entry.objects.get(id=self.request.POST['pk'])
-			Like.objects.create(user=user,entry=entry)
-
-		return redirect(self.request.META['HTTP_REFERER'])
-
-
-class LikeListView(ListView):
-	template_name='mlog/likelist.html'
-
-	def get_queryset(self):
-		try:
-			qs=Like.objects.filter(entry=self.kwargs['pk'])
-		except ObjectDoesNotExist:
-			qs=Like.objects.none()
-		return qs
-
-	def get_context_data(self, **kwargs):
-		context= super().get_context_data(**kwargs)
-		context['entry']=Entry.objects.get(id=self.kwargs['pk'])
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
 		return context
 
 
@@ -281,20 +247,6 @@ class FavoriteArtistProcess(LoginRequiredMixin,View):
 		else:
 			FavoriteArtist.objects.create(user=user,artist=artist)
 		return redirect(self.request.META['HTTP_REFERER'])
-
-
-class LikeEntryListView(ListView):
-	template_name='mlog/userlikelist.html'
-
-	def get_queryset(self):
-		liked_entry=Like.objects.filter(user__username=self.kwargs['username']).values('entry__id')
-		qs=Entry.objects.filter(id__in=liked_entry)
-		return qs
-
-	def get_context_data(self,**kwargs):
-		context= super().get_context_data(**kwargs)
-		context['detail_user']=User.objects.get(username=self.kwargs['username'])
-		return context
 
 
 class ArtistFavoriteUserListView(ListView):

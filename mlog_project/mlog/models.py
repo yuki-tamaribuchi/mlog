@@ -44,14 +44,6 @@ class Entry(models.Model):
         return '%s written by %s (Song:%s)'%(self.title,self.writer,self.song)
 
 
-class Like(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
-    entry=models.ForeignKey(Entry,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return '%s liked %s'%(self.user,self.entry)
-
-
 class ReadHistory(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     entry=models.ForeignKey(Entry,on_delete=models.CASCADE)
