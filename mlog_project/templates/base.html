@@ -30,9 +30,9 @@
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownSearchButton">
 				<form method="GET">
 					<input type="search" placeholder="検索" name="keyword">
-					<input type="submit" value="アーティストを検索" formaction="{% url 'mlog:artistsearch'%}">
-					<input type="submit" value="曲を検索" formaction="{% url 'mlog:songsearch'%}">
-					<input type="submit" value="ユーザを検索" formaction="{% url 'accounts:usersearch'%}">
+					<input type="submit" value="アーティストを検索" formaction="{% url 'search:artist'%}">
+					<input type="submit" value="曲を検索" formaction="{% url 'search:song'%}">
+					<input type="submit" value="ユーザを検索" formaction="{% url 'search:user'%}">
 				</form>
 				
 			</div>
