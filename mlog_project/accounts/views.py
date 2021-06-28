@@ -11,9 +11,10 @@ from django.views.generic.list import ListView
 from django.db.models import Q
 
 from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
-from .models import User, Follow
+from .models import User
 from mlog.models import Entry, Artist
 from likes.models import Like
+from follow.models import Follow
 
 
 PROFILE_IMAGE_SIZE={
@@ -80,66 +81,7 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
 	def get_success_url(self):
 		return reverse_lazy('accounts:detail',kwargs={'username':self.request.user.username})
 
-class FollowProcess(LoginRequiredMixin,View):
 
-	def post(self,*args,**kwargs):
-		user=get_object_or_404(User, username=self.request.user.username)	
-		follow_user=get_object_or_404(User, username=self.request.POST['username'])
-		following=Follow.objects.filter(user__username=user.username,follower__username=follow_user.username)
-
-		if user==follow_user:
-			return redirect(self.request.META['HTTP_REFERER'])
-		
-		if following.exists():
-			following.delete()
-		else:
-			Follow.objects.create(user=user,follower=follow_user)
-
-		return redirect(self.request.META['HTTP_REFERER'])
-
-
-class FollowListView(ListView):
-	model=Follow
-	template_name='accounts/followlist.html'
-	context_object_name='follows'
-
-	def get_queryset(self):
-		try:
-			qs=Follow.objects.filter(user__username=self.kwargs['username'])
-			#queryset=get_object_or_404(Follow,user__username=self.kwargs['username'])
-			print(qs)
-		except ObjectDoesNotExist:
-			qs=Follow.objects.none()
-		return qs
-	
-	def get_context_data(self, **kwargs):
-		context=super().get_context_data(**kwargs)
-		this_page_user=get_object_or_404(User,username=self.kwargs['username'])
-		context['this_page_username']=this_page_user.username
-		context['this_page_handle']=this_page_user.handle
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
-		return context
-
-
-class FollowerListView(ListView):
-	model=Follow
-	template_name='accounts/followerlist.html'
-	context_object_name='followers'
-
-	def get_queryset(self):
-		try:
-			qs=Follow.objects.filter(follower__username=self.kwargs['username'])
-		except ObjectDoesNotExist:
-			qs=Follow.objects.none()
-		return qs
-	
-	def get_context_data(self, **kwargs):
-		context=super().get_context_data(**kwargs)
-		this_page_user=get_object_or_404(User,username=self.kwargs['username'])
-		context['this_page_username']=this_page_user.username
-		context['this_page_handle']=this_page_user.handle
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
-		return context
 
 
 class UserEntryListView(ListView):

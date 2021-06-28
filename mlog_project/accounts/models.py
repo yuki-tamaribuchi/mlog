@@ -20,13 +20,3 @@ class User(AbstractUser):
 		upload_to=get_image_path,
 		default='accounts/images/profile/default/default.jpg'
 		)
-
-
-class Follow(models.Model):
-	user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='following_user')
-	follower=models.ForeignKey(User,on_delete=models.CASCADE,related_name='followed_user')
-
-	def __str__(self):
-		return '%s follows %s'%(self.user,self.follower)
-
-

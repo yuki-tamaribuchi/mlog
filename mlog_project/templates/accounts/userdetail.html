@@ -12,11 +12,11 @@
 			<p>自己紹介が入力されていません。</p>
 			{% endif %}
 
-			<p><a href="{% url 'accounts:followlist' detail_user.username %}">{{follow_count}}フォロー</a> | <a href="{% url 'accounts:followerlist' detail_user.username %}"> {{follower_count}}フォロワー</a></p>
+			<p><a href="{% url 'follow:following' detail_user.username %}">{{follow_count}}フォロー</a> | <a href="{% url 'follow:follower' detail_user.username %}"> {{follower_count}}フォロワー</a></p>
 
 			{% if not is_myself %}
 				{% if user.username %}
-				<form action="{% url 'accounts:follow' %}" method="POST">
+				<form action="{% url 'follow:process' %}" method="POST">
 					{% csrf_token %}
 					<input type="hidden" name='username' value="{{detail_user.username}}">
 					<input type="submit" value="{% if is_following %}フォローをやめる{% else %}フォローする{% endif %}">

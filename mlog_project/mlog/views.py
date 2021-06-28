@@ -11,10 +11,11 @@ from django.db.models import Q
 
 from .models import Artist, ArtistCheckedHistory, Entry, Genre, Song, ReadHistory
 from .forms import EntryCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
-from accounts.models import User, Follow
+from accounts.models import User
 from comments.models import Comment
 from likes.models import Like
 from favorite_artists.models import FavoriteArtist
+from follow.models import Follow
 
 
 PROFILE_IMAGE_SIZE={
