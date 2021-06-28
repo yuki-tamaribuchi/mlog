@@ -9,13 +9,14 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
 
-from .models import Artist, ArtistCheckedHistory, Entry, Genre, Song, ReadHistory
+from .models import Artist, Entry, Genre, Song
 from .forms import EntryCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
 from accounts.models import User
 from comments.models import Comment
 from likes.models import Like
 from favorite_artists.models import FavoriteArtist
 from follow.models import Follow
+from activity.models import ArtistCheckedActivity, EntryReadActivity
 
 
 PROFILE_IMAGE_SIZE={
@@ -83,9 +84,9 @@ class EntryDetailView(DetailView):
 
 		if self.request.user.username:
 			current_user=User.objects.get(username=self.request.user.username)
-			ReadHistory.objects.create(user=current_user,entry=current_entry)
+			EntryReadActivity.objects.create(user=current_user,entry=current_entry)
 		else:
-			ReadHistory.objects.create(entry=current_entry)
+			EntryReadActivity.objects.create(entry=current_entry)
 
 		return current_entry
 
@@ -100,7 +101,7 @@ class EntryDetailView(DetailView):
 		except ObjectDoesNotExist:
 			context['like_status']=Like.objects.none()
 
-		context['view_count']=ReadHistory.objects.filter(entry__id=self.kwargs['pk']).count()
+		context['view_count']=EntryReadActivity.objects.filter(entry__id=self.kwargs['pk']).count()
 
 		return context
 
@@ -113,7 +114,7 @@ class ArtistDetailView(DetailView):
 
 		if self.request.user.username:
 			current_user=User.objects.get(username=self.request.user.username)
-			ArtistCheckedHistory.objects.create(user=current_user,artist=current_artist)
+			ArtistCheckedActivity.objects.create(user=current_user,artist=current_artist)
 
 		return current_artist
 
