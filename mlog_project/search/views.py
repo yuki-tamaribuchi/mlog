@@ -7,7 +7,7 @@ from accounts.models import User
 
 
 class ArtistSearchListView(ListView):
-	template_name='mlog/artistsearch.html'
+	template_name='search/artist.html'
 
 	def get_queryset(self):
 		keyword=self.request.GET['keyword']
@@ -26,7 +26,7 @@ class ArtistSearchListView(ListView):
 
 
 class SongSearchListView(ListView):
-	template_name='mlog/songsearch.html'
+	template_name='search/song.html'
 
 	def get_queryset(self):
 		keyword=self.request.GET['keyword']
@@ -45,7 +45,7 @@ class SongSearchListView(ListView):
 
 
 class UserSearchListView(ListView):
-	template_name='accounts/usersearch.html'
+	template_name='search/user.html'
 
 	def get_queryset(self):
 		keyword=self.request.GET['keyword']
