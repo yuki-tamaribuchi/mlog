@@ -16,7 +16,7 @@ from comments.models import Comment
 from likes.models import Like
 from favorite_artists.models import FavoriteArtist
 from follow.models import Follow
-from activity.models import ArtistCheckedActivity, EntryReadActivity
+from activity.models import ArtistCheckedActivity, EntryReadActivity, SongCheckedActivity
 
 
 PROFILE_IMAGE_SIZE={
@@ -159,9 +159,17 @@ class ArtistCreateView(CreateView):
 
 
 class SongDetailView(DetailView):
-	model=Song
 	template_name='mlog/songdetail.html'
-	
+
+	def get_object(self):
+		current_song=Song.objects.get(pk=self.kwargs['pk'])
+
+		if self.request.user.username:
+			current_user=User.objects.get(username=self.request.user.username)
+			SongCheckedActivity.objects.create(user=current_user, song=current_song)
+
+		return current_song
+
 
 
 	def get_context_data(self, **kwargs):
