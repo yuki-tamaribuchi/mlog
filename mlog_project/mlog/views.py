@@ -390,7 +390,7 @@ class ArtistByGenreListView(ListView):
 	template_name='mlog/artist_by_genre_list.html'
 
 	def get_queryset(self):
-		qs=Artist.objects.filter(genre__genre_name=self.kwargs['genre_name'])
+		qs=Artist.objects.filter(genre__genre_name=self.kwargs['genre_name']).order_by('artist_name_id')
 		return qs
 
 	def get_context_data(self, **kwargs):
