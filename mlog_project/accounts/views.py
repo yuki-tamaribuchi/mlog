@@ -16,19 +16,7 @@ from mlog.models import Entry, Artist
 from likes.models import Like
 from follow.models import Follow
 from activity.models import UserDetailCheckedActivity
-
-
-PROFILE_IMAGE_SIZE={
-	'SM':{
-		'HEIGHT':100,
-		'WIDTH':100
-	},
-	'MID':{
-		'HEIGHT':250,
-		'WIDTH':250
-	}
-}
-
+from utils.utils import get_profile_image_size
 
 
 class SignUpView(CreateView):
@@ -65,7 +53,7 @@ class UserDetailView(DetailView):
 		context['entries']=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
 		context['follow_count']=Follow.objects.filter(user__username=self.kwargs['username']).count()
 		context['follower_count']=Follow.objects.filter(follower__username=self.kwargs['username']).count()
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['MID']
+		context['profile_image_size']=get_profile_image_size('MID')
 		context['liked_entry_count']=Like.objects.filter(user__username=self.kwargs['username']).count()
 
 		if self.request.user.username:

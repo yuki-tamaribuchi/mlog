@@ -5,20 +5,9 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import User
 from mlog.models import Entry
+from utils.utils import get_profile_image_size
 
 from .models import Like
-
-
-PROFILE_IMAGE_SIZE={
-	'SM':{
-		'HEIGHT':100,
-		'WIDTH':100
-	},
-	'MID':{
-		'HEIGHT':250,
-		'WIDTH':250
-	}
-}
 
 
 class LikeProcess(LoginRequiredMixin,View):
@@ -52,7 +41,7 @@ class EntrysLikeListView(ListView):
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
 		context['entry']=Entry.objects.get(id=self.kwargs['pk'])
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
+		context['profile_image_size']=get_profile_image_size('SM')
 		return context
 
 

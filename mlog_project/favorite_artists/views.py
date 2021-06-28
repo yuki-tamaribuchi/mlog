@@ -6,20 +6,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from accounts.models import User
 from mlog.models import Artist
+from utils.utils import get_profile_image_size
 
 from .models import FavoriteArtist
-
-
-PROFILE_IMAGE_SIZE={
-	'SM':{
-		'HEIGHT':100,
-		'WIDTH':100
-	},
-	'MID':{
-		'HEIGHT':250,
-		'WIDTH':250
-	}
-}
 
 
 class FavoriteArtistProcess(LoginRequiredMixin,View):
@@ -53,7 +42,7 @@ class ArtistFavoriteUserListView(ListView):
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
 		context['detail_artist']=Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
+		context['profile_image_size']=get_profile_image_size('SM')
 		return context
 
 

@@ -17,18 +17,7 @@ from likes.models import Like
 from favorite_artists.models import FavoriteArtist
 from follow.models import Follow
 from activity.models import ArtistCheckedActivity, EntryReadActivity, SongCheckedActivity
-
-
-PROFILE_IMAGE_SIZE={
-	'SM':{
-		'HEIGHT':100,
-		'WIDTH':100
-	},
-	'MID':{
-		'HEIGHT':250,
-		'WIDTH':250
-	}
-}
+from utils.utils import get_profile_image_size
 
 
 class RootRedirectView(View):
@@ -53,7 +42,7 @@ class TopView(ListView):
 
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
+		context['profile_image_size']=get_profile_image_size('SM')
 		return context
 
 
@@ -72,7 +61,7 @@ class TimelineView(LoginRequiredMixin, ListView):
 
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
+		context['profile_image_size']=get_profile_image_size('SM')
 		return context
 
 
@@ -94,7 +83,7 @@ class EntryDetailView(DetailView):
 		context=super().get_context_data(**kwargs)
 		context['like_count']=Like.objects.filter(entry=self.kwargs['pk']).count()
 		context['comment_count']=Comment.objects.filter(entry=self.kwargs['pk']).count()
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
+		context['profile_image_size']=get_profile_image_size('SM')
 		
 		try:
 			context['like_status']=Like.objects.filter(user__username=self.request.user.username,entry=self.kwargs['pk'])
