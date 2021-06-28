@@ -26,6 +26,7 @@ from .views import (
 					FavoriteArtistProcess,
 					LikeEntryListView,
 					ArtistFavoriteUserListView,
+					GenreListView,
 				)
 
 app_name='mlog'
@@ -54,4 +55,5 @@ urlpatterns=[
 	path('favprocess/', FavoriteArtistProcess.as_view(), name='favprocess'),
 	path('detail/<str:username>/like/', LikeEntryListView.as_view(), name='likeentrylist'),
 	path('artist/<str:artist_name_id>/favoriteuser/', ArtistFavoriteUserListView.as_view(), name='favoriteuser'),
+	path('genre/', GenreListView.as_view(), name='genre_list'),
 ]

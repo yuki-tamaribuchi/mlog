@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title%} ジャンル一覧 | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class "row mt-5">
+	{% if genre_list %}
+		{% for genre in genre_list %}
+		<p><a href="#">{{genre.genre_name}}</a></p>
+		{% endfor %}
+	{% else %}
+	<p>ジャンルが登録されていません。</p>
+	{% endif %}
+	</div>
+</div>
+{% endblock content %}

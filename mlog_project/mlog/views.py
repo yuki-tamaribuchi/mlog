@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
 
-from .models import Artist, ArtistCheckedHistory, Entry, Like, Comment, Song, ReadHistory, FavoriteArtist
+from .models import Artist, ArtistCheckedHistory, Entry, Genre, Like, Comment, Song, ReadHistory, FavoriteArtist
 from .forms import EntryCreateForm, CommentCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
 from accounts.models import User, Follow
 
@@ -377,3 +377,8 @@ class ArtistFavoriteUserListView(ListView):
 		context['detail_artist']=Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
 		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
 		return context
+
+
+class GenreListView(ListView):
+	model=Genre
+	template_name='mlog/genre_list.html'
