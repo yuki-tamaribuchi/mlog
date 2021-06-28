@@ -15,6 +15,7 @@ from .models import User
 from mlog.models import Entry, Artist
 from likes.models import Like
 from follow.models import Follow
+from activity.models import UserDetailCheckedActivity
 
 
 PROFILE_IMAGE_SIZE={
@@ -46,12 +47,18 @@ class LoginView(auth_login_view):
 
 
 class UserDetailView(DetailView):
-	model=User
 	template_name='accounts/userdetail.html'
 	context_object_name='detail_user'
 
 	def get_object(self):
-		return get_object_or_404(User,username=self.kwargs['username'])
+		detail_user=User.objects.get(username=self.kwargs['username'])
+		
+		if self.request.user.username:
+			current_user=User.objects.get(username=self.request.user.username)
+			if not detail_user==current_user:
+				UserDetailCheckedActivity.objects.create(user=current_user, detail_user=detail_user)
+
+		return detail_user
 
 	def get_context_data(self, **kwargs):
 		context=super().get_context_data(**kwargs)

@@ -26,3 +26,11 @@ class SongCheckedActivity(models.Model):
 
 	def __str__(self):
 		return '%s checked %s'%(self.user.username, self.song.song_name)
+
+
+class UserDetailCheckedActivity(models.Model):
+	user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='logined_user')
+	detail_user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='detail_user')
+
+	def __str__(self):
+		return '%s checked %s'%(self.user.username, self.detail_user.username)
