@@ -11,7 +11,7 @@
 		<p>紹介はありません。</p>
 		{% endif %}
 
-		<form method="POST" action="{% url 'favorites:process' %}" >
+		<form method="POST" action="{% url 'favorite_artists:process' %}" >
 			{% csrf_token %}
 			<input type="hidden" value="{{artist.artist_name_id}}" name="artist_name_id">
 			<input type="submit" value="{% if fav_status %}お気に入り解除{% else %}お気に入りに登録{% endif %}">
