@@ -12,18 +12,9 @@ class Genre(models.Model):
         return self.genre_name
 
 
-class SubGenre(models.Model):
-    subgenre_name=models.CharField(max_length=20)
-    main_genre=models.ForeignKey(Genre,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.subgenre_name
-
-
 class Artist(models.Model):
     artist_name=models.CharField(max_length=30)
     genre=models.ManyToManyField(Genre)
-    subgenre=models.ManyToManyField(SubGenre,blank=True)
     artist_name_id=models.CharField(max_length=30,unique=True)
     artist_biograph=models.TextField(max_length=200,blank=True)
 
@@ -35,7 +26,6 @@ class Song(models.Model):
     song_name=models.CharField(max_length=30)
     artist=models.ManyToManyField(Artist)
     genre=models.ManyToManyField(Genre)
-    subgenre=models.ManyToManyField(SubGenre,blank=True)
 
 
     def __str__(self):

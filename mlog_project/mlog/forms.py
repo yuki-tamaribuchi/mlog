@@ -20,13 +20,13 @@ class CommentCreateForm(ModelForm):
 class ArtsitCreateForm(ModelForm):
 	class Meta:
 		model=Artist
-		fields=('artist_name','genre','subgenre','artist_name_id','artist_biograph')
+		fields=('artist_name','genre','artist_name_id','artist_biograph')
 
 
 class SongCreateForm(ModelForm):
 	class Meta:
 		model=Song
-		fields=('song_name','artist','genre','subgenre')
+		fields=('song_name','artist','genre')
 
 
 class GenreCreateForm(ModelForm):
