@@ -17,8 +17,6 @@ from .views import (
 					PopupArtistCreateView, 
 					GenreCreateView, 
 					PopupGenreCreateView, 
-					FavoriteArtistProcess,
-					ArtistFavoriteUserListView,
 					GenreListView,
 					ArtistByGenreListView,
 				)
@@ -40,8 +38,6 @@ urlpatterns=[
 	path('popup/artist_create', PopupArtistCreateView.as_view(), name='popupartistcreate'),
 	path('create/genre/', GenreCreateView.as_view(), name='genrecreate'),
 	path('popup/genre_create',PopupGenreCreateView.as_view(),name='popupgenrecreate'),
-	path('favprocess/', FavoriteArtistProcess.as_view(), name='favprocess'),
-	path('artist/<str:artist_name_id>/favoriteuser/', ArtistFavoriteUserListView.as_view(), name='favoriteuser'),
 	path('genre/', GenreListView.as_view(), name='genre_list'),
 	path('genre/<str:genre_name>/artist/', ArtistByGenreListView.as_view(), name='artist_by_genre'),
 ]

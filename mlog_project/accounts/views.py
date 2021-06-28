@@ -12,7 +12,7 @@ from django.db.models import Q
 
 from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
 from .models import User, Follow
-from mlog.models import Entry, Artist, FavoriteArtist
+from mlog.models import Entry, Artist
 from likes.models import Like
 
 
@@ -139,20 +139,6 @@ class FollowerListView(ListView):
 		context['this_page_username']=this_page_user.username
 		context['this_page_handle']=this_page_user.handle
 		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
-		return context
-
-
-class UserFavoriteArtistListView(ListView):
-	template_name='accounts/userfavoriteartistlist.html'
-
-	def get_queryset(self):
-		fav_artist=FavoriteArtist.objects.filter(user__username=self.kwargs['username']).values('artist__id')
-		qs=Artist.objects.filter(id__in=fav_artist)
-		return qs
-	
-	def get_context_data(self, **kwargs):
-		context= super().get_context_data(**kwargs)
-		context['detail_user']=User.objects.get(username=self.kwargs['username'])
 		return context
 
 

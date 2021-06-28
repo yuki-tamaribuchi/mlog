@@ -9,11 +9,12 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
 
-from .models import Artist, ArtistCheckedHistory, Entry, Genre, Song, ReadHistory, FavoriteArtist
+from .models import Artist, ArtistCheckedHistory, Entry, Genre, Song, ReadHistory
 from .forms import EntryCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
 from accounts.models import User, Follow
 from comments.models import Comment
 from likes.models import Like
+from favorite_artists.models import FavoriteArtist
 
 
 PROFILE_IMAGE_SIZE={
@@ -228,41 +229,6 @@ class PopupGenreCreateView(GenreCreateView):
 			'function_name':'add_genre'
 		}
 		return render(self.request,'mlog/close.html',context)
-
-
-class FavoriteArtistProcess(LoginRequiredMixin,View):
-
-	def post(self,*args,**kwargs):
-
-		user=User.objects.get(username=self.request.user.username)
-		artist=Artist.objects.get(artist_name_id=self.request.POST['artist_name_id'])
-
-		try:
-			fav_status=FavoriteArtist.objects.get(user=user,artist=artist)
-		except ObjectDoesNotExist:
-			fav_status=FavoriteArtist.objects.none()
-		
-		if fav_status:
-			fav_status.delete()
-		else:
-			FavoriteArtist.objects.create(user=user,artist=artist)
-		return redirect(self.request.META['HTTP_REFERER'])
-
-
-class ArtistFavoriteUserListView(ListView):
-	template_name='mlog/artistfavoriteuserlist.html'
-	context_object_name='fav_users'
-
-	def get_queryset(self):
-		fav_user=FavoriteArtist.objects.filter(artist__artist_name_id=self.kwargs['artist_name_id']).values('user__id')
-		qs=User.objects.filter(id__in=fav_user)
-		return qs
-
-	def get_context_data(self, **kwargs):
-		context= super().get_context_data(**kwargs)
-		context['detail_artist']=Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
-		context['profile_image_size']=PROFILE_IMAGE_SIZE['SM']
-		return context
 
 
 class GenreListView(ListView):

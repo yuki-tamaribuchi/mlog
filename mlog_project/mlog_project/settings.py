@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'search',
     'comments',
     'likes',
+    'favorite_artists',
 ]
 
 MIDDLEWARE = [
