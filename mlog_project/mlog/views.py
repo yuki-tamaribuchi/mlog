@@ -1,6 +1,7 @@
 from typing import List
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.db.models.expressions import OrderBy
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import ListView, DetailView, View, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -381,6 +382,7 @@ class ArtistFavoriteUserListView(ListView):
 
 class GenreListView(ListView):
 	model=Genre
+	ordering=['genre_name']
 	template_name='mlog/genre_list.html'
 
 
