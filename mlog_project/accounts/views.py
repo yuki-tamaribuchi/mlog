@@ -82,7 +82,7 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
 
 class UserEntryListView(ListView):
 	model=Entry
-	template_name='mlog/userentrylist.html'
+	template_name='accounts/userentrylist.html'
 	paginate_by=20
 
 	def get_queryset(self):

@@ -21,7 +21,7 @@
 		<h2>記事一覧</h2>
 		{% if entries %}
 			{% for entry in entries %}
-			<p><a href="{% url 'mlog:detail' entry.id %}">{{entry.title}} </a>by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}({{entry.writer.username}})</a></p>
+			<p><a href="{% url 'entry:detail' entry.id %}">{{entry.title}} </a>by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}({{entry.writer.username}})</a></p>
 			{% endfor %}
 		{% else %}
 		<p>記事はありません。</p>

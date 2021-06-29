@@ -5,7 +5,7 @@
 	<div class "row mt-5">
 		{% if entry_list %}
 			{% for entry in entry_list %}
-			<p><a href="{% url 'mlog:detail' entry.id %}">{{entry.title}}</a> by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}</a> 
+			<p><a href="{% url 'entry:detail' entry.id %}">{{entry.title}}</a> by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}</a> 
 				(Song:<a href="{% url 'musics:song_detail' entry.song.id %}">{{entry.song.song_name}}</a> 
 				by {% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.artist_name_id %}">{{artist.artist_name}} </a>{% endfor %})</p>
 			{% endfor %}

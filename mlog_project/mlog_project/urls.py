@@ -29,4 +29,5 @@ urlpatterns = [
     path('favorites/', include('favorite_artists.urls'), name='favorites'),
     path('follow/', include('follow.urls'), name='follow'),
     path('musics/', include('musics.urls'), name='musics'),
+    path('entry/', include('entry.urls'), name='entry'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -25,7 +25,7 @@
 		</form>
 
 		{% if entry.writer.username == user.username %}
-		<a href="{% url 'mlog:entrydelete' entry.id %}"><input type="button" value="削除する"></a>
+		<a href="{% url 'entry:entrydelete' entry.id %}"><input type="button" value="削除する"></a>
 		{% endif %}
 
 	</div>

@@ -41,7 +41,7 @@
 			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
 				{% if user.id %}
-				<a class="dropdown-item" href="{% url 'mlog:entrycreate' %}">投稿する</a>		
+				<a class="dropdown-item" href="{% url 'entry:create' %}">投稿する</a>		
 				<a class="dropdown-item" href="{% url 'accounts:detail' user.username %}">ログイン中:{{user.handle}} ({{user.username}})</a>
 				<a class="dropdown-item" href="{% url 'accounts:update' %}">アカウント管理</a>
 				<a class="dropdown-item" href="{% url 'accounts:logout' %}">ログアウト</a>
