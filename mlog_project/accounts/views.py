@@ -12,7 +12,7 @@ from django.db.models import Q
 
 from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
 from .models import User
-from mlog.models import Entry
+from entry.models import Entry
 from likes.models import Like
 from follow.models import Follow
 from activity.models import UserDetailCheckedActivity

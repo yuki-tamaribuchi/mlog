@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import User
-from mlog.models import Entry
+from entry.models import Entry
 from utils.utils import get_profile_image_size
 
 from .models import Like

@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 
 from activity.models import ArtistCheckedActivity, SongCheckedActivity
 from accounts.models import User
-from mlog.models import Entry
+from entry.models import Entry
 from favorite_artists.models import FavoriteArtist
 
 from .models import Artist, Song, Genre

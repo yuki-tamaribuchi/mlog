@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView
 from django.core.exceptions import ObjectDoesNotExist
 
-from mlog.models import Entry
+from entry.models import Entry
 from accounts.models import User
 from utils.utils import get_profile_image_size
 

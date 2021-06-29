@@ -1,7 +1,7 @@
 from django.db import models
 
 from accounts.models import User
-from mlog.models import Entry
+from entry.models import Entry
 
 class Comment(models.Model):
 	comment=models.TextField(max_length=200)
