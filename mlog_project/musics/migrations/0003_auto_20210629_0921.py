@@ -10,4 +10,33 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunSQL("""
+        INSERT INTO musics_artist (
+            id,
+            artist_name,
+            artist_biograph,
+            artist_name_id
+        )
+        SELECT
+            id,
+            artist_name,
+            artist_biograph,
+            artist_name_id
+        FROM 
+            mlog_artist;
+        """,reverse_sql="""
+        INSERT INTO mlog_artist (
+            id,
+            artist_name,
+            artist_biograph,
+            artist_name_id
+        )
+        SELECT
+            id,
+            artist_name,
+            artist_biograph,
+            artist_name_id
+        FROM
+            musics_artist;
+        """)
     ]
