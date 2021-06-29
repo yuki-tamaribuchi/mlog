@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'favorite_artists',
     'follow',
     'activity',
+    'musics',
 ]
 
 MIDDLEWARE = [
