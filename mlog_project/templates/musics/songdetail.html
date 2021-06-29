@@ -7,7 +7,7 @@
 
 		<h2>アーティスト</h2>
 		<p>{% for artist in song.artist.all %}
-		<a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}} </a>
+		<a href="{% url 'musics:artist_detail' artist.artist_name_id %}">{{artist.artist_name}} </a>
 		{% endfor %}</p>
 
 		<h2>この曲の記事一覧</h2>

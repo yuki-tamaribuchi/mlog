@@ -8,8 +8,8 @@
 		{{form.as_p}}
 		<input type="submit" value="登録">
 		</form>
-		<a href="javascript:void(0)" onclick="window.open('{% url 'mlog:popupartistcreate' %}','subwin_artist')">アーティストを追加</a>
-		<a href="javascript:void(0)" onclick="window.open('{% url 'mlog:popupgenrecreate' %}','subwin_genre')">ジャンルを追加</a>
+		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:artist_create_popup' %}','subwin_artist')">アーティストを追加</a>
+		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:genre_create_popup' %}','subwin_genre')">ジャンルを追加</a>
 	</div>
 </div>
 <script>

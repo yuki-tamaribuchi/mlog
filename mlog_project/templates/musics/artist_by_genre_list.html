@@ -5,7 +5,7 @@
 	<div class "row mt-5">
 	{% if artist_list %}
 		{% for artist in artist_list %}
-		<p><a href="{% url 'mlog:artistdetail' artist.artist_name_id %}">{{artist.artist_name}}</a></p>
+		<p><a href="{% url 'musics:artist_detail' artist.artist_name_id %}">{{artist.artist_name}}</a></p>
 		{% endfor %}
 	{% else %}
 	<p>{{genre.genre_name}}に登録されいるアーティストはいません。</p>

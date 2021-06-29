@@ -5,7 +5,7 @@
 	<div class "row mt-5">
 	{% if genre_list %}
 		{% for genre in genre_list %}
-		<p><a href="{% url 'mlog:artist_by_genre' genre.genre_name %}">{{genre.genre_name}}</a></p>
+		<p><a href="{% url 'musics:artist_by_genre' genre.genre_name %}">{{genre.genre_name}}</a></p>
 		{% endfor %}
 	{% else %}
 	<p>ジャンルが登録されていません。</p>
