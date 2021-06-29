@@ -1,7 +1,7 @@
 from django.db import models
 
 from accounts.models import User
-from mlog.models import Artist
+from musics.models import Artist
 
 class FavoriteArtist(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)

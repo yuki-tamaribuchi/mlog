@@ -2,7 +2,9 @@ from django.db import models
 from django.db.models.base import Model
 from django.forms import ModelForm, fields
 
-from .models import Entry, Artist, Genre, Song
+from musics.models import Artist, Genre, Song
+
+from .models import Entry
 
 
 class EntryCreateForm(ModelForm):

@@ -1,7 +1,8 @@
 from django.db import models
 
 from accounts.models import User
-from mlog.models import Entry, Artist, Song
+from mlog.models import Entry
+from musics.models import Artist, Song
 
 
 class EntryReadActivity(models.Model):

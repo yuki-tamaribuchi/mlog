@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
 
-from .models import Artist, Entry, Genre, Song
+from .models import Entry
 from .forms import EntryCreateForm, SongCreateForm, ArtsitCreateForm, GenreCreateForm
 from accounts.models import User
 from comments.models import Comment
@@ -18,6 +18,7 @@ from favorite_artists.models import FavoriteArtist
 from follow.models import Follow
 from activity.models import ArtistCheckedActivity, EntryReadActivity, SongCheckedActivity
 from utils.utils import get_profile_image_size
+from musics.models import Artist, Song, Genre
 
 
 class RootRedirectView(View):

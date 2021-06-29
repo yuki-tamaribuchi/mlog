@@ -2,9 +2,8 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.db.models import Q
 
-from mlog.models import Artist, Song
 from accounts.models import User
-
+from musics.models import Song, Artist
 
 class ArtistSearchListView(ListView):
 	template_name='search/artist.html'

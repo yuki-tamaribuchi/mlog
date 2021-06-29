@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 from accounts.models import User
-from mlog.models import Artist
+from musics.models import Artist
 from utils.utils import get_profile_image_size
 
 from .models import FavoriteArtist

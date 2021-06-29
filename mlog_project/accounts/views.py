@@ -12,11 +12,12 @@ from django.db.models import Q
 
 from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
 from .models import User
-from mlog.models import Entry, Artist
+from mlog.models import Entry
 from likes.models import Like
 from follow.models import Follow
 from activity.models import UserDetailCheckedActivity
 from utils.utils import get_profile_image_size
+from musics.models import Artist
 
 
 class SignUpView(CreateView):
