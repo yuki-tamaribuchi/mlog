@@ -43,7 +43,7 @@ class SongCreateView(CreateView):
 	template_name='musics/songcreate.html'
 
 	def get_success_url(self):
-		return reverse_lazy('mlog:songdetail',kwargs={'pk':self.object.id})
+		return reverse_lazy('musics:song_detail',kwargs={'pk':self.object.id})
 
 
 class ArtistCreateView(CreateView):
@@ -51,7 +51,7 @@ class ArtistCreateView(CreateView):
 	template_name='musics/artistcreate.html'
 
 	def get_success_url(self):
-		return reverse_lazy('mlog:artistdetail',kwargs={'artist_name_id':self.object.artist_name_id})
+		return reverse_lazy('musics:artist_detail',kwargs={'artist_name_id':self.object.artist_name_id})
 
 
 class SongDetailView(DetailView):
@@ -95,7 +95,7 @@ class PopupArtistCreateView(ArtistCreateView):
 			'object_pk':artist.pk,
 			'function_name':'add_artist'
 		}
-		return render(self.request,'mlog/close.html',context)
+		return render(self.request,'musics/close.html',context)
 
 
 class GenreCreateView(CreateView):
@@ -104,7 +104,7 @@ class GenreCreateView(CreateView):
 
 
 	def get_success_url(self):
-		return reverse_lazy('mlog:entrycreate')
+		return reverse_lazy('entry:create')
 
 
 class PopupGenreCreateView(GenreCreateView):

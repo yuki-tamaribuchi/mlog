@@ -52,7 +52,7 @@ class EntryCreateView(LoginRequiredMixin,CreateView):
 		return super().form_valid(form)
 
 	def get_success_url(self):
-		return reverse_lazy('mlog:detail',kwargs={'pk':self.object.id})
+		return reverse_lazy('entry:detail',kwargs={'pk':self.object.id})
 
 
 class EntryUpdateView(LoginRequiredMixin, UpdateView):
