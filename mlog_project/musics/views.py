@@ -83,7 +83,7 @@ class PopupSongCreateView(SongCreateView):
 			'object_pk':song.pk,
 			'function_name':'add_song'
 		}
-		return render(self.request,'mlog/close.html',context)
+		return render(self.request,'musics/close.html',context)
 
 
 class PopupArtistCreateView(ArtistCreateView):
