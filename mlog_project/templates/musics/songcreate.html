@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 {% block title%}曲登録 | {{block.super}}{% endblock title %}
+{% block head %}
+	{{ form.media.css }}
+	<style>
+		input,select{width:50%}
+	</style>
+{% endblock head %}
 {% block content %}
 <div class="container">
 	<div class="row mt-5">
@@ -12,6 +18,8 @@
 		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:genre_create_popup' %}','subwin_genre')">ジャンルを追加</a>
 	</div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{{ form.media.js }}
 <script>
 	function add_artist(name,pk){
 		var select=document.getElementById('id_artist');

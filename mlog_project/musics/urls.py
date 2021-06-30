@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from .views import (
 	ArtistDetailView,
@@ -30,4 +30,6 @@ urlpatterns=[
 
 	path('list/genre/', GenreListView.as_view(), name='genre_list'),
 	path('list/genre/<str:genre_name>/artist/', ArtistByGenreListView.as_view(), name='artist_by_genre'),
+
+	path('select2/', include('django_select2.urls')),
 ]

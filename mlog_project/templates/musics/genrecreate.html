@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 {% block title%}ジャンル登録 | {{block.super}}{% endblock title %}
+{% block head %}
+	{{ form.media.css }}
+	<style>
+		input,select{width:50%}
+	</style>
+{% endblock head %}
 {% block content %}
 <div class="container">
 	<div class "row mt-5">
@@ -10,4 +16,6 @@
 		</form>
 	</div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{{ form.media.js }}
 {% endblock content %}
