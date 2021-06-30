@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 {% block title%}投稿 | {{block.super}}{% endblock title %}
+{% block head %}
+	{{ form.media.css }}
+	<style>
+		input,select{width:50%}
+	</style>
+{% endblock head %}
+
+
 {% block content %}
 <div class="container">
 	<div class "row mt-5">
@@ -11,6 +19,8 @@
 		<a href="javascript:void(0);" onclick="window.open('{% url 'musics:song_create_popup' %}','subwin_song','width=500,height=500');">曲を追加</a>
 	</div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{{ form.media.js }}
 <script>
 	function add_song(name,pk){
 		var select=document.getElementById('id_song');
@@ -22,4 +32,5 @@
 		select.options[0].selected=true;
 	}
 </script>
+
 {% endblock content %}

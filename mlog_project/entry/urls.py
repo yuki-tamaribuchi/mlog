@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from .views import (
 	EntryDetailView,
@@ -14,4 +14,6 @@ urlpatterns=[
 	path('detail/<int:pk>/', EntryDetailView.as_view(), name='detail'),
 	path('update/<int:pk>/', EntryUpdateView.as_view(), name='update'),
 	path('delete/<int:pk>/', EntryDeleteView.as_view(), name='delete'),
+
+	path('select2/', include('django_select2.urls')),
 ]

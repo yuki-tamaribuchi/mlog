@@ -30,4 +30,5 @@ urlpatterns = [
     path('follow/', include('follow.urls'), name='follow'),
     path('musics/', include('musics.urls'), name='musics'),
     path('entry/', include('entry.urls'), name='entry'),
+    path('select2/', include('django_select2.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

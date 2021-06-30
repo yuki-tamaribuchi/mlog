@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'activity',
     'musics',
     'entry',
+    'django_select2',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,19 @@ MEDIA_URL='/media/'
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
+
+
+CACHES={
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'select2':{
+        'BACKEND':'django_redis.cache.RedisCache',
+        'LOCATION':'redis://127.0.0.1:6379/2',
+        'OPTIONS':{
+            'CLIENT_CLASS':'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+SELECT2_CACHE_BACKEND='select2'
