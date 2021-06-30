@@ -8,7 +8,7 @@
 
 			{% if followers %}
 			{% for follower in followers%}
-			<p><a href='{% url 'accounts:detail' follower.user.username%}'><img src="/media/{{follower.user.profile_image}}" height="{{profile_image_size.HEIGHT}}" width="{{profile_image_size.WIDTH}}"/>{{follower.user.handle}}({{follower.user.username}})</a></p>
+			<p><a href='{% url 'accounts:detail' follower.user.username%}'><img src="{{MEDIA_URL}}{{follower.user.profile_image}}" height="{{profile_image_size.HEIGHT}}" width="{{profile_image_size.WIDTH}}"/>{{follower.user.handle}}({{follower.user.username}})</a></p>
 			{% endfor %}
 			{% else %}
 			フォロワーはいません

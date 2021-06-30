@@ -8,7 +8,7 @@
 
 			{% if fav_users %}
 			{% for fav_user in fav_users %}
-			<p><a href="{% url 'accounts:detail' fav_user.username %}"><img src="/media/{{fav_user.profile_image}}" height="{{profile_image_size.HEIGHT}}" width="{{profile_image_size.WIDTH}}"/>{{fav_user.handle}}({{fav_user.username}})</a></p>
+			<p><a href="{% url 'accounts:detail' fav_user.username %}"><img src="{{MEDIA_URL}}{{fav_user.profile_image}}" height="{{profile_image_size.HEIGHT}}" width="{{profile_image_size.WIDTH}}"/>{{fav_user.handle}}({{fav_user.username}})</a></p>
 			{% endfor %}
 			{% else %}
 			お気に入り登録者はいません。
