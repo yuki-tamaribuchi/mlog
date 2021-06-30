@@ -21,7 +21,8 @@ class EntryDetailView(DetailView):
 
 		if self.request.user.username:
 			current_user=User.objects.get(username=self.request.user.username)
-			EntryReadActivity.objects.create(user=current_user,entry=current_entry)
+			if not current_entry.writer.username == current_user.username:
+				EntryReadActivity.objects.create(user=current_user,entry=current_entry)
 		else:
 			EntryReadActivity.objects.create(entry=current_entry)
 
