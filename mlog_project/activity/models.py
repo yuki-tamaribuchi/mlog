@@ -2,7 +2,7 @@ from django.db import models
 
 from accounts.models import User
 from entry.models import Entry
-from musics.models import Artist, Song
+from musics.models import Artist, Song, Genre
 
 
 class EntryReadActivity(models.Model):
@@ -35,3 +35,11 @@ class UserDetailCheckedActivity(models.Model):
 
 	def __str__(self):
 		return '%s checked %s'%(self.user.username, self.detail_user.username)
+
+
+class GenreCheckedActivity(models.Model):
+	user=models.ForeignKey(User, on_delete=models.CASCADE)
+	genre=models.ForeignKey(Genre, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return '%s checked %s'%(self.user, self.genre)

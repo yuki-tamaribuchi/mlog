@@ -3,7 +3,7 @@ from django.views.generic import DetailView, CreateView, ListView
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 
-from activity.models import ArtistCheckedActivity, SongCheckedActivity
+from activity.models import ArtistCheckedActivity, SongCheckedActivity, GenreCheckedActivity
 from accounts.models import User
 from entry.models import Entry
 from favorite_artists.models import FavoriteArtist
@@ -129,6 +129,11 @@ class ArtistByGenreListView(ListView):
 	template_name='musics/artist_by_genre_list.html'
 
 	def get_queryset(self):
+		if self.request.user.username:
+			current_user=User.objects.get(username=self.request.user.username)
+			current_genre=Genre.objects.get(genre_name=self.kwargs['genre_name'])
+			GenreCheckedActivity.objects.create(user=current_user, genre=current_genre)
+
 		qs=Artist.objects.filter(genre__genre_name=self.kwargs['genre_name']).order_by('artist_name_id')
 		return qs
 
