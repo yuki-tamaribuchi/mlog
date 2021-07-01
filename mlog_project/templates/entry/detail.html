@@ -16,9 +16,11 @@
 
 		<div class="row mb-3">
 			<h3>Featured Song</h3>
-			<div class="card text-center" style="width: 15rem;">
-				<div class="card-body">
-					<a href="{% url 'musics:song_detail' entry.song.id %}" class="stretched-link">{{entry.song.song_name}}</a>
+			<div class="col">
+				<div class="card text-center song-card" style="width: 15rem;">
+					<div class="card-body">
+						<a href="{% url 'musics:song_detail' entry.song.id %}" class="stretched-link text-decoration-none">{{entry.song.song_name}}</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -28,29 +30,23 @@
 			<div class="row">
 				{% for artist in entry.song.artist.all %}
 				<div class="col">
-					<div class="card text-center my-2">
+					<div class="card text-center artist-card" style="width: 10rem;">
 						<div class="card-body">
-							<a href="{% url 'musics:artist_detail' artist.artist_name_id %}" class="stretched-link">{{artist.artist_name}}</a>
+							<a href="{% url 'musics:artist_detail' artist.artist_name_id %}" class="stretched-link text-decoration-none">{{artist.artist_name}}</a>
 						</div>
 					</div>
 				</div>
 				{% endfor %}
 			</div>
-
-
-			
-			
-			
-
 		</div>
 
-		<div class="row">
+		<div class="row mb-3">
 			<div class="col"><a href="{% url 'likes:entry_list' entry.id %}">Like:{{like_count}}</a></div>
 			<div class="col"><a href="{% url 'comments:list' entry.id %}">Comment:{{comment_count}}</a></div>
 			<div class="col"><p>Views:{{view_count}}</p></div>	
 		</div>
 
-		<div class="row">
+		<div class="row mb-3">
 			<div class="col"><a href="{% url 'comments:create' entry.id %}"><input type="button" value="コメントする"></a></div>
 			<div class="col">
 				<form action="{% url 'likes:process' %}" method="POST">

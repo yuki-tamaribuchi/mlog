@@ -11,3 +11,11 @@ body {
 	margin-left: -50px !important;
 	display:block;
 }
+
+.song-card {
+	background-color: snow;
+}
+
+.artist-card {
+	background-color: mintcream;
+}
