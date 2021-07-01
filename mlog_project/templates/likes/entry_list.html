@@ -3,10 +3,20 @@
 {% block content %}
 <div class="container">
 	<div class "row mt-5">
-        <h1><a href="{% url 'entry:detail' entry.id %}">{{entry.title}}</a>へのLike</h1>
+        <h2><a href="{% url 'entry:detail' entry.id %}">{{entry.title}}</a>へのLike</h2>
 	    {% if like_list%}
             {% for like in like_list %}
-            <p><a href="{% url 'accounts:detail' like.user %}">{{like.user}}</a></p>
+            <div class="col">
+                <div class="card m-3 user-list-card text-center mx-auto">
+                        <div class="card-body">
+                                <div class="row">
+                                        <div class="col">
+                                                <a href="{% url 'accounts:detail' entry.writer.username %}"><img src="{{MEDIA_URL}}{{entry.writer.profile_image}}" class="profile-image profile-image-size-xs" /><h6 class="card-subtitle">{{entry.writer.handle}} ({{entry.writer.username}})</h6></a>
+                                        </div>
+                                </div>	
+                        </div>
+                </div>
+            </div>
             {% endfor %}
         {% else %}
         Likeはありません。
