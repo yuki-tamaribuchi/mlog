@@ -4,8 +4,9 @@
 <div class="container">
 	<div class "row mt-5">
 		{% if entry_list %}
+		<div class="col">
 			{% for entry in entry_list %}
-			<div class="card m-3 entry-list-card text-center">
+			<div class="card m-3 entry-list-card text-center mx-auto">
 				<div class="card-body">
 					<div class="row">
 						<div class="col">
@@ -19,6 +20,7 @@
 					</div>	
 				</div>
 			</div>
+		</div>
 			{% endfor %}
 
 
