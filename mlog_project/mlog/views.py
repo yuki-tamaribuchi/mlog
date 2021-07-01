@@ -40,7 +40,7 @@ class TimelineView(LoginRequiredMixin, ListView):
 		follows=Follow.objects.filter(user__username=self.request.user.username).values('follower__username')
 		
 		try:
-			qs=Entry.objects.filter(writer__username__in=follows)
+			qs=Entry.objects.filter(writer__username__in=follows).order_by('-id')
 		except ObjectDoesNotExist:
 			qs=Entry.objects.none()
 		return qs
