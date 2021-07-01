@@ -7,6 +7,12 @@ from musics.models import Song, Artist
 
 
 class BaseSeachListView(ListView):
+	def get_queryset(self):
+		self.keyword = self.request.GET['keyword']
+
+		qs = super().get_queryset()
+		return qs
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['keyword'] = self.request.GET['keyword']
@@ -14,25 +20,27 @@ class BaseSeachListView(ListView):
 
 
 class ArtistSearchListView(BaseSeachListView):
+	model=Artist
 	template_name = 'search/artist.html'
 
 	def get_queryset(self):
-		keyword = self.request.GET['keyword']
+		qs = super().get_queryset()
+		
+		if not self.keyword:
+			return qs.none()
 
-		if not keyword:
-			return Artist.objects.none()
-
-		return Artist.objects.filter(
-			Q(artist_name__icontains = keyword) | Q(artist_name_id__icontains = keyword)
+		return qs.filter(
+			Q(artist_name__icontains = self.keyword) | Q(artist_name_id__icontains = self.keyword)
 		)
 		
 
 
 class SongSearchListView(BaseSeachListView):
+	model=Song
 	template_name = 'search/song.html'
 
 	def get_queryset(self):
-		keyword = self.request.GET['keyword']
+		qs = super().get_queryset()
 
 		if not keyword:
 			return Song.objects.none()
