@@ -2,10 +2,13 @@
 {% block title%} {{detail_user.handle}} ({{detail_user.username}}) | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
-	<div class="row">
-		<div class="col mt-5">
+	<div class="row mt-5">
+		<div class="col text-center">
 			<h1>{{detail_user.handle}} ({{detail_user.username}})</h1>
-			<img src="{{MEDIA_URL}}{{detail_user.profile_image}}" height="{{profile_image_size.HEIGHT}}" width="{{profile_image_size.WIDTH}}" />
+			<img src="{{MEDIA_URL}}{{detail_user.profile_image}}" class="profile-image profile-image-size-lg"/>
+		</div>
+
+		<div class="col pt-5">
 			{% if detail_user.biograph %}
 			<p>{{detail_user.biograph}}</p>
 			{% else %}
@@ -25,19 +28,37 @@
 				<a href="{% url 'accounts:login' %}"><input type="button" value="フォローする"></a>
 				{% endif %}
 			{% endif %}
+			<div class="mt-5">
+				<p><a href="{% url 'likes:user_list' detail_user.username %}">ライクした記事({{liked_entry_count}})</a></p>
+				<p><a href="{% url 'favorite_artists:favoriteartist' detail_user.username %}">お気に入りアーティスト一覧</a></p>
+			</div>
+		</div>
 
+		<div class="row mt-5">
 			<h2>投稿</h2>
 			{% if entries %}
 			{% for entry in entries %}
-			<p><a href="{% url 'entry:detail' entry.id %}">{{entry.title}}</a> (曲:<a href="{% url 'musics:song_detail' entry.song.id %}">{{entry.song.song_name}}</a> / {% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.artist_name_id %}">{{artist.artist_name}}</a>{% endfor %}) </p>
+			<div class="card m-3 entry-list-card text-center">
+				<div class="card-body">
+					<div class="row">
+						<div class="col">
+							<a href="{% url 'entry:detail' entry.id %}"><h4 class="card-title">{{entry.title}}</h4></a>
+						</div>
+	
+						<div class="col">
+							<p>Song:<a href="{% url 'musics:song_detail' entry.song.id %}" class="card-link">{{entry.song.song_name}}</a></p>
+							<p>Artist:{% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.artist_name_id %}" class="card-link">{{artist.artist_name}} </a>{% endfor %}</p>
+						</div>
+					</div>
+					
+					
+				</div>
+			</div>	
 			{% endfor %}
 			<p><a href="{% url 'accounts:userentrylist' detail_user.username %}">もっと見る</a></p>
 			{% else %}
 			表示する記事がありません。
 			{% endif %}
-
-			<p><a href="{% url 'likes:user_list' detail_user.username %}">ライクした記事({{liked_entry_count}})</a></p>
-			<p><a href="{% url 'favorite_artists:favoriteartist' detail_user.username %}">お気に入りアーティスト一覧</a></p>
 		</div>
 	</div>
 </div>
