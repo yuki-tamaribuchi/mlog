@@ -30,7 +30,7 @@ class TopView(ListView):
 
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
-		context['profile_image_size']=get_profile_image_size('SM')
+		context['profile_image_size']=get_profile_image_size('XS')
 		return context
 
 
@@ -49,5 +49,5 @@ class TimelineView(LoginRequiredMixin, ListView):
 
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
-		context['profile_image_size']=get_profile_image_size('SM')
+		context['profile_image_size']=get_profile_image_size('XS')
 		return context

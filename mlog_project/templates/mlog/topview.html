@@ -5,10 +5,25 @@
 	<div class "row mt-5">
 		{% if entry_list %}
 			{% for entry in entry_list %}
-			<p><a href="{% url 'entry:detail' entry.id %}">{{entry.title}}</a> by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}</a> 
-				(Song:<a href="{% url 'musics:song_detail' entry.song.id %}">{{entry.song.song_name}}</a> 
-				by {% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.artist_name_id %}">{{artist.artist_name}} </a>{% endfor %})</p>
+			<div class="card m-3 bg-dark text-white entry-list-card text-center">
+				<div class="card-body">
+					<div class="row">
+						<div class="col">
+							<a href="{% url 'entry:detail' entry.id %}"><h4 class="card-title">{{entry.title}}</h4></a>
+							<a href="{% url 'accounts:detail' entry.writer.username %}"><h6 class="card-subtitle">{{entry.writer.handle}} ({{entry.writer.username}})</h6></a>
+						</div>
+						<div class="col">
+							<p>Song:<a href="{% url 'musics:song_detail' entry.song.id %}" class="card-link">{{entry.song.song_name}}</a></p>
+							<p>Artist:{% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.artist_name_id %}" class="card-link">{{artist.artist_name}} </a>{% endfor %}</p>
+						</div>
+					</div>	
+				</div>
+			</div>
 			{% endfor %}
+
+
+
+
 		{% else %}
 		<p>エントリーはありません。</p>
 		{% endif %}

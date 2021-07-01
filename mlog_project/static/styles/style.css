@@ -29,3 +29,8 @@ body {
 	border: none;
 	border-radius: 50%;
 }
+
+
+.entry-list-card {
+	width: 30rem;
+}
