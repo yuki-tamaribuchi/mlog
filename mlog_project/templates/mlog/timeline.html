@@ -11,7 +11,7 @@
 					<div class="row">
 						<div class="col">
 							<a href="{% url 'entry:detail' entry.id %}"><h4 class="card-title">{{entry.title}}</h4></a>
-							<a href="{% url 'accounts:detail' entry.writer.username %}"><img src="{{MEDIA_URL}}{{entry.writer.profile_image}}" height="{{profile_image_size.HEIGHT}}" width="{{profile_image_size.WIDTH}}" class="profile-image" /><h6 class="card-subtitle">{{entry.writer.handle}} ({{entry.writer.username}})</h6></a>
+							<a href="{% url 'accounts:detail' entry.writer.username %}"><img src="{{MEDIA_URL}}{{entry.writer.profile_image}}"  class="profile-image profile-image-size-xs" /><h6 class="card-subtitle">{{entry.writer.handle}} ({{entry.writer.username}})</h6></a>
 						</div>
 
 						<div class="col">

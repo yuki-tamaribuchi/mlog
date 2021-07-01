@@ -10,7 +10,7 @@
 					<div class="row">
 						<div class="col">
 							<a href="{% url 'entry:detail' entry.id %}"><h4 class="card-title">{{entry.title}}</h4></a>
-							<a href="{% url 'accounts:detail' entry.writer.username %}"><h6 class="card-subtitle">{{entry.writer.handle}} ({{entry.writer.username}})</h6></a>
+							<a href="{% url 'accounts:detail' entry.writer.username %}"><img src="{{MEDIA_URL}}{{entry.writer.profile_image}}" class="profile-image profile-image-size-xs" /><h6 class="card-subtitle">{{entry.writer.handle}} ({{entry.writer.username}})</h6></a>
 						</div>
 						<div class="col">
 							<p>Song:<a href="{% url 'musics:song_detail' entry.song.id %}" class="card-link">{{entry.song.song_name}}</a></p>
