@@ -19,3 +19,7 @@ body {
 .artist-card {
 	background-color: mintcream;
 }
+
+.profile-image {
+	border-radius: 50%;
+}

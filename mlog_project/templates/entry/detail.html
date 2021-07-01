@@ -4,9 +4,13 @@
 <div class="container text-white">
 	<div class "row mt-5">
 		<div class="row">
-			<h2>{{entry.title}}</h2>
-			<div class="col"><p>written by <a href="{% url 'accounts:detail' entry.writer %}">{{entry.writer}}</a></p></div>
-			<div class="col"><img src="{{MEDIA_URL}}{{entry.writer.profile_image}}" height="{{profile_image_size.HEIGHT}}" width="{{profile_image_size.WIDTH}}" /></div>
+			<div class="col">
+				<h2>{{entry.title}}</h2>
+				<a href="{% url 'accounts:detail' entry.writer %}" style="font-size: large;" class="text-decoration-none text-white">
+				<img src="{{MEDIA_URL}}{{entry.writer.profile_image}}" height="{{profile_image_size.HEIGHT}}" width="{{profile_image_size.WIDTH}}" class="profile-image" />
+				{{entry.writer.handle}} ({{entry.writer.username}})
+				</a>
+			</div>
 		</div>
 		
 		<div class="row my-5">
