@@ -40,11 +40,8 @@ class SongSearchListView(BaseSeachListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 
-		if not keyword:
-			return Song.objects.none()
-
-		return Song.objects.filter(
-			Q(song_name__icontains = keyword)
+		return qs.filter(
+			Q(song_name__icontains = self.keyword)
 		)
 
 
