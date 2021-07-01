@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block title%}{{entry.title}} | {{block.super}}{% endblock title %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock head %}
 {% block content %}
 <div class="container text-white">
 	<div class "row mt-5">
@@ -10,6 +13,15 @@
 				<img src="{{MEDIA_URL}}{{entry.writer.profile_image}}" height="{{profile_image_size.HEIGHT}}" width="{{profile_image_size.WIDTH}}" class="profile-image" />
 				{{entry.writer.handle}} ({{entry.writer.username}})
 				</a>
+			</div>
+		</div>
+		<div class="row my-4">
+			<div class="col">
+				<form action="{% url 'likes:process' %}" method="POST">
+					{% csrf_token %}
+					<input type="hidden" name='pk' value="{{entry.id}}">
+					<button type="submit" class="like-btn">{% if like_status %}<i class="fa fa-heart" style="font-size:36px;color: red;"></i>{% else %}<i class="fa fa-heart" style="font-size:36px;color: darkgrey;"></i>{% endif %}</button>
+				</form>				
 			</div>
 		</div>
 		
@@ -52,13 +64,6 @@
 
 		<div class="row mb-3">
 			<div class="col"><a href="{% url 'comments:create' entry.id %}"><input type="button" value="コメントする"></a></div>
-			<div class="col">
-				<form action="{% url 'likes:process' %}" method="POST">
-				{% csrf_token %}
-				<input type="hidden" name='pk' value="{{entry.id}}">
-				<input type="submit" value="{% if like_status %}Unlike{% else %}Like{% endif %}">
-			</form>				
-			</div>
 		</div>
 
 		<div col="row">

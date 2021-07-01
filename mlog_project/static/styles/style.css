@@ -23,3 +23,9 @@ body {
 .profile-image {
 	border-radius: 50%;
 }
+
+.like-btn {
+	background-color: Transparent;
+	border: none;
+	border-radius: 50%;
+}
