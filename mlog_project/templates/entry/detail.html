@@ -25,13 +25,21 @@
 
 		<div class="row mb-3">
 			<h3>Featured Artist</h3>
-			{% for artist in entry.song.artist.all %}
-			<div class="card text-center m-2">
-				<div class="card-body">
-					<a href="{% url 'musics:artist_detail' artist.artist_name_id %}" class="stretched-link">{{artist.artist_name}}</a>
+			<div class="row">
+				{% for artist in entry.song.artist.all %}
+				<div class="col">
+					<div class="card text-center my-2">
+						<div class="card-body">
+							<a href="{% url 'musics:artist_detail' artist.artist_name_id %}" class="stretched-link">{{artist.artist_name}}</a>
+						</div>
+					</div>
 				</div>
+				{% endfor %}
 			</div>
-			{% endfor %}
+
+
+			
+			
 			
 
 		</div>
