@@ -4,13 +4,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock head %}
 {% block content %}
-<div class="container text-white">
+<div class="container">
 	<div class "row mt-5">
 		<div class="row">
 			<div class="col">
 				<h2>{{entry.title}}</h2>
-				<a href="{% url 'accounts:detail' entry.writer %}" style="font-size: large;" class="text-decoration-none text-white">
-				<img src="{{MEDIA_URL}}{{entry.writer.profile_image}}" height="{{profile_image_size.HEIGHT}}" width="{{profile_image_size.WIDTH}}" class="profile-image" />
+				<a href="{% url 'accounts:detail' entry.writer %}" style="font-size: large;" class="text-decoration-none">
+				<img src="{{MEDIA_URL}}{{entry.writer.profile_image}}" class="profile-image profile-image-size-xs" />
 				{{entry.writer.handle}} ({{entry.writer.username}})
 				</a>
 			</div>

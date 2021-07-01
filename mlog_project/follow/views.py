@@ -4,7 +4,6 @@ from django.views.generic import View, ListView
 from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import User
-from utils.utils import get_profile_image_size
 
 from .models import Follow
 
@@ -44,7 +43,6 @@ class FollowingListView(ListView):
 		this_page_user=User.objects.get(username=self.kwargs['username'])
 		context['this_page_username']=this_page_user.username
 		context['this_page_handle']=this_page_user.handle
-		context['profile_image_size']=get_profile_image_size('SM')
 		return context
 
 
@@ -65,5 +63,4 @@ class FollowerListView(ListView):
 		this_page_user=User.objects.get(username=self.kwargs['username'])
 		context['this_page_username']=this_page_user.username
 		context['this_page_handle']=this_page_user.handle
-		context['profile_image_size']=get_profile_image_size('SM')
 		return context

@@ -7,7 +7,6 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from entry.models import Entry
 from accounts.models import User
-from utils.utils import get_profile_image_size
 
 from .models import Comment
 from .forms import CommentCreateForm
@@ -39,5 +38,4 @@ class CommentListView(ListView):
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
 		context['entry']=Entry.objects.get(id=self.kwargs['pk'])
-		context['profile_image_size']=get_profile_image_size('SM')
 		return context

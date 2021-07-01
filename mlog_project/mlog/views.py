@@ -4,7 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 
 from entry.models import Entry
-from utils.utils import get_profile_image_size
 from follow.models import Follow
 
 
@@ -30,7 +29,6 @@ class TopView(ListView):
 
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
-		context['profile_image_size']=get_profile_image_size('XS')
 		return context
 
 
@@ -49,5 +47,4 @@ class TimelineView(LoginRequiredMixin, ListView):
 
 	def get_context_data(self, **kwargs):
 		context= super().get_context_data(**kwargs)
-		context['profile_image_size']=get_profile_image_size('XS')
 		return context

@@ -16,7 +16,6 @@ from entry.models import Entry
 from likes.models import Like
 from follow.models import Follow
 from activity.models import UserDetailCheckedActivity
-from utils.utils import get_profile_image_size
 from musics.models import Artist
 
 
@@ -54,7 +53,6 @@ class UserDetailView(DetailView):
 		context['entries']=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
 		context['follow_count']=Follow.objects.filter(user__username=self.kwargs['username']).count()
 		context['follower_count']=Follow.objects.filter(follower__username=self.kwargs['username']).count()
-		context['profile_image_size']=get_profile_image_size('MID')
 		context['liked_entry_count']=Like.objects.filter(user__username=self.kwargs['username']).count()
 
 		if self.request.user.username:

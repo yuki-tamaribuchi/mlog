@@ -4,7 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 
-from utils.utils import get_profile_image_size
 from activity.models import EntryReadActivity
 from accounts.models import User
 from likes.models import Like
@@ -32,7 +31,6 @@ class EntryDetailView(DetailView):
 		context=super().get_context_data(**kwargs)
 		context['like_count']=Like.objects.filter(entry=self.kwargs['pk']).count()
 		context['comment_count']=Comment.objects.filter(entry=self.kwargs['pk']).count()
-		context['profile_image_size']=get_profile_image_size('XS')
 		
 		try:
 			context['like_status']=Like.objects.filter(user__username=self.request.user.username,entry=self.kwargs['pk'])
