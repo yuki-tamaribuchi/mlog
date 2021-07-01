@@ -26,41 +26,35 @@ class FollowProcess(LoginRequiredMixin,View):
 		return redirect(self.request.META['HTTP_REFERER'])
 
 
-class FollowingListView(ListView):
-	model=Follow
-	template_name='follow/following.html'
-	context_object_name='follows'
-
-	def get_queryset(self):
-		try:
-			qs=Follow.objects.filter(user__username=self.kwargs['username'])
-		except ObjectDoesNotExist:
-			qs=Follow.objects.none()
-		return qs
-	
+class BaseListView(ListView):
 	def get_context_data(self, **kwargs):
-		context=super().get_context_data(**kwargs)
-		this_page_user=User.objects.get(username=self.kwargs['username'])
-		context['this_page_username']=this_page_user.username
-		context['this_page_handle']=this_page_user.handle
+		context = super().get_context_data(**kwargs)
+		this_page_user = User.objects.get(username = self.kwargs['username'])
+		context['this_page_username'] = this_page_user.username
+		context['this_page_handle'] = this_page_user.handle
 		return context
 
 
-class FollowerListView(ListView):
-	model=Follow
-	template_name='follow/follower.html'
-	context_object_name='followers'
+
+class FollowingListView(BaseListView):
+	template_name = 'follow/following.html'
+	context_object_name = 'follows'
 
 	def get_queryset(self):
 		try:
-			qs=Follow.objects.filter(follower__username=self.kwargs['username'])
+			qs = Follow.objects.filter(user__username = self.kwargs['username'])
 		except ObjectDoesNotExist:
-			qs=Follow.objects.none()
+			qs = Follow.objects.none()
 		return qs
-	
-	def get_context_data(self, **kwargs):
-		context=super().get_context_data(**kwargs)
-		this_page_user=User.objects.get(username=self.kwargs['username'])
-		context['this_page_username']=this_page_user.username
-		context['this_page_handle']=this_page_user.handle
-		return context
+
+
+class FollowerListView(BaseListView):
+	template_name = 'follow/follower.html'
+	context_object_name = 'followers'
+
+	def get_queryset(self):
+		try:
+			qs = Follow.objects.filter(follower__username = self.kwargs['username'])
+		except ObjectDoesNotExist:
+			qs = Follow.objects.none()
+		return qs
