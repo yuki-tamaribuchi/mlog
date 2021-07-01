@@ -9,8 +9,9 @@ from musics.models import Song, Artist
 class BaseSeachListView(ListView):
 	def get_queryset(self):
 		self.keyword = self.request.GET['keyword']
-
 		qs = super().get_queryset()
+		if not self.keyword:
+			qs=self.model.objects.none()
 		return qs
 
 	def get_context_data(self, **kwargs):
@@ -25,9 +26,6 @@ class ArtistSearchListView(BaseSeachListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		
-		if not self.keyword:
-			return qs.none()
 
 		return qs.filter(
 			Q(artist_name__icontains = self.keyword) | Q(artist_name_id__icontains = self.keyword)
