@@ -46,14 +46,12 @@ class SongSearchListView(BaseSeachListView):
 
 
 class UserSearchListView(BaseSeachListView):
+	model=User
 	template_name = 'search/user.html'
 
 	def get_queryset(self):
-		keyword = self.request.GET['keyword']
-		
-		if not keyword:
-			return User.objects.none()
+		qs = super().get_queryset()
 
-		return User.objects.filter(
-			Q(username__icontains = keyword) | Q(handle__icontains = keyword)
+		return qs.filter(
+			Q(username__icontains = self.keyword) | Q(handle__icontains = self.keyword)
 		)
