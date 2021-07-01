@@ -21,7 +21,23 @@
 		<h2>記事一覧</h2>
 		{% if entries %}
 			{% for entry in entries %}
-			<p><a href="{% url 'entry:detail' entry.id %}">{{entry.title}} </a>by <a href="{% url 'accounts:detail' entry.writer.username %}">{{entry.writer.handle}}({{entry.writer.username}})</a></p>
+			<div class="card m-3 entry-list-card text-center">
+				<div class="card-body">
+					<div class="row">
+						<div class="col">
+							<a href="{% url 'entry:detail' entry.id %}"><h4 class="card-title">{{entry.title}}</h4></a>
+							<a href="{% url 'accounts:detail' entry.writer.username %}"><img src="{{MEDIA_URL}}{{entry.writer.profile_image}}" class="profile-image profile-image-size-xs" /><h6 class="card-subtitle">{{entry.writer.handle}} ({{entry.writer.username}})</h6></a>
+						</div>
+	
+						<div class="col">
+							<p>Song:<a href="{% url 'musics:song_detail' entry.song.id %}" class="card-link">{{entry.song.song_name}}</a></p>
+							<p>Artist:{% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.artist_name_id %}" class="card-link">{{artist.artist_name}} </a>{% endfor %}</p>
+						</div>
+					</div>
+					
+					
+				</div>
+			</div>	
 			{% endfor %}
 		{% else %}
 		<p>記事はありません。</p>
