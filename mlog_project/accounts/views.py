@@ -1,22 +1,18 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import redirect, render, get_object_or_404
-from django.views.generic import CreateView, DetailView, UpdateView, View
+from django.shortcuts import get_object_or_404
+from django.views.generic import CreateView, DetailView, UpdateView
 from django.urls import reverse_lazy
-from django.contrib.auth import login
-from django.http import HttpResponseRedirect
 from django.contrib.auth.views import LoginView as auth_login_view, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
-from django.db.models import Q
 
-from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
-from .models import User
 from entry.models import Entry
 from likes.models import Like
 from follow.models import Follow
 from activity.models import UserDetailCheckedActivity
-from musics.models import Artist
+
+from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
+from .models import User
 
 
 class SignUpView(CreateView):
