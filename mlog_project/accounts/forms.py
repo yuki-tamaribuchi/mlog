@@ -5,17 +5,17 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm, UserC
 
 class SignUpForm(UserCreationForm):
 	class Meta:
-		model=User
-		fields=('username','password1','password2','handle','biograph','profile_image')
+		model = User
+		fields = ('username', 'password1', 'password2', 'handle', 'biograph', 'profile_image')
 
 
 class UserUpdateForm(UserChangeForm):
 	class Meta:
-		model=User
-		fields=('handle','biograph','profile_image')
+		model = User
+		fields = ('handle', 'biograph', 'profile_image')
 
 
 class UserPasswordChangeForm(PasswordChangeForm):
 	class Meta:
-		model=User
-		fields='__all__'
+		model = User
+		fields = '__all__'

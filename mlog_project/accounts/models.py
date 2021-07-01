@@ -1,4 +1,3 @@
-import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -8,15 +7,15 @@ class User(AbstractUser):
 		from uuid import uuid4
 		import os
 
-		prefix='accounts/images/profile/'
-		name=str(uuid4()).replace('-','')
-		ext=os.path.splitext(filename)[-1]
+		prefix = 'accounts/images/profile/'
+		name = str(uuid4()).replace('-', '')
+		ext = os.path.splitext(filename)[-1]
 		
-		return prefix+name+ext
+		return prefix + name + ext
 
-	handle=models.CharField(max_length=20)
-	biograph=models.TextField(max_length=200,blank=True)
-	profile_image=models.ImageField(
-		upload_to=get_image_path,
-		default='accounts/images/profile/default/default.jpg'
+	handle = models.CharField(max_length=20)
+	biograph = models.TextField(max_length=200, blank=True)
+	profile_image = models.ImageField(
+		upload_to = get_image_path,
+		default = 'accounts/images/profile/default/default.jpg'
 		)

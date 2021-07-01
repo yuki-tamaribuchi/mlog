@@ -20,104 +20,102 @@ from musics.models import Artist
 
 
 class SignUpView(CreateView):
-	form_class=SignUpForm
-	template_name='accounts/signup.html'
+	form_class = SignUpForm
+	template_name = 'accounts/signup.html'
 
 	def get_success_url(self):
-		return reverse_lazy('accounts:detail',kwargs={'username':self.object.username})
+		return reverse_lazy('accounts:detail', kwargs={'username' : self.object.username})
 
 class LoginView(auth_login_view):
-	template_name='accounts/login.html'
-	redirect_authenticated_user=True
+	template_name = 'accounts/login.html'
+	redirect_authenticated_user = True
 
 	def get_success_url(self):
-		return reverse_lazy('accounts:detail',kwargs={'username':self.request.user.username})
+		return reverse_lazy('accounts:detail', kwargs={'username' : self.request.user.username})
 
 
 class UserDetailView(DetailView):
-	template_name='accounts/userdetail.html'
-	context_object_name='detail_user'
+	template_name = 'accounts/userdetail.html'
+	context_object_name = 'detail_user'
 
 	def get_object(self):
-		detail_user=User.objects.get(username=self.kwargs['username'])
+		detail_user = User.objects.get(username = self.kwargs['username'])
 		
 		if self.request.user.username:
-			current_user=User.objects.get(username=self.request.user.username)
-			if not detail_user==current_user:
+			current_user = User.objects.get(username=self.request.user.username)
+			if not detail_user == current_user:
 				UserDetailCheckedActivity.objects.create(user=current_user, detail_user=detail_user)
 
 		return detail_user
 
 	def get_context_data(self, **kwargs):
-		context=super().get_context_data(**kwargs)
-		context['entries']=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
-		context['follow_count']=Follow.objects.filter(user__username=self.kwargs['username']).count()
-		context['follower_count']=Follow.objects.filter(follower__username=self.kwargs['username']).count()
-		context['liked_entry_count']=Like.objects.filter(user__username=self.kwargs['username']).count()
+		context = super().get_context_data(**kwargs)
+		context['entries'] = Entry.objects.filter(writer__username = self.kwargs['username']).order_by('id').reverse()[:5]
+		context['follow_count'] = Follow.objects.filter(user__username = self.kwargs['username']).count()
+		context['follower_count'] = Follow.objects.filter(follower__username = self.kwargs['username']).count()
+		context['liked_entry_count'] = Like.objects.filter(user__username = self.kwargs['username']).count()
 
 		if self.request.user.username:
-			user=get_object_or_404(User, username=self.request.user.username)	
-			follow_user=get_object_or_404(User, username=self.kwargs['username'])
-			context['is_myself']=(user==follow_user)
-			context['is_following']=Follow.objects.filter(user__username=user.username,follower__username=follow_user.username).exists()
+			user = get_object_or_404(User, username = self.request.user.username)	
+			follow_user = get_object_or_404(User, username = self.kwargs['username'])
+			context['is_myself'] = (user == follow_user)
+			context['is_following'] = Follow.objects.filter(user__username=user.username, follower__username = follow_user.username).exists()
 		
 		return context
 
 
 class UserUpdateView(LoginRequiredMixin,UpdateView):
-	model=User
-	template_name='accounts/userupdate.html'
-	form_class=UserUpdateForm
+	model = User
+	template_name = 'accounts/userupdate.html'
+	form_class = UserUpdateForm
 	
 	def get_object(self):
-		return get_object_or_404(User,username=self.request.user.username)
+		return get_object_or_404(User, username = self.request.user.username)
 
 	def get_success_url(self):
-		return reverse_lazy('accounts:detail',kwargs={'username':self.request.user.username})
-
-
+		return reverse_lazy('accounts:detail',kwargs = {'username' : self.request.user.username})
 
 
 class UserEntryListView(ListView):
-	model=Entry
-	template_name='accounts/userentrylist.html'
-	paginate_by=20
+	model = Entry
+	template_name = 'accounts/userentrylist.html'
+	paginate_by = 20
 
 	def get_queryset(self):
-		qs=Entry.objects.filter(writer__username=self.kwargs['username']).order_by('id').reverse()
+		qs = Entry.objects.filter(writer__username = self.kwargs['username']).order_by('id').reverse()
 		return qs
 
 	def get_context_data(self, **kwargs):
-		context= super().get_context_data(**kwargs)
-		context['detail_user']=User.objects.get(username=self.kwargs['username'])
+		context = super().get_context_data(**kwargs)
+		context['detail_user'] = User.objects.get(username = self.kwargs['username'])
 		return context
 
 
 class UserPasswordChangeView(PasswordChangeView):
-	template_name='accounts/passwordchange.html'
-	form_class=UserPasswordChangeForm
-	success_url=reverse_lazy('accounts:passwordchanged')
+	template_name = 'accounts/passwordchange.html'
+	form_class = UserPasswordChangeForm
+	success_url = reverse_lazy('accounts:passwordchanged')
 
 
 class UserPasswordChangeDoneView(PasswordChangeDoneView):
-	template_name='accounts/passwordchangedone.html'
+	template_name = 'accounts/passwordchangedone.html'
 
 
 class UserPasswordResetView(PasswordResetView):
-	template_name='accounts/password_reset.html'
-	form_class=PasswordResetForm
-	success_url=reverse_lazy('accounts:passwordresetdone')
-	email_template_name='accounts/password_reset_email.html'
+	template_name = 'accounts/password_reset.html'
+	form_class = PasswordResetForm
+	success_url = reverse_lazy('accounts:passwordresetdone')
+	email_template_name = 'accounts/password_reset_email.html'
 
 
 class UserPasswordResetDoneView(PasswordResetDoneView):
-	template_name='accounts/password_reset_done.html'
+	template_name = 'accounts/password_reset_done.html'
 	
 
 class UserPasswordResetConfirmView(PasswordResetConfirmView):
-	template_name='accounts/password_reset_confirm.html'
-	success_url=reverse_lazy('accounts:passwordresetcomplete')
+	template_name = 'accounts/password_reset_confirm.html'
+	success_url = reverse_lazy('accounts:passwordresetcomplete')
 
 
 class UserPasswordResetCompleteView(PasswordResetCompleteView):
-	template_name='accounts/password_reset_complete.html'
+	template_name = 'accounts/password_reset_complete.html'
