@@ -81,36 +81,6 @@ class TestArtistCheckedActivity(TestCase):
 		activity_instance = ArtistCheckedActivity.objects.all().first()
 		self.assertEqual(str(activity_instance), 'testuserforact checked test artist')
 
-	
-class TestSongCheckedActivity(TestCase):
-
-	@classmethod
-	def setUp(cls):
-		test_genre = Genre.objects.create(genre_name = 'test genre')
-
-		test_artist = Artist.objects.create(
-			artist_name = 'test artist',
-			artist_name_id = 'testartist',
-		)
-		test_artist.genre.add(test_genre)
-
-		test_song = Song.objects.create(song_name = 'test song')
-		test_song.artist.add(test_artist)
-		test_song.genre.add(test_genre)
-
-		test_user_for_activity = User.objects.create(
-			username = 'testuserforact',
-			handle = 'testuser for act',
-		)
-
-		ArtistCheckedActivity.objects.create(
-			user = test_user_for_activity,
-			artist = test_artist,
-		)
-	
-	def test_str(self):
-		activity_instance = ArtistCheckedActivity.objects.all().first()
-		self.assertEqual(str(activity_instance), 'testuserforact checked test artist')
 
 
 class TestSongCheckedActivity(TestCase):
