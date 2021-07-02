@@ -78,8 +78,9 @@ class UserEntryListView(ListView):
 	paginate_by = 20
 
 	def get_queryset(self):
-		qs = Entry.objects.filter(writer__username = self.kwargs['username']).order_by('id').reverse()
+		qs = Entry.objects.filter(writer__username = self.kwargs['username']).order_by('-id')
 		return qs
+		#At this time, I can't resolve problem when queried not exist user.
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
