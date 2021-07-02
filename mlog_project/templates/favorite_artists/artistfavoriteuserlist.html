@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col mt-5">
-			<h1><a href="{% url 'mlog:artistdetail' detail_artist.artist_name_id %}">{{detail_artist.artist_name}}</a>のお気に入り登録者一覧</h1>
+			<h1><a href="{% url 'musics:artist_detail' detail_artist.artist_name_id %}">{{detail_artist.artist_name}}</a>のお気に入り登録者一覧</h1>
 
 			{% if fav_users %}
 			{% for fav_user in fav_users %}
