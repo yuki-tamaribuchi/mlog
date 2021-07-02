@@ -35,7 +35,7 @@ class UserDetailView(DetailView):
 	context_object_name = 'detail_user'
 
 	def get_object(self):
-		detail_user = User.objects.get(username = self.kwargs['username'])
+		detail_user = get_object_or_404(User, username= self.kwargs['username'])
 		
 		if self.request.user.username:
 			current_user = User.objects.get(username=self.request.user.username)
