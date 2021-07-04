@@ -3,6 +3,7 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
 
 from activity.models import EntryReadActivity
 from accounts.models import User
@@ -16,7 +17,7 @@ class EntryDetailView(DetailView):
 	template_name='entry/detail.html'
 
 	def get_object(self):
-		current_entry=Entry.objects.get(pk=self.kwargs['pk'])
+		current_entry=get_object_or_404(Entry,pk=self.kwargs['pk'])
 
 		if self.request.user.username:
 			current_user=User.objects.get(username=self.request.user.username)
