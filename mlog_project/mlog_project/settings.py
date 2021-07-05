@@ -175,3 +175,6 @@ CACHES={
 }
 
 SELECT2_CACHE_BACKEND='select2'
+
+
+SOCIALACCOUNT_ADAPTER = 'accounts.adapter.MySocialAccountAdapter'
