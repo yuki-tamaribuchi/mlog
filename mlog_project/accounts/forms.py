@@ -3,6 +3,8 @@ from .models import User
 from django import forms
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm, UserChangeForm, PasswordChangeForm
 
+from allauth.account.forms import LoginForm as allauth_login_form
+
 class SignUpForm(UserCreationForm):
 	class Meta:
 		model = User
