@@ -180,3 +180,16 @@ SELECT2_CACHE_BACKEND='select2'
 
 
 SOCIALACCOUNT_ADAPTER = 'accounts.adapter.MySocialAccountAdapter'
+
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_FORMS = {
+    'signup' : 'accounts.forms.SignupForm',
+}
+
+
+LOGIN_REDIRECT_URL = 'mlog:timeline'
