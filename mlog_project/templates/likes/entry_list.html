@@ -6,17 +6,7 @@
         <h2><a href="{% url 'entry:detail' entry.id %}">{{entry.title}}</a>へのLike</h2>
 	    {% if like_list%}
             {% for like in like_list %}
-            <div class="col">
-                <div class="card m-3 user-list-card text-center mx-auto">
-                        <div class="card-body">
-                                <div class="row">
-                                        <div class="col">
-                                                <a href="{% url 'accounts:detail' entry.writer.username %}"><img src="{{MEDIA_URL}}{{entry.writer.profile_image}}" class="profile-image profile-image-size-xs" /><h6 class="card-subtitle">{{entry.writer.handle}} ({{entry.writer.username}})</h6></a>
-                                        </div>
-                                </div>	
-                        </div>
-                </div>
-            </div>
+            {% include 'common_templates/entry_card_with_writer.html' %}
             {% endfor %}
         {% else %}
         Likeはありません。
