@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+    db:
+        image: mysql:5.7
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpassword
+            MYSQL_DATABASE: mlog_db
+            MYSQL_USER: mlog_db_user
+            MYSQL_PASSWORD: password
+        volumes:
+            - ./mysql:/var/lib/mysql
+            - ./sql:/docker-entrypoint-initdb.d
+
+    cache:
+        image: redis:6.2
+
+    python:
+        image: python:3.8
+        volumes:
+            - ./mlog_project:/mlog_project
+        ports: 
+            - 8000:8000
+        environment: 
+            -  DJANGO_DATABASE=docker
+        command: bash -c "cd ./mlog_project && pip install -r requirements.txt && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+        depends_on: 
+            - db
+            - cache
+
