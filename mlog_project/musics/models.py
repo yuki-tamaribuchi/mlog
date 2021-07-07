@@ -22,6 +22,7 @@ class Song(models.Model):
     song_name=models.CharField(max_length=30)
     artist=models.ManyToManyField(Artist)
     genre=models.ManyToManyField(Genre)
+    spotify_link = models.URLField(blank=True)
 
     def __str__(self):
         names=[name.artist_name for name in self.artist.all()]
