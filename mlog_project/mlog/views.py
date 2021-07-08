@@ -18,7 +18,7 @@ class RootRedirectView(View):
 class TopView(ListView):
 	model=Entry
 	template_name='mlog/topview.html'
-	paginate_by=10
+	paginate_by=20
 
 	def get_queryset(self):
 		try:
@@ -31,6 +31,7 @@ class TopView(ListView):
 class TimelineView(LoginRequiredMixin, ListView):
 	model=Entry
 	template_name='mlog/timeline.html'
+	paginate_by=20
 
 	def get_queryset(self):
 		follows=Follow.objects.filter(user__username=self.request.user.username).values('follower__username')
