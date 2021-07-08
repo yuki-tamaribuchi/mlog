@@ -12,8 +12,8 @@ services:
             MYSQL_PASSWORD: password
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
         volumes:
-            - ./mysql:/var/lib/mysql
-            - ./sql:/docker-entrypoint-initdb.d
+            - ../mysql:/var/lib/mysql
+            - ../sql:/docker-entrypoint-initdb.d
 
     cache:
         image: redis:6.2
@@ -21,7 +21,7 @@ services:
     python:
         image: python:3.8
         volumes:
-            - ./mlog_project:/mlog_project
+            - ../mlog_project:/mlog_project
         ports: 
             - 8000:8000
         environment: 
