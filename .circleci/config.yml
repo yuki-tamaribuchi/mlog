@@ -1,4 +1,4 @@
-version: '2.1'
+version: 2.1
 jobs:
   build:
     docker:
@@ -13,6 +13,4 @@ jobs:
 
     steps:
       - checkout
-      - run:
-        name: docker-compose build
-        command: docker-compose build
+      - run: docker-compose build
