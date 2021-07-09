@@ -27,5 +27,5 @@ class Song(models.Model):
     spotify_link = models.URLField(blank=True)
 
     def __str__(self):
-        names=[name.artist_name for name in self.artist.all()]
+        names=', '.join(str(artist) for artist in self.artist.all())
         return '%s by %s'%(self.song_name,str(names))

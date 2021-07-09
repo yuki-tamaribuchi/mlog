@@ -80,4 +80,4 @@ class TestSong(TestCase):
 
 	def test_str(self):
 		song_instance = Song.objects.all().first()
-		self.assertEqual(str(song_instance), 'test song by [\'test artist\']')
+		self.assertEqual(str(song_instance), 'test song by test artist')
