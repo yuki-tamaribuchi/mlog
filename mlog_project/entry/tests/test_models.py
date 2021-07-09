@@ -52,4 +52,4 @@ class EntryTest(TestCase):
 
 	def test_str(self):
 		entry = Entry.objects.all().first()
-		self.assertEqual(str(entry), 'test title written by testuserforentry (Song:test song by [\'test artist\'])')
+		self.assertEqual(str(entry), 'test title written by testuserforentry (Song:test song by test artist)')
