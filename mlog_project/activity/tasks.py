@@ -4,7 +4,7 @@ from mlog_project.celery import app
 
 from accounts.models import User
 from entry.models import Entry
-from musics.models import Artist, Song
+from musics.models import Artist, Song, Genre
 
 @app.task()
 def entry_read_activity(pk, username):
@@ -53,3 +53,13 @@ def user_checked_activity(detail_username, current_username):
 			detail_user=detail_user,
 			user=current_user
 		)
+
+
+@app.task()
+def genre_checked_activity(genre_name, username):
+	current_genre = Genre.objects.get(genre_name=genre_name)
+	current_user = User.objects.get(username=username)
+	models.GenreCheckedActivity.objects.create(
+		genre=current_genre,
+		user=current_user
+	)

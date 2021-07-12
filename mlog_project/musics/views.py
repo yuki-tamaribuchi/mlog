@@ -8,7 +8,7 @@ from accounts.models import User
 from entry.models import Entry
 from favorite_artists.models import FavoriteArtist
 
-from activity.tasks import artist_checked_activity, song_checked_activity
+from activity.tasks import artist_checked_activity, song_checked_activity, genre_checked_activity
 
 from .models import Artist, Song, Genre
 from .forms import ArtsitCreateForm, SongCreateForm, GenreCreateForm
@@ -126,11 +126,8 @@ class ArtistByGenreListView(ListView):
 	template_name='musics/artist_by_genre_list.html'
 
 	def get_queryset(self):
-		if self.request.user.username:
-			current_user=User.objects.get(username=self.request.user.username)
-			current_genre=Genre.objects.get(genre_name=self.kwargs['genre_name'])
-			GenreCheckedActivity.objects.create(user=current_user, genre=current_genre)
-
+		genre_checked_activity.delay(self.kwargs['genre_name'], self.request.user.username)
+		
 		qs=Artist.objects.filter(genre__genre_name=self.kwargs['genre_name']).order_by('artist_name_id')
 		return qs
 
