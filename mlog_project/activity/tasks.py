@@ -50,7 +50,7 @@ def user_checked_activity(detail_username, current_username):
 		detail_user = User.objects.get(username=detail_username)
 		models.UserDetailCheckedActivity.objects.create(
 			detail_user=detail_user,
-			user=get_current_user(username)
+			user=get_current_user(current_username)
 		)
 
 
