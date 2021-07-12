@@ -18,12 +18,19 @@ services:
     redis:
         image: redis:6.2
 
+
     celery:
-        image: celery:4.0
+        image: python:3.8
         environment: 
-            - CELERY_BROKER_URL=redis://redis:6379
+            - DJANGO_DATABASE=docker
+            - CELERY_BROKER_DEFAULT=docker
+            - CELERY_RESULT_BACKENDS_DEFAULT=docker
+        volumes: 
+            - ../mlog_project:/mlog_project
+        command: bash -c "cd /mlog_project && pip install -r requirements.txt && celery -A mlog_project worker"
         depends_on: 
             - redis
+    
 
     app:
         image: python:3.8
