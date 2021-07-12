@@ -10,7 +10,10 @@ class EntryReadActivity(models.Model):
 	entry = models.ForeignKey(Entry, on_delete = models.CASCADE)
 
 	def __str__(self):
-		return '%s read %s'%(self.user.username, self.entry.title)
+		if self.user:
+			return '%s read %s'%(self.user.username, self.entry.title)
+		else:
+			return 'Unknown user read %s'%(self.entry.title)
 
 
 class ArtistCheckedActivity(models.Model):
