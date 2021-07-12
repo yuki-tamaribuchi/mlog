@@ -9,7 +9,7 @@ services:
             - ../nginx/conf:/etc/nginx/conf.d
             - ../nginx/uwsgi_params:/etc/nginx/uwsgi_params
         depends_on: 
-            - python
+            - app
 
 
     db:
@@ -26,10 +26,10 @@ services:
             - ../mysql:/var/lib/mysql
             - ../sql:/docker-entrypoint-initdb.d
 
-    cache:
+    redis:
         image: redis:6.2
 
-    python:
+    app:
         image: python:3.8
         volumes:
             - ../mlog_project:/mlog_project
@@ -40,4 +40,4 @@ services:
             - 8001
         depends_on: 
             - db
-            - cache
+            - redis
