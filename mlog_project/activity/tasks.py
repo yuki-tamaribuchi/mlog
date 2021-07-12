@@ -10,8 +10,8 @@ def get_current_user(username):
 	return User.objects.get(username=username)
 
 @app.task()
-def entry_read_activity(pk, username):
-	current_entry = Entry.objects.get(pk=pk)
+def entry_read_activity(entry_pk, username):
+	current_entry = Entry.objects.get(pk=entry_pk)
 
 	if username:
 		models.EntryReadActivity.objects.create(
