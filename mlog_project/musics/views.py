@@ -8,6 +8,8 @@ from accounts.models import User
 from entry.models import Entry
 from favorite_artists.models import FavoriteArtist
 
+from activity.tasks import artist_checked_activity
+
 from .models import Artist, Song, Genre
 from .forms import ArtsitCreateForm, SongCreateForm, GenreCreateForm
 
@@ -18,9 +20,7 @@ class ArtistDetailView(DetailView):
 	def get_object(self):
 		current_artist=Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
 
-		if self.request.user.username:
-			current_user=User.objects.get(username=self.request.user.username)
-			ArtistCheckedActivity.objects.create(user=current_user,artist=current_artist)
+		artist_checked_activity.delay(self.kwargs['artist_name_id'], self.request.user.username)
 
 		return current_artist
 
