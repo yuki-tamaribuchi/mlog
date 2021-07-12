@@ -9,10 +9,10 @@ from django.views.generic.list import ListView
 from entry.models import Entry
 from likes.models import Like
 from follow.models import Follow
-from activity.models import UserDetailCheckedActivity
 
 from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
 from .models import User
+from activity.tasks import user_checked_activity
 
 
 class SignUpView(CreateView):
@@ -36,11 +36,8 @@ class UserDetailView(DetailView):
 
 	def get_object(self):
 		detail_user = get_object_or_404(User, username= self.kwargs['username'])
-		
-		if self.request.user.username:
-			current_user = User.objects.get(username=self.request.user.username)
-			if not detail_user == current_user:
-				UserDetailCheckedActivity.objects.create(user=current_user, detail_user=detail_user)
+
+		user_checked_activity.delay(self.kwargs['username'], self.request.user.username)
 
 		return detail_user
 

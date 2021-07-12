@@ -1,3 +1,4 @@
+from django.views.generic import detail
 from activity import models
 from mlog_project.celery import app
 
@@ -39,5 +40,16 @@ def song_checked_activity(song_pk, username):
 		current_user = User.objects.get(username=username)
 		models.SongCheckedActivity.objects.create(
 			song=current_song,
+			user=current_user
+		)
+
+
+@app.task()
+def user_checked_activity(detail_username, current_username):
+	if current_username:
+		detail_user = User.objects.get(username=detail_username)
+		current_user = User.objects.get(username=current_username)
+		models.UserDetailCheckedActivity.objects.create(
+			detail_user=detail_user,
 			user=current_user
 		)
