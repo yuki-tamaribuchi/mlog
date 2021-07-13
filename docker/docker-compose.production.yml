@@ -30,7 +30,9 @@ services:
         image: redis:6.2
 
     celery:
-        image: python:3.8
+        build: 
+            context: ..
+            dockerfile: ./docker/python/Dockerfile
         environment: 
             - DJANGO_DATABASE=docker
             - CELERY_BROKER_DEFAULT=docker
@@ -42,7 +44,9 @@ services:
             - redis
 
     app:
-        image: python:3.8
+        build: 
+            context: ..
+            dockerfile: ./docker/python/Dockerfile
         volumes:
             - ../mlog_project:/mlog_project
         environment: 
