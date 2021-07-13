@@ -15,10 +15,24 @@ services:
             - ../mysql:/var/lib/mysql
             - ../sql:/docker-entrypoint-initdb.d
 
-    cache:
+    redis:
         image: redis:6.2
 
-    python:
+
+    celery:
+        image: python:3.8
+        environment: 
+            - DJANGO_DATABASE=docker
+            - CELERY_BROKER_DEFAULT=docker
+            - CELERY_RESULT_BACKENDS_DEFAULT=docker
+        volumes: 
+            - ../mlog_project:/mlog_project
+        command: bash -c "cd /mlog_project && pip install -r requirements.txt && celery -A mlog_project worker"
+        depends_on: 
+            - redis
+    
+
+    app:
         image: python:3.8
         volumes:
             - ../mlog_project:/mlog_project
@@ -26,8 +40,12 @@ services:
             - 8000:8000
         environment: 
             -  DJANGO_DATABASE=docker
+            - SELECT2_DEFAULT=select2_docker
+            - CELERY_BROKER_DEFAULT=docker
+            - CELERY_RESULT_BACKENDS_DEFAULT=docker
         command: bash -c "cd ./mlog_project && pip install -r requirements.txt && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
         depends_on: 
             - db
-            - cache
+            - redis
+            - celery
 

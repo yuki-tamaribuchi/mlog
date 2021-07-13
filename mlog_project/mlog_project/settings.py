@@ -167,14 +167,23 @@ CACHES={
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     },
-    'select2':{
+    'select2_local':{
         'BACKEND':'django_redis.cache.RedisCache',
         'LOCATION':'redis://127.0.0.1:6379/2',
         'OPTIONS':{
             'CLIENT_CLASS':'django_redis.client.DefaultClient',
         }
+    },
+    'select2_docker':{
+        'BACKEND':'django_redis.cache.RedisCache',
+        'LOCATION':'redis://redis:6379/2',
+        'OPTIONS':{
+            'CLIENT_CLASS':'django_redis.client.DefaultClient',
+        }
     }
 }
+
+CACHES['select2']=CACHES[os.environ.get('SELECT2_DEFAULT','select2_local')]
 
 SELECT2_CACHE_BACKEND='select2'
 
@@ -193,3 +202,21 @@ ACCOUNT_FORMS = {
 
 
 LOGIN_REDIRECT_URL = 'mlog:timeline'
+
+CELERY_BROKER_URLS={
+    'local':"redis://127.0.0.1:6379/1",
+    'docker':"redis://redis:6379"
+}
+
+CELERY_BROKER_URL = CELERY_BROKER_URLS[os.environ.get('CELERY_BROKER_DEFAULT','local')]
+
+CELERY_RESULT_BACKENDS={
+    'local':"redis://127.0.0.1:6379",
+    'docker':"redis://redis:6379"
+}
+
+CELERY_RESULT_BACKEND = CELERY_RESULT_BACKENDS[os.environ.get('CELERY_RESULT_BACKENDS_DEFAULT','local')]
+
+CELERY_TIMEZONE = "Asia/Tokyo"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
