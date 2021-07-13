@@ -13,18 +13,16 @@ from comments.models import Comment
 from .models import Entry
 from .forms import EntryCreateForm
 
+from activity.tasks import entry_read_activity
+
+
 class EntryDetailView(DetailView):
 	template_name='entry/detail.html'
 
 	def get_object(self):
 		current_entry=get_object_or_404(Entry,pk=self.kwargs['pk'])
 
-		if self.request.user.username:
-			current_user=User.objects.get(username=self.request.user.username)
-			if not current_entry.writer.username == current_user.username:
-				EntryReadActivity.objects.create(user=current_user,entry=current_entry)
-		else:
-			EntryReadActivity.objects.create(entry=current_entry)
+		entry_read_activity.delay(self.kwargs['pk'], self.request.user.username)
 
 		return current_entry
 
