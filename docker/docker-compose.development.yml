@@ -29,7 +29,7 @@ services:
             - CELERY_RESULT_BACKENDS_DEFAULT=docker
         volumes: 
             - ../mlog_project:/mlog_project
-        command: bash -c "cd /mlog_project && celery -A mlog_project worker"
+        command: bash -c "apt update -y && apt install -y python-celery && cd /mlog_project && celery -A mlog_project worker"
         depends_on: 
             - redis
     
