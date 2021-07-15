@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.8
-      - image: circleci/redis:6.20
+      - image: circleci/redis
       - image: circleci/mysql:5.7
         environment:
           MYSQL_ROOT_PASSWORD: rootpassword
@@ -13,4 +13,4 @@ jobs:
 
     steps:
       - checkout
-      - run: docker-compose build
+      - run: mkdir mysql sql
