@@ -45,7 +45,7 @@ services:
         ports: 
             - 8000:8000
         environment: 
-            -  DJANGO_DATABASE=docker
+            - DJANGO_DATABASE=docker
             - SELECT2_DEFAULT=select2_docker
             - CELERY_BROKER_DEFAULT=docker
             - CELERY_RESULT_BACKENDS_DEFAULT=docker
