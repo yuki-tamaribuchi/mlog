@@ -102,6 +102,32 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mlog_project.wsgi.application'
 
 
+# Database
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
+DATABASES = {
+    'main': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mlog_project_db',
+        'USER': os.environ.get('MLOG_DB_USER'),
+        'PASSWORD': os.environ.get('MLOG_DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '3306',
+    },
+    'docker':{
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mlog_db',
+        'USER': 'mlog_db_user',
+        'PASSWORD': 'password',
+        'HOST': 'db',
+        'PORT': '3306',
+    }
+}
+
+default_database = environ.get('DJANGO_DATABASE', 'main')
+DATABASES['default'] = DATABASES[default_database]
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
