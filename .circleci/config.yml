@@ -1,8 +1,8 @@
 version: 2.1
 jobs:
   build:
-    docker:
-      - image: cimg/base:2021.07
+    machine: 
+      image: circleci/ubuntu-2004:202010-01
 
     steps:
       - checkout
@@ -12,3 +12,4 @@ jobs:
       - run: echo $MLOG_OAUTH_GOOGLE_KEY
       - run: echo $MLOG_OAUTH_GOOGLE_SECRET
       - run: echo $MLOG_SECRET_KEY
+      - run: docker-compose -f docker/docker-compose.test.yml up
