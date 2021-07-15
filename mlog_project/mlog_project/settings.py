@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-from .settings_secret import *
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,7 +127,7 @@ DATABASES = {
     }
 }
 
-default_database = environ.get('DJANGO_DATABASE', 'main')
+default_database = os.environ.get('DJANGO_DATABASE', 'main')
 DATABASES['default'] = DATABASES[default_database]
 
 
@@ -219,6 +218,23 @@ CACHES['select2']=CACHES[os.environ.get('SELECT2_DEFAULT','select2_local')]
 
 SELECT2_CACHE_BACKEND='select2'
 
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.environ.get('MLOG_OAUTH_GOOGLE_CLIENT_ID'),
+            'secret': os.environ.get('MLOG_OAUTH_GOOGLE_SECRET'),
+            'key': os.environ.get('MLOG_OAUTH_GOOGLE_KEY')
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
 SOCIALACCOUNT_ADAPTER = 'accounts.adapter.MySocialAccountAdapter'
 
