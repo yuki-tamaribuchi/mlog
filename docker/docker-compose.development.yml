@@ -1,47 +1,7 @@
 version: '3'
 
 services:
-    db:
-        image: mysql:5.7
-        ports: 
-            - 33060:3306
-        environment:
-            MYSQL_ROOT_PASSWORD: rootpassword
-            MYSQL_DATABASE: mlog_db
-            MYSQL_USER: mlog_db_user
-            MYSQL_PASSWORD: password
-        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-        volumes:
-            - ../mysql:/var/lib/mysql
-            - ../sql:/docker-entrypoint-initdb.d
-
-    redis:
-        image: redis:6.2
-
-
-    celery:
-        build: 
-            context: ..
-            dockerfile: ./docker/python/Dockerfile
-        environment: 
-            - DJANGO_DATABASE=docker
-            - CELERY_BROKER_DEFAULT=docker
-            - CELERY_RESULT_BACKENDS_DEFAULT=docker
-        env_file: 
-            - ./python/app_envfile.env
-        volumes: 
-            - ../mlog_project:/mlog_project
-        command: bash -c "apt update -y && apt install -y python-celery && cd /mlog_project && celery -A mlog_project worker"
-        depends_on: 
-            - redis
-    
-
     app:
-        build: 
-            context: ..
-            dockerfile: ./docker/python/Dockerfile
-        volumes:
-            - ../mlog_project:/mlog_project
         ports: 
             - 8000:8000
         environment: 
@@ -52,8 +12,3 @@ services:
         env_file: 
             - ./python/app_envfile.env
         command: bash -c "cd ./mlog_project && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-        depends_on: 
-            - db
-            - redis
-            - celery
-
