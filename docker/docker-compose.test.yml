@@ -1,18 +1,13 @@
 version: '3'
 
 services:
-    nginx:
-        image: nginx:1.20
-        ports: 
-            - 8000:8000
-        volumes: 
-            - ../nginx/conf:/etc/nginx/conf.d
-            - ../nginx/uwsgi_params:/etc/nginx/uwsgi_params
-        depends_on: 
-            - app
-
+    db:
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpassword
+            MYSQL_DATABASE: mlog_db
+            MYSQL_DATABASE: test_mlog_db
+            MYSQL_USER: mlog_db_user
+            MYSQL_PASSWORD: password
 
     app:
-        command: bash -c "cd ./mlog_project && python manage.py migrate && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"
-        expose:
-            - 8001
+        command: bash -c "cd ./mlog_project"
