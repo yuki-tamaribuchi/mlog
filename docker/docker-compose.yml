@@ -22,8 +22,6 @@ services:
             - DJANGO_DATABASE=docker
             - CELERY_BROKER_DEFAULT=docker
             - CELERY_RESULT_BACKENDS_DEFAULT=docker
-        env_file: 
-            - ./python/app_envfile.env
         volumes: 
             - ../mlog_project:/mlog_project
         command: bash -c "apt update -y && apt install -y python-celery && cd /mlog_project && celery -A mlog_project worker >/dev/null"
@@ -42,8 +40,6 @@ services:
             - SELECT2_DEFAULT=select2_docker
             - CELERY_BROKER_DEFAULT=docker
             - CELERY_RESULT_BACKENDS_DEFAULT=docker
-        env_file: 
-            - ./python/app_envfile.env
         depends_on: 
             - db
             - redis
