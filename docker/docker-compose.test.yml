@@ -4,10 +4,10 @@ services:
     db:
         environment:
             MYSQL_ROOT_PASSWORD: rootpassword
-            MYSQL_DATABASE: mlog_db
             MYSQL_DATABASE: test_mlog_db
             MYSQL_USER: mlog_db_user
             MYSQL_PASSWORD: password
-
-    app:
-        command: bash -c "cd ./mlog_project"
+        
+        volumes: 
+            - ../mysql:/var/lib/mysql
+            - ../sql:/docker-entrypoint-initdb.d
