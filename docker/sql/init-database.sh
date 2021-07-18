@@ -1,0 +1,1 @@
+mysql -u docker < "/docker-entrypoint-initdb.d/001-grant-priviege.sql"
