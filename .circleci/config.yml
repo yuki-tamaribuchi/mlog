@@ -8,13 +8,21 @@ jobs:
       - run: set -x
       - setup_remote_docker
       - checkout
-      - run: echo $MLOG_OAUTH_GOOGLE_CLIENT_ID
-      - run: echo $MLOG_OAUTH_GOOGLE_KEY
-      - run: echo $MLOG_OAUTH_GOOGLE_SECRET
-      - run: echo $MLOG_SECRET_KEY
-
-
-      - run: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml up --no-start app
-      - run: docker cp . docker_app_1:.
-      - run: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/"
-      - run: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
+      - run:
+          name: Set environment variables
+          command: |
+              echo $MLOG_OAUTH_GOOGLE_CLIENT_ID
+              echo $MLOG_OAUTH_GOOGLE_KEY
+              echo $MLOG_OAUTH_GOOGLE_SECRET
+              echo $MLOG_SECRET_KEY
+      - run:
+          name: Copy app source to app container
+          command: |
+              docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml up --no-start app
+              docker cp . docker_app_1:.
+      - run: 
+          name : Test
+          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/"
+      - run: 
+          name: Down containers
+          docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
