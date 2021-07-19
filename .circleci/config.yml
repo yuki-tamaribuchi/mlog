@@ -22,9 +22,7 @@ jobs:
               docker cp . docker_app_1:.
       - run: 
           name: Test
-          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/ > test-results"
-      - store_test_results:
-          path: test-results
+          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/"
       - run: 
           name: Down containers
           command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
