@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+    db:
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpassword
+            MYSQL_DATABASE: test_mlog_db
+            MYSQL_USER: mlog_db_user
+            MYSQL_PASSWORD: password
