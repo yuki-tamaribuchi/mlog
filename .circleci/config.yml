@@ -21,8 +21,8 @@ jobs:
               docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml up --no-start app
               docker cp . docker_app_1:.
       - run: 
-          name : Test
+          name: Test
           command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/"
       - run: 
           name: Down containers
-          docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
+          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
