@@ -14,7 +14,7 @@ jobs:
       - run: echo $MLOG_SECRET_KEY
 
 
-      - run: sudo docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml up --no-start app
-      - run: sudo docker cp . docker_app_1:.
-      - run: sudo docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/"
-      - run: sudo docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
+      - run: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml up --no-start app
+      - run: docker cp . docker_app_1:.
+      - run: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/"
+      - run: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
