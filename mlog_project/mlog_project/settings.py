@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'musics',
     'entry',
     'django_select2',
+    'django_nose',
 
 
     'allauth',
@@ -126,6 +127,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
 
 default_database = os.environ.get('DJANGO_DATABASE', 'main')
 DATABASES['default'] = DATABASES[default_database]
@@ -268,3 +270,12 @@ CELERY_RESULT_BACKEND = CELERY_RESULT_BACKENDS[os.environ.get('CELERY_RESULT_BAC
 CELERY_TIMEZONE = "Asia/Tokyo"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+
+#Setting for django-nose
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-xunit',
+    '--xunit-file=result/unittest.xml',
+]
