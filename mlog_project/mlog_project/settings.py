@@ -109,7 +109,7 @@ WSGI_APPLICATION = 'mlog_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
+DATABASES_LIST = {
     'main': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mlog_project_db',
@@ -128,9 +128,9 @@ DATABASES = {
     }
 }
 
-
+DATABASES={}
 default_database = os.environ.get('DJANGO_DATABASE', 'main')
-DATABASES['default'] = DATABASES[default_database]
+DATABASES['default'] = DATABASES_LIST[default_database]
 
 
 # Password validation
