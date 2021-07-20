@@ -10,3 +10,4 @@ redis==3.5.3
 django-allauth==0.44.0
 uwsgi==2.0.19.1
 celery==5.1.2
+django-nose=1.4.7
