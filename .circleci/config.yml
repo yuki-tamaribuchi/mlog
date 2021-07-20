@@ -9,6 +9,9 @@ jobs:
       - setup_remote_docker
       - checkout
       - run:
+          name: Make Directory for result
+          command: mkdir mlog_project/result/
+      - run:
           name: Set environment variables
           command: |
               echo $MLOG_OAUTH_GOOGLE_CLIENT_ID
