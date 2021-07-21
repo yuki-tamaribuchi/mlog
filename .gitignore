@@ -166,3 +166,4 @@ media/
 mysql/
 sql/
 *.env
+mlog_project/result/*
