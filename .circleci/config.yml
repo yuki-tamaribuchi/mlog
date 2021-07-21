@@ -25,7 +25,7 @@ jobs:
               docker cp . docker_app_1:.
       - run: 
           name: Test
-          command: sudo docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run --name app_test app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/"
+          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run --name app_test app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/"
       - run:
           name: Copy test results from container
           command: |
