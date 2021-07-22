@@ -76,17 +76,12 @@ class TestSongCheckedActivity(TestCase):
 
 	@classmethod
 	def setUp(cls):
-		test_genre = Genre.objects.create(genre_name = 'test genre')
-
-		test_artist = Artist.objects.create(
-			artist_name = 'test artist',
-			artist_name_id = 'testartist',
+		test_song = utils_for_test.create_test_song(
+			song_name='test song',
+			artist_name='test artist',
+			artist_name_id='testartist',
+			genre_name='test genre'
 		)
-		test_artist.genre.add(test_genre)
-
-		test_song = Song.objects.create(song_name = 'test song')
-		test_song.artist.add(test_artist)
-		test_song.genre.add(test_genre)
 
 		test_user_for_activity = User.objects.create(
 			username = 'testuserforact',
