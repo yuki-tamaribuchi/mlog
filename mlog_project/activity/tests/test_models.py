@@ -17,7 +17,7 @@ class TestEntryReadActivity(TestCase):
 
 	@classmethod
 	def setUp(cls):
-		entry_instance = utils_for_test.create_test_entry(
+		utils_for_test.create_test_entry(
 			title='test title',
 			content='test content',
 			username='testuser',
@@ -29,15 +29,15 @@ class TestEntryReadActivity(TestCase):
 			genre_name='test genre'
 		)
 
+
+	def test_with_user_str(self):
 		read_user_instance = utils_for_test.create_test_user(
 			username='testuserforread',
 			handle='test user for read',
 			biograph='test biograph'
 		)
-
+		entry_instance = Entry.objects.first()
 		EntryReadActivity.objects.create(user=read_user_instance, entry=entry_instance)
-
-	def test_str(self):
 		activity_instance = EntryReadActivity.objects.all().first()
 		self.assertEqual(str(activity_instance), 'testuserforread read test title')
 
