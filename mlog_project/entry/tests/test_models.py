@@ -4,36 +4,23 @@ from entry.models import Entry
 from accounts.models import User
 from musics.models import Genre, Artist, Song
 
+from utils import utils_for_test
 
 class EntryTest(TestCase):
 
 	@classmethod
 	def setUp(cls):
-
-		test_genre = Genre.objects.create(genre_name = 'test genre')
-
-		test_artist = Artist.objects.create(
-			artist_name = 'test artist',
-			artist_name_id = 'testartist',
+		utils_for_test.create_test_entry(
+			title='test title',
+			content='test content',
+			username='testuser',
+			handle='test user',
+			biograph='test biograph',
+			song_name='test song',
+			artist_name='test artist',
+			artist_name_id='testartist',
+			genre_name='test genre'
 		)
-		test_artist.genre.add(test_genre)
-
-		test_song = Song.objects.create(song_name = 'test song')
-		test_song.artist.add(test_artist)
-		test_song.genre.add(test_genre)
-
-		test_user_for_entry = User.objects.create(
-			username = 'testuserforentry',
-			handle = 'testuser for entry',
-		)
-
-		Entry.objects.create(
-			title = 'test title',
-			content = 'test content',
-			song = test_song,
-			writer = test_user_for_entry
-		)
-
 	
 	def test_title_max_length(self):
 		entry = Entry.objects.all().first()
@@ -52,4 +39,4 @@ class EntryTest(TestCase):
 
 	def test_str(self):
 		entry = Entry.objects.all().first()
-		self.assertEqual(str(entry), 'test title written by testuserforentry (Song:test song by test artist)')
+		self.assertEqual(str(entry), 'test title written by testuser (Song:test song by test artist)')
