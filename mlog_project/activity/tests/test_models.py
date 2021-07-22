@@ -37,8 +37,7 @@ class TestEntryReadActivity(TestCase):
 			biograph='test biograph'
 		)
 		entry_instance = Entry.objects.first()
-		EntryReadActivity.objects.create(user=read_user_instance, entry=entry_instance)
-		activity_instance = EntryReadActivity.objects.all().first()
+		activity_instance = EntryReadActivity.objects.create(user=read_user_instance, entry=entry_instance)
 		self.assertEqual(str(activity_instance), 'testuserforread read test title')
 
 	def test_without_user_str(self):
