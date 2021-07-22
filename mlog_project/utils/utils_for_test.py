@@ -3,9 +3,9 @@ def create_test_genre(genre_name):
 	genre_instance = Genre.objects.create(genre_name = genre_name)
 	return genre_instance
 
-def get_test_genre(gerne_name):
+def get_test_genre(genre_name):
 	from musics.models import Genre
-	genre_instance = Genre.objects.get(gerne_name=gerne_name)
+	genre_instance = Genre.objects.get(genre_name=genre_name)
 	return genre_instance
 
 def create_test_artist(artist_name, artist_name_id, genre_name):
