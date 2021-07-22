@@ -6,32 +6,22 @@ import entry.models
 import musics.models
 import accounts.models
 
+from utils import utils_for_test
+
 class TestCommentsUrls(TestCase):
 
 	@classmethod
 	def setUp(cls):
-		test_genre = musics.models.Genre.objects.create(genre_name = 'test genre')
-
-		test_artist = musics.models.Artist.objects.create(
-			artist_name = 'test artist',
-			artist_name_id = 'testartist',
-		)
-		test_artist.genre.add(test_genre)
-
-		test_song = musics.models.Song.objects.create(song_name = 'song name')
-		test_song.artist.add(test_artist)
-		test_song.genre.add(test_genre)
-
-		test_user_for_entry = accounts.models.User.objects.create(
+		utils_for_test.create_test_entry(
+			title='test title',
+			content='test content',
 			username='testuserforentry',
 			handle='testuser for entry',
-		)
-
-		test_entry = entry.models.Entry.objects.create(
-			title = 'test title',
-			content = 'test content',
-			song = test_song,
-			writer = test_user_for_entry
+			biograph='test biograph',
+			song_name='test song',
+			artist_name='test artist',
+			artist_name_id='testartist',
+			genre_name='test genre'
 		)
 	
 	def test_create(self):
