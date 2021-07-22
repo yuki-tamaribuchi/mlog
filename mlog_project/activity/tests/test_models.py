@@ -129,7 +129,7 @@ class TestGenreCheckedActivity(TestCase):
 
 	@classmethod
 	def setUp(cls):
-		test_genre = Genre.objects.create(genre_name = 'test genre')
+		test_genre = utils_for_test.create_test_genre(genre_name='test genre')
 
 		test_user_for_activity = User.objects.create(
 			username = 'testuserforact',
