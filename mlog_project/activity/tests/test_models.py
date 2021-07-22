@@ -41,6 +41,11 @@ class TestEntryReadActivity(TestCase):
 		activity_instance = EntryReadActivity.objects.all().first()
 		self.assertEqual(str(activity_instance), 'testuserforread read test title')
 
+	def test_without_user_str(self):
+		entry_instance = Entry.objects.first()
+		activity_instance = EntryReadActivity.objects.create(user=None, entry=entry_instance)
+		self.assertEqual(str(activity_instance), 'Unknown user read test title')
+
 
 class TestArtistCheckedActivity(TestCase):
 
