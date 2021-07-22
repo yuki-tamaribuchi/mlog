@@ -30,8 +30,8 @@ class TestEntryReadActivity(TestCase):
 		)
 
 		read_user_instance = utils_for_test.create_test_user(
-			username='test user for read',
-			handle='testuserforread',
+			username='testuserforread',
+			handle='test user for read',
 			biograph='test biograph'
 		)
 
@@ -39,7 +39,7 @@ class TestEntryReadActivity(TestCase):
 
 	def test_str(self):
 		activity_instance = EntryReadActivity.objects.all().first()
-		self.assertEqual(str(activity_instance), 'test user for read read test title')
+		self.assertEqual(str(activity_instance), 'testuserforread read test title')
 
 
 class TestArtistCheckedActivity(TestCase):
