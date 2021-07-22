@@ -11,48 +11,35 @@ from activity.models import (
 	GenreCheckedActivity,
 )
 
+from utils import utils_for_test
+
 class TestEntryReadActivity(TestCase):
 
 	@classmethod
 	def setUp(cls):
-
-		test_genre = Genre.objects.create(genre_name = 'test genre')
-
-		test_artist = Artist.objects.create(
-			artist_name = 'test artist',
-			artist_name_id = 'testartist',
-		)
-		test_artist.genre.add(test_genre)
-
-		test_song = Song.objects.create(song_name = 'test song')
-		test_song.artist.add(test_artist)
-		test_song.genre.add(test_genre)
-
-		test_user_for_entry = User.objects.create(
-			username = 'testuserforentry',
-			handle = 'testuser for entry',
+		entry_instance = utils_for_test.create_test_entry(
+			title='test title',
+			content='test content',
+			username='testuser',
+			handle='test user',
+			biograph='test biograph',
+			song_name='test song',
+			artist_name='test artist',
+			artist_name_id='testartist',
+			genre_name='test genre'
 		)
 
-		test_entry = Entry.objects.create(
-			title = 'test title',
-			content = 'test content',
-			song = test_song,
-			writer = test_user_for_entry
+		read_user_instance = utils_for_test.create_test_user(
+			username='test user for read',
+			handle='testuserforread',
+			biograph='test biograph'
 		)
 
-		test_user_for_activity = User.objects.create(
-			username = 'testuserforact',
-			handle = 'testuser for act',
-		)
-
-		EntryReadActivity.objects.create(
-			user = test_user_for_activity,
-			entry = test_entry
-		)
+		EntryReadActivity.objects.create(user=read_user_instance, entry=entry_instance)
 
 	def test_str(self):
 		activity_instance = EntryReadActivity.objects.all().first()
-		self.assertEqual(str(activity_instance), 'testuserforact read test title')
+		self.assertEqual(str(activity_instance), 'test user for read read test title')
 
 
 class TestArtistCheckedActivity(TestCase):
