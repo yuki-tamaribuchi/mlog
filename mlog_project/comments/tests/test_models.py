@@ -5,41 +5,31 @@ from musics.models import Genre, Song, Artist
 from entry.models import Entry
 from accounts.models import User
 
+from utils import utils_for_test
+
 
 class CommentTests(TestCase):
 
 	@classmethod
 	def setUp(cls):
-
-		test_genre = Genre.objects.create(genre_name = 'test genre')
-
-		test_artist = Artist.objects.create(
-			artist_name = 'test artist',
-			artist_name_id = 'testartist',
-		)
-		test_artist.genre.add(test_genre)
-
-		test_song = Song.objects.create(song_name = 'song name')
-		test_song.artist.add(test_artist)
-		test_song.genre.add(test_genre)
-
-		test_user_for_entry = User.objects.create(
+		test_entry = utils_for_test.create_test_entry(
+			title='test title',
+			content='test content',
 			username='testuserforentry',
-			handle='testuser for entry',
+			handle='test entry for entry',
+			biograph='test biograph',
+			song_name='test song',
+			artist_name='test artist',
+			artist_name_id='testartist',
+			genre_name='test genre'
 		)
 
-		test_entry = Entry.objects.create(
-			title = 'test title',
-			content = 'test content',
-			song = test_song,
-			writer = test_user_for_entry
-		)
-
-		test_user_for_comment = User.objects.create(
+		test_user_for_comment = utils_for_test.create_test_user(
 			username='testuserforcomment',
 			handle='testuser for comment',
+			biograph='test biograph'
 		)
-
+		
 		Comment.objects.create(
 			comment = 'test comment',
 			entry = test_entry,
