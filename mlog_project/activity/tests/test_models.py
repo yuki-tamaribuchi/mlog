@@ -103,14 +103,16 @@ class TestUserCheckedActivity(TestCase):
 	@classmethod
 	def setUp(cls):
 
-		test_detail_user = User.objects.create(
-			username = 'testdetailuser',
-			handle = 'test detail user',
+		test_detail_user = utils_for_test.create_test_user(
+			username='testdetailuser',
+			handle='test detail user',
+			biograph='test biograph'
 		)
 
-		test_user_for_activity = User.objects.create(
-			username = 'testuserforact',
-			handle = 'testuser for act',
+		test_user_for_activity = utils_for_test.create_test_user(
+			username='testuserforact',
+			handle='test user for act',
+			biograph='test biograph'
 		)
 
 		UserDetailCheckedActivity.objects.create(
