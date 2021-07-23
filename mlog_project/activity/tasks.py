@@ -1,4 +1,3 @@
-from django.views.generic import detail
 from activity import models
 from mlog_project.celery import app
 
