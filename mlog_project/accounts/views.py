@@ -69,7 +69,6 @@ class UserDetailView(DetailView):
 
 
 class UserUpdateView(LoginRequiredMixin,UpdateView):
-	model = User
 	template_name = 'accounts/userupdate.html'
 	form_class = UserUpdateForm
 	
