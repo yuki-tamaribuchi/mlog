@@ -1,8 +1,7 @@
-from django.shortcuts import render
-from django.views.generic import CreateView, DetailView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.shortcuts import get_object_or_404
 
 from activity.models import EntryReadActivity
@@ -50,7 +49,7 @@ class EntryCreateView(LoginRequiredMixin,CreateView):
 		return super().form_valid(form)
 
 	def get_success_url(self):
-		return reverse_lazy('entry:detail',kwargs={'pk':self.object.id})
+		return reverse('entry:detail',kwargs={'pk':self.object.id})
 
 
 class EntryUpdateView(LoginRequiredMixin, UpdateView):
@@ -68,4 +67,4 @@ class EntryDeleteView(LoginRequiredMixin, DeleteView):
 		return Entry.objects.get(writer__username=self.request.user.username,id=self.kwargs['pk'])
 
 	def get_success_url(self):
-		return reverse_lazy('accounts:detail',kwargs={'username':self.request.user.username})
+		return reverse('accounts:detail',kwargs={'username':self.request.user.username})
