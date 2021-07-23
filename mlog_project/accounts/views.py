@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView, DetailView, UpdateView
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView as auth_login_view, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
@@ -19,6 +19,11 @@ from activity.tasks import user_checked_activity
 class SignUpView(CreateView):
 	form_class = SignUpForm
 	template_name = 'accounts/signup.html'
+
+	def get(self, request, *args, **kwargs):
+		if request.user.username:
+			return redirect('accounts:detail',username=self.request.user.username)
+		return super().get(request, *args, **kwargs)
 
 	def form_valid(self, form):
 		to_return = super().form_valid(form)
