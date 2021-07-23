@@ -44,13 +44,20 @@ class CommentListView(ListView):
 		return context
 
 
+
+
+def get_comment_object(pk, username):
+	obj = get_object_or_404(Comment, pk=pk, user__username=username)
+	entry_pk = obj.entry.id
+	return (obj, entry_pk)
+
+
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
 	form_class = CommentUpdateForm
 	template_name = 'comments/update.html'
 
 	def get_object(self):
-		obj = get_object_or_404(Comment, pk=self.kwargs['pk'], user__username=self.request.user.username)
-		self.entry_pk = obj.entry.id
+		obj,self.entry_pk = get_comment_object(self.kwargs['pk'], self.request.user.username)
 		return obj
 
 	def get_success_url(self):
@@ -62,8 +69,7 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
 	template_name = 'comments/delete_confirm.html'
 
 	def get_object(self):
-		obj = get_object_or_404(Comment, pk=self.kwargs['pk'], user__username=self.request.user.username)
-		self.entry_pk = obj.entry.id
+		obj,self.entry_pk = get_comment_object(self.kwargs['pk'], self.request.user.username)
 		return obj
 
 	def get_success_url(self):
