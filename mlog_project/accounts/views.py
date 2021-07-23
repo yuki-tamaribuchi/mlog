@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, DetailView, UpdateView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView as auth_login_view, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,14 +20,14 @@ class SignUpView(CreateView):
 	template_name = 'accounts/signup.html'
 
 	def get_success_url(self):
-		return reverse_lazy('accounts:detail', kwargs={'username' : self.object.username})
+		return reverse('accounts:detail', kwargs={'username' : self.object.username})
 
 class LoginView(auth_login_view):
 	template_name = 'accounts/login.html'
 	redirect_authenticated_user = True
 
 	def get_success_url(self):
-		return reverse_lazy('accounts:detail', kwargs={'username' : self.request.user.username})
+		return reverse('accounts:detail', kwargs={'username' : self.request.user.username})
 
 
 class UserDetailView(DetailView):
@@ -35,7 +35,7 @@ class UserDetailView(DetailView):
 	context_object_name = 'detail_user'
 
 	def get_object(self):
-		detail_user = get_object_or_404(User, username= self.kwargs['username'])
+		detail_user = get_object_or_404(User, username=self.kwargs['username'])
 
 		user_checked_activity.delay(self.kwargs['username'], self.request.user.username)
 
@@ -43,16 +43,16 @@ class UserDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.filter(writer__username = self.kwargs['username']).order_by('id').reverse()[:5]
-		context['follow_count'] = Follow.objects.filter(user__username = self.kwargs['username']).count()
-		context['follower_count'] = Follow.objects.filter(follower__username = self.kwargs['username']).count()
-		context['liked_entry_count'] = Like.objects.filter(user__username = self.kwargs['username']).count()
+		context['entries'] = Entry.objects.filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
+		context['follow_count'] = Follow.objects.filter(user__username=self.kwargs['username']).count()
+		context['follower_count'] = Follow.objects.filter(follower__username=self.kwargs['username']).count()
+		context['liked_entry_count'] = Like.objects.filter(user__username=self.kwargs['username']).count()
 
 		if self.request.user.username:
-			user = get_object_or_404(User, username = self.request.user.username)	
-			follow_user = get_object_or_404(User, username = self.kwargs['username'])
-			context['is_myself'] = (user == follow_user)
-			context['is_following'] = Follow.objects.filter(user__username=user.username, follower__username = follow_user.username).exists()
+			user = get_object_or_404(User, username=self.request.user.username)	
+			follow_user = get_object_or_404(User, username=self.kwargs['username'])
+			context['is_myself'] = (user==follow_user)
+			context['is_following'] = Follow.objects.filter(user__username=user.username, follower__username=follow_user.username).exists()
 		
 		return context
 
@@ -63,10 +63,10 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
 	form_class = UserUpdateForm
 	
 	def get_object(self):
-		return get_object_or_404(User, username = self.request.user.username)
+		return get_object_or_404(User, username=self.request.user.username)
 
 	def get_success_url(self):
-		return reverse_lazy('accounts:detail',kwargs = {'username' : self.request.user.username})
+		return reverse('accounts:detail',kwargs={'username':self.request.user.username})
 
 
 class UserEntryListView(ListView):
@@ -75,13 +75,12 @@ class UserEntryListView(ListView):
 	paginate_by = 20
 
 	def get_queryset(self):
-		qs = Entry.objects.filter(writer__username = self.kwargs['username']).order_by('-id')
-		return qs
-		#At this time, I can't resolve problem when queried not exist user.
+		qs = super().get_queryset()
+		return qs.filter(writer__username=self.kwargs['username']).order_by('-id')
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['detail_user'] = User.objects.get(username = self.kwargs['username'])
+		context['detail_user'] = User.objects.get(username=self.kwargs['username'])
 		return context
 
 
