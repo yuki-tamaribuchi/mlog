@@ -5,6 +5,7 @@ from django.contrib.auth.views import LoginView as auth_login_view, PasswordChan
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
+from django.contrib.auth import login
 
 from entry.models import Entry
 from likes.models import Like
@@ -18,6 +19,11 @@ from activity.tasks import user_checked_activity
 class SignUpView(CreateView):
 	form_class = SignUpForm
 	template_name = 'accounts/signup.html'
+
+	def form_valid(self, form):
+		to_return = super().form_valid(form)
+		login(self.request, self.object, backend='django.contrib.auth.backends.ModelBackend')
+		return to_return
 
 	def get_success_url(self):
 		return reverse('accounts:detail', kwargs={'username' : self.object.username})
