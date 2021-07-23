@@ -25,13 +25,15 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 
 
 class CommentListView(ListView):
+	model = Comment
 	template_name = 'comments/list.html'
 
 	def get_queryset(self):
+		qs = super().get_queryset()
 		try:
-			qs = Comment.objects.filter(id=self.kwargs['pk'])
+			qs = qs.filter(entry_id=self.kwargs['pk'])
 		except ObjectDoesNotExist:
-			qs = Comment.objects.none()
+			qs = qs.objects.none()
 		return qs
 
 	def get_context_data(self, **kwargs):
