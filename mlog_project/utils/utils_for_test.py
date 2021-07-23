@@ -45,3 +45,26 @@ def create_test_entry(title, content, username, handle, biograph, song_name, art
 		song = create_test_song(song_name, artist_name, artist_name_id, genre_name)
 	)
 	return entry_instance
+
+def create_test_comment(comment, username_for_comment, handle_for_comment, biograph_for_comment, title, content, username_for_entry, handle_for_entry, biograph_for_entry, song_name, artist_name, artist_name_id, genre_name):
+	from comments.models import Comment
+	comment_instance = Comment.objects.create(
+		comment=comment,
+		user=create_test_user(
+			username=username_for_comment,
+			handle=handle_for_comment,
+			biograph=biograph_for_comment
+		),
+		entry=create_test_entry(
+			title=title,
+			content=content,
+			username=username_for_entry,
+			handle=handle_for_entry,
+			biograph=biograph_for_entry,
+			song_name=song_name,
+			artist_name=artist_name,
+			artist_name_id=artist_name_id,
+			genre_name=genre_name
+		)
+	)
+	return comment_instance
