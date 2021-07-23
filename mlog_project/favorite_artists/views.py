@@ -46,12 +46,13 @@ class ArtistFavoriteUserListView(ListView):
 
 
 class UserFavoriteArtistListView(ListView):
+	model = Artist
 	template_name = 'favorite_artists/userfavoriteartistlist.html'
 
 	def get_queryset(self):
+		qs = super().get_queryset()
 		fav_artist = FavoriteArtist.objects.filter(user__username=self.kwargs['username']).values('artist__id')
-		qs = Artist.objects.filter(id__in=fav_artist)
-		return qs
+		return qs.filter(id__in=fav_artist)
 	
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
