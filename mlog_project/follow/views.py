@@ -27,6 +27,8 @@ class FollowProcess(LoginRequiredMixin,View):
 
 
 class BaseListView(ListView):
+	model = Follow
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		this_page_user = User.objects.get(username = self.kwargs['username'])
@@ -41,11 +43,11 @@ class FollowingListView(BaseListView):
 	context_object_name = 'follows'
 
 	def get_queryset(self):
+		qs = super().get_queryset()
 		try:
-			qs = Follow.objects.filter(user__username = self.kwargs['username'])
+			return qs.filter(user__username = self.kwargs['username'])
 		except ObjectDoesNotExist:
-			qs = Follow.objects.none()
-		return qs
+			return qs.none()
 
 
 class FollowerListView(BaseListView):
@@ -53,8 +55,8 @@ class FollowerListView(BaseListView):
 	context_object_name = 'followers'
 
 	def get_queryset(self):
+		qs = super().get_queryset()
 		try:
-			qs = Follow.objects.filter(follower__username = self.kwargs['username'])
+			return qs.filter(follower__username = self.kwargs['username'])
 		except ObjectDoesNotExist:
-			qs = Follow.objects.none()
-		return qs
+			return qs.none()
