@@ -11,61 +11,50 @@ from activity.models import (
 	GenreCheckedActivity,
 )
 
+from utils import utils_for_test
+
 class TestEntryReadActivity(TestCase):
 
 	@classmethod
 	def setUp(cls):
-
-		test_genre = Genre.objects.create(genre_name = 'test genre')
-
-		test_artist = Artist.objects.create(
-			artist_name = 'test artist',
-			artist_name_id = 'testartist',
-		)
-		test_artist.genre.add(test_genre)
-
-		test_song = Song.objects.create(song_name = 'test song')
-		test_song.artist.add(test_artist)
-		test_song.genre.add(test_genre)
-
-		test_user_for_entry = User.objects.create(
-			username = 'testuserforentry',
-			handle = 'testuser for entry',
+		utils_for_test.create_test_entry(
+			title='test title',
+			content='test content',
+			username='testuser',
+			handle='test user',
+			biograph='test biograph',
+			song_name='test song',
+			artist_name='test artist',
+			artist_name_id='testartist',
+			genre_name='test genre'
 		)
 
-		test_entry = Entry.objects.create(
-			title = 'test title',
-			content = 'test content',
-			song = test_song,
-			writer = test_user_for_entry
-		)
 
-		test_user_for_activity = User.objects.create(
-			username = 'testuserforact',
-			handle = 'testuser for act',
+	def test_with_user_str(self):
+		read_user_instance = utils_for_test.create_test_user(
+			username='testuserforread',
+			handle='test user for read',
+			biograph='test biograph'
 		)
+		entry_instance = Entry.objects.first()
+		activity_instance = EntryReadActivity.objects.create(user=read_user_instance, entry=entry_instance)
+		self.assertEqual(str(activity_instance), 'testuserforread read test title')
 
-		EntryReadActivity.objects.create(
-			user = test_user_for_activity,
-			entry = test_entry
-		)
-
-	def test_str(self):
-		activity_instance = EntryReadActivity.objects.all().first()
-		self.assertEqual(str(activity_instance), 'testuserforact read test title')
+	def test_without_user_str(self):
+		entry_instance = Entry.objects.first()
+		activity_instance = EntryReadActivity.objects.create(user=None, entry=entry_instance)
+		self.assertEqual(str(activity_instance), 'Unknown user read test title')
 
 
 class TestArtistCheckedActivity(TestCase):
 
 	@classmethod
 	def setUp(cls):
-		test_genre = Genre.objects.create(genre_name = 'test genre')
-
-		test_artist = Artist.objects.create(
-			artist_name = 'test artist',
-			artist_name_id = 'testartist',
+		test_artist = utils_for_test.create_test_artist(
+			artist_name='test artist',
+			artist_name_id='testartist',
+			genre_name='test genre',
 		)
-		test_artist.genre.add(test_genre)
 
 		test_user_for_activity = User.objects.create(
 			username = 'testuserforact',
@@ -87,17 +76,12 @@ class TestSongCheckedActivity(TestCase):
 
 	@classmethod
 	def setUp(cls):
-		test_genre = Genre.objects.create(genre_name = 'test genre')
-
-		test_artist = Artist.objects.create(
-			artist_name = 'test artist',
-			artist_name_id = 'testartist',
+		test_song = utils_for_test.create_test_song(
+			song_name='test song',
+			artist_name='test artist',
+			artist_name_id='testartist',
+			genre_name='test genre'
 		)
-		test_artist.genre.add(test_genre)
-
-		test_song = Song.objects.create(song_name = 'test song')
-		test_song.artist.add(test_artist)
-		test_song.genre.add(test_genre)
 
 		test_user_for_activity = User.objects.create(
 			username = 'testuserforact',
@@ -119,14 +103,16 @@ class TestUserCheckedActivity(TestCase):
 	@classmethod
 	def setUp(cls):
 
-		test_detail_user = User.objects.create(
-			username = 'testdetailuser',
-			handle = 'test detail user',
+		test_detail_user = utils_for_test.create_test_user(
+			username='testdetailuser',
+			handle='test detail user',
+			biograph='test biograph'
 		)
 
-		test_user_for_activity = User.objects.create(
-			username = 'testuserforact',
-			handle = 'testuser for act',
+		test_user_for_activity = utils_for_test.create_test_user(
+			username='testuserforact',
+			handle='test user for act',
+			biograph='test biograph'
 		)
 
 		UserDetailCheckedActivity.objects.create(
@@ -143,7 +129,7 @@ class TestGenreCheckedActivity(TestCase):
 
 	@classmethod
 	def setUp(cls):
-		test_genre = Genre.objects.create(genre_name = 'test genre')
+		test_genre = utils_for_test.create_test_genre(genre_name='test genre')
 
 		test_user_for_activity = User.objects.create(
 			username = 'testuserforact',

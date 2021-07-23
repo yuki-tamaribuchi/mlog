@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+削除しますか？ | {{block.super}}
+{% endblock title %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                <p>このコメントを削除しますか？</p>
+				<p>記事：{{comment.entry.title}}</p>
+				<p>コメント：{{comment.comment}}</p>
+                <input type="submit" value="削除">
+                <a href="{% url 'comments:list' comment.entry.id %}"><input type="button" value="キャンセル"></a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
