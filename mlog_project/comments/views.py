@@ -1,8 +1,9 @@
+from django.http import request
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.exceptions import ObjectDoesNotExist
 
 from entry.models import Entry
@@ -46,6 +47,19 @@ class CommentListView(ListView):
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
 	form_class = CommentUpdateForm
 	template_name = 'comments/update.html'
+
+	def get_object(self):
+		obj = get_object_or_404(Comment, pk=self.kwargs['pk'], user__username=self.request.user.username)
+		self.entry_pk = obj.entry.id
+		return obj
+
+	def get_success_url(self):
+		return reverse('comments:list', kwargs={'pk':self.entry_pk})
+
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+	context_object_name = 'comment'
+	template_name = 'comments/delete_confirm.html'
 
 	def get_object(self):
 		obj = get_object_or_404(Comment, pk=self.kwargs['pk'], user__username=self.request.user.username)
