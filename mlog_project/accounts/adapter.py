@@ -11,7 +11,7 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
 		if user.id:
 			return
 		try:
-			exist_user = User.objects.get(email = user.email)
+			exist_user = User.objects.get(email=user.email)
 			sociallogin.state['process'] = 'connect'
 			perform_login(request, exist_user, 'none')
 		except ObjectDoesNotExist:
