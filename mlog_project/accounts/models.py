@@ -16,6 +16,6 @@ class User(AbstractUser):
 	handle = models.CharField(max_length=20)
 	biograph = models.TextField(max_length=200, blank=True)
 	profile_image = models.ImageField(
-		upload_to = get_image_path,
-		default = 'accounts/images/profile/default/default.jpg'
+		upload_to=get_image_path,
+		default='accounts/images/profile/default/default.jpg'
 		)
