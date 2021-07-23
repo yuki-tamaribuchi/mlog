@@ -1,9 +1,5 @@
-from django.forms import fields
 from .models import User
-from django import forms
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm, UserChangeForm, PasswordChangeForm
-
-from allauth.account.forms import LoginForm as allauth_login_form
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 
 class SignUpForm(UserCreationForm):
 	class Meta:
