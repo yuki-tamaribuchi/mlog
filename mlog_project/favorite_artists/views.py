@@ -30,13 +30,14 @@ class FavoriteArtistProcess(LoginRequiredMixin,View):
 
 
 class ArtistFavoriteUserListView(ListView):
+	model = User
 	template_name = 'favorite_artists/artistfavoriteuserlist.html'
 	context_object_name = 'fav_users'
 
 	def get_queryset(self):
+		qs = super().get_queryset()
 		fav_user = FavoriteArtist.objects.filter(artist__artist_name_id=self.kwargs['artist_name_id']).values('user__id')
-		qs = User.objects.filter(id__in=fav_user)
-		return qs
+		return qs.filter(id__in=fav_user)
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
