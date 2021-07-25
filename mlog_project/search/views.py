@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views.generic import ListView
 from django.db.models import Q
 
@@ -11,7 +10,7 @@ class BaseSeachListView(ListView):
 		self.keyword = self.request.GET['keyword']
 		qs = super().get_queryset()
 		if not self.keyword:
-			qs=self.model.objects.none()
+			qs = self.model.objects.none()
 		return qs
 
 	def get_context_data(self, **kwargs):
@@ -21,20 +20,20 @@ class BaseSeachListView(ListView):
 
 
 class ArtistSearchListView(BaseSeachListView):
-	model=Artist
+	model = Artist
 	template_name = 'search/artist.html'
 
 	def get_queryset(self):
 		qs = super().get_queryset()
 
 		return qs.filter(
-			Q(artist_name__icontains = self.keyword) | Q(artist_name_id__icontains = self.keyword)
+			Q(artist_name__icontains=self.keyword) | Q(artist_name_id__icontains=self.keyword)
 		)
 		
 
 
 class SongSearchListView(BaseSeachListView):
-	model=Song
+	model = Song
 	template_name = 'search/song.html'
 
 	def get_queryset(self):
@@ -46,7 +45,7 @@ class SongSearchListView(BaseSeachListView):
 
 
 class UserSearchListView(BaseSeachListView):
-	model=User
+	model = User
 	template_name = 'search/user.html'
 
 	def get_queryset(self):
