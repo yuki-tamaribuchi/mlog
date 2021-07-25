@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
@@ -13,45 +13,47 @@ class LikeProcess(LoginRequiredMixin,View):
 
 	def post(self, *args, **kwargs):
 		try:
-			like_status=Like.objects.filter(user__username=self.request.user.username,entry=self.request.POST['pk'])
+			like_status = Like.objects.filter(user__username=self.request.user.username,entry=self.request.POST['pk'])
 		except ObjectDoesNotExist:
-			like_status=Like.objects.none()
+			like_status = Like.objects.none()
 
 		if like_status:
 			like_status.delete()
 		else:
-			user=User.objects.get(username=self.request.user.username)
-			entry=Entry.objects.get(id=self.request.POST['pk'])
+			user = User.objects.get(username=self.request.user.username)
+			entry = Entry.objects.get(id=self.request.POST['pk'])
 			Like.objects.create(user=user,entry=entry)
 
 		return redirect(self.request.META['HTTP_REFERER'])
 
 
 class EntrysLikeListView(ListView):
-	template_name='likes/entry_list.html'
+	model = Like
+	template_name = 'likes/entry_list.html'
 
 	def get_queryset(self):
+		qs = super().get_queryset()
 		try:
-			qs=Like.objects.filter(entry=self.kwargs['pk'])
+			return qs.filter(entry=self.kwargs['pk'])
 		except ObjectDoesNotExist:
-			qs=Like.objects.none()
-		return qs
+			return qs.none()
 
 	def get_context_data(self, **kwargs):
-		context= super().get_context_data(**kwargs)
-		context['entry']=Entry.objects.get(id=self.kwargs['pk'])
+		context = super().get_context_data(**kwargs)
+		context['entry'] = Entry.objects.get(id=self.kwargs['pk'])
 		return context
 
 
 class UsersLikeListView(ListView):
-	template_name='likes/user_list.html'
+	model = Like
+	template_name = 'likes/user_list.html'
 
 	def get_queryset(self):
+		qs = super().get_queryset()
 		liked_entry=Like.objects.filter(user__username=self.kwargs['username']).values('entry__id')
-		qs=Entry.objects.filter(id__in=liked_entry)
-		return qs
+		return qs.filter(id__in=liked_entry)
 
 	def get_context_data(self,**kwargs):
-		context= super().get_context_data(**kwargs)
-		context['detail_user']=User.objects.get(username=self.kwargs['username'])
+		context = super().get_context_data(**kwargs)
+		context['detail_user'] = User.objects.get(username=self.kwargs['username'])
 		return context
