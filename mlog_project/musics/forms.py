@@ -21,9 +21,10 @@ class GenreWidget(s2forms.ModelSelect2MultipleWidget):
 class ArtsitCreateForm(ModelForm):
 	class Meta:
 		model = Artist
-		fields = ('artist_name', 'genre', 'artist_name_id', 'artist_biograph')
+		fields = ('artist_name', 'genre', 'artist_name_id', 'artist_biograph','belong_to')
 		widgets = {
 			'genre':GenreWidget,
+			'belong_to':ArtistWidget,
 		}
 
 
