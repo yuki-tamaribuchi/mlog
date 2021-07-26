@@ -26,6 +26,8 @@ class ArtistDetailView(DetailView):
 		context = super().get_context_data(**kwargs)
 		context['entries'] = Entry.objects.filter(song__artist__artist_name_id=self.kwargs['artist_name_id'])
 
+		context['members'] = Artist.objects.filter(belong_to__artist_name_id=self.kwargs['artist_name_id'])
+
 		if self.request.user.username:
 			try:
 				context['fav_status'] = FavoriteArtist.objects.get(user__username=self.request.user.username, artist__artist_name_id=self.kwargs['artist_name_id'])
