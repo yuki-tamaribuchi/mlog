@@ -16,6 +16,13 @@
 		<p><a href="{% url 'musics:artist_detail' artist.belong_to.artist_name_id %}">{{ artist.belong_to.artist_name }}</a></p>
 		{% endif %}
 
+		{% if members %}
+		<p>所属メンバー</p>
+		{% for member in members %}
+		<p><a href="{% url 'musics:artist_detail' member.artist_name_id %}">{{ member.artist_name }}</a></p>
+		{% endfor %}
+		{% endif %}
+
 		<form method="POST" action="{% url 'favorite_artists:process' %}" >
 			{% csrf_token %}
 			<input type="hidden" value="{{artist.artist_name_id}}" name="artist_name_id">
