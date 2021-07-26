@@ -11,6 +11,11 @@
 		<p>紹介はありません。</p>
 		{% endif %}
 
+		{% if artist.belong_to %}
+		<p>所属グループ</p>
+		<p><a href="{% url 'musics:artist_detail' artist.belong_to.artist_name_id %}">{{ artist.belong_to.artist_name }}</a></p>
+		{% endif %}
+
 		<form method="POST" action="{% url 'favorite_artists:process' %}" >
 			{% csrf_token %}
 			<input type="hidden" value="{{artist.artist_name_id}}" name="artist_name_id">
