@@ -1,16 +1,15 @@
 from django.shortcuts import render
 from django.views.generic import DetailView, CreateView, ListView
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
-from django.db import transaction
 
 from entry.models import Entry
 from favorite_artists.models import FavoriteArtist
 
 from activity.tasks import artist_checked_activity, song_checked_activity, genre_checked_activity
 
-from .models import Artist, BelongTo, Song, Genre
-from .forms import ArtsitCreateForm, SongCreateForm, GenreCreateForm, SelectBelongToForm
+from .models import Artist, Song, Genre
+from .forms import ArtsitCreateForm, SongCreateForm, GenreCreateForm
 
 
 class ArtistDetailView(DetailView):
@@ -49,30 +48,7 @@ class SongCreateView(CreateView):
 
 class ArtistCreateView(CreateView):
 	form_class = ArtsitCreateForm
-	belongto_form_class = SelectBelongToForm
 	template_name = 'musics/artistcreate.html'
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		belongto_form = self.belongto_form_class(self.request.GET or None)
-		context.update({'belongto_form':belongto_form})
-		return context
-
-	def form_valid(self, form):
-		artist_form = form
-		belongto_form = self.belongto_form_class(self.request.POST)
-		if belongto_form.is_valid:
-			try:
-				with transaction.atomic():
-					artist_form.save()
-
-					belongto_form.save(commit=False)
-					belongto_form.instance.group_id = 3
-					belongto_form.instance.member_id = 4
-					belongto_form.save()
-			except ValidationError:
-				return self.form_invalid(artist_form, belongto_form)
-			return artist_form
 
 	def get_success_url(self):
 		return reverse_lazy('musics:artist_detail', kwargs={'artist_name_id':self.object.artist_name_id})
@@ -110,12 +86,10 @@ class PopupSongCreateView(SongCreateView):
 class PopupArtistCreateView(ArtistCreateView):
 
 	def form_valid(self, form):
-		artist_form = super().form_valid(form)
-		print(dir(artist_form))
-
-		context = {
-			'object_name':str(artist_form),
-			'object_pk':artist_form.instance.pk,
+		artist=form.save()
+		context={
+			'object_name':str(artist),
+			'object_pk':artist.pk,
 			'function_name':'add_artist'
 		}
 		return render(self.request, 'musics/close.html', context)
