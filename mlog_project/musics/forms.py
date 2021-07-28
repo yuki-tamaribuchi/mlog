@@ -12,6 +12,13 @@ class ArtistWidget(s2forms.ModelSelect2MultipleWidget):
 	]
 
 
+class ArtistBelongToWidget(s2forms.ModelSelect2Widget):
+	search_fields = [
+		'artist_name__icontains',
+		'artist_name_id__icontains'
+	]
+
+
 class GenreWidget(s2forms.ModelSelect2MultipleWidget):
 	search_fields = [
 		'genre_name__icontains'
@@ -21,10 +28,10 @@ class GenreWidget(s2forms.ModelSelect2MultipleWidget):
 class ArtsitCreateForm(ModelForm):
 	class Meta:
 		model = Artist
-		fields = ('artist_name', 'genre', 'artist_name_id', 'artist_biograph')
+		fields = ('artist_name', 'genre', 'artist_name_id', 'artist_biograph', 'belong_to')
 		widgets = {
 			'genre':GenreWidget,
-			'belong_to':ArtistWidget,
+			'belong_to':ArtistBelongToWidget,
 		}
 
 
