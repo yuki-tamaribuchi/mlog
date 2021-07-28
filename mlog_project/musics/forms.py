@@ -2,7 +2,7 @@ from django.forms import ModelForm
 
 from django_select2 import forms as s2forms
 
-from .models import Artist, Song, Genre, BelongTo
+from .models import Artist, Song, Genre
 
 
 class ArtistWidget(s2forms.ModelSelect2MultipleWidget):
@@ -27,18 +27,6 @@ class ArtsitCreateForm(ModelForm):
 			'belong_to':ArtistWidget,
 		}
 
-class SelectBelongToForm(ModelForm):
-	class Meta:
-		model = BelongTo
-		fields = ('group',)
-		widgets = {
-			'group':ArtistWidget,
-		}
-
-	def __init__(self, *args, **kwargs):
-		super(SelectBelongToForm, self).__init__()
-		self.fields['group'].required = False
-		
 
 class SongCreateForm(ModelForm):
 	class Meta:
