@@ -12,7 +12,6 @@
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
-		<p>{{belongto_form}}</p>
 		<input type="submit" value="登録">
 		</form>
 		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:genre_create_popup' %}','subwin_genre')">ジャンルを追加</a>
