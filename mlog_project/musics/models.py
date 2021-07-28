@@ -18,14 +18,6 @@ class Artist(models.Model):
     def __str__(self):
         return self.artist_name
 
-class BelongTo(models.Model):
-    group = models.ForeignKey(Artist, on_delete=PROTECT, related_name='group_artist')
-    member = models.ForeignKey(Artist, on_delete=PROTECT, related_name='member_artist')
-
-    def __str__(self):
-        return '%s belongs to %s'%(self.member.artist_name, self.group.artist_name)
-
-
 
 class Song(models.Model):
     song_name = models.CharField(max_length=30)
