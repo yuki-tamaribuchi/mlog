@@ -13,7 +13,9 @@
 
 		{% if artist.belong_to %}
 		<p>所属グループ</p>
-		<p><a href="{% url 'musics:artist_detail' artist.belong_to.artist_name_id %}">{{ artist.belong_to.artist_name }}</a></p>
+		{% for group in artist.belong_to.all %}
+		<p><a href="{% url 'musics:artist_detail' group.artist_name_id %}">{{ group.artist_name }}</a></p>
+		{% endfor %}
 		{% endif %}
 
 		{% if members %}
