@@ -48,4 +48,4 @@ class SongForm(ModelForm):
 class GenreForm(ModelForm):
 	class Meta:
 		model = Genre
-		fields = '__all__'
+		fields = ('genre_name',)
