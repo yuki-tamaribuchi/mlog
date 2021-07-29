@@ -25,7 +25,7 @@ class GenreWidget(s2forms.ModelSelect2MultipleWidget):
 	]
 
 
-class ArtsitCreateForm(ModelForm):
+class ArtsitForm(ModelForm):
 	class Meta:
 		model = Artist
 		fields = ('artist_name', 'genre', 'artist_name_id', 'artist_biograph', 'belong_to')
@@ -35,7 +35,7 @@ class ArtsitCreateForm(ModelForm):
 		}
 
 
-class SongCreateForm(ModelForm):
+class SongForm(ModelForm):
 	class Meta:
 		model = Song
 		fields = ('song_name', 'artist', 'genre')
@@ -45,7 +45,7 @@ class SongCreateForm(ModelForm):
 		}
 
 
-class GenreCreateForm(ModelForm):
+class GenreForm(ModelForm):
 	class Meta:
 		model = Genre
 		fields = '__all__'

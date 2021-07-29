@@ -9,7 +9,7 @@ from favorite_artists.models import FavoriteArtist
 from activity.tasks import artist_checked_activity, song_checked_activity, genre_checked_activity
 
 from .models import Artist, Song, Genre
-from .forms import ArtsitCreateForm, SongCreateForm, GenreCreateForm
+from .forms import ArtsitForm, SongForm, GenreForm
 
 
 class ArtistDetailView(DetailView):
@@ -39,7 +39,7 @@ class ArtistDetailView(DetailView):
 
 
 class SongCreateView(CreateView):
-	form_class = SongCreateForm
+	form_class = SongForm
 	template_name = 'musics/songcreate.html'
 
 	def get_success_url(self):
@@ -47,7 +47,7 @@ class SongCreateView(CreateView):
 
 
 class ArtistCreateView(CreateView):
-	form_class = ArtsitCreateForm
+	form_class = ArtsitForm
 	template_name = 'musics/artistcreate.html'
 
 	def get_success_url(self):
@@ -96,7 +96,7 @@ class PopupArtistCreateView(ArtistCreateView):
 
 
 class GenreCreateView(CreateView):
-	form_class = GenreCreateForm
+	form_class = GenreForm
 	template_name = 'musics/genrecreate.html'
 
 
