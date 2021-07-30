@@ -10,9 +10,21 @@ from likes.models import Like
 from comments.models import Comment
 
 from .models import Entry
-from .forms import EntryCreateForm
+from .forms import EntryForm
 
 from activity.tasks import entry_read_activity
+
+
+class EntryCreateView(LoginRequiredMixin,CreateView):
+	form_class = EntryForm
+	template_name = 'entry/entry_form.html'
+
+	def form_valid(self, form):
+		form.instance.writer_id = User.objects.get(username=self.request.user.username).id
+		return super().form_valid(form)
+
+	def get_success_url(self):
+		return reverse('entry:detail',kwargs={'pk':self.object.id})
 
 
 class EntryDetailView(DetailView):
@@ -40,21 +52,9 @@ class EntryDetailView(DetailView):
 		return context
 
 
-class EntryCreateView(LoginRequiredMixin,CreateView):
-	form_class=EntryCreateForm
-	template_name = 'entry/create.html'
-
-	def form_valid(self, form):
-		form.instance.writer_id = User.objects.get(username=self.request.user.username).id
-		return super().form_valid(form)
-
-	def get_success_url(self):
-		return reverse('entry:detail',kwargs={'pk':self.object.id})
-
-
 class EntryUpdateView(LoginRequiredMixin, UpdateView):
-	template_name = 'entry/update.html'
-	fields = ('title','content','song')
+	form_class = EntryForm
+	template_name = 'entry/entry_form.html'
 
 	def get_object(self):
 		return Entry.objects.get(writer__username=self.request.user.username,id=self.kwargs['pk'])

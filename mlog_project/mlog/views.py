@@ -16,16 +16,16 @@ class RootRedirectView(View):
 
 
 class TopView(ListView):
-	model=Entry
-	template_name='mlog/topview.html'
+	model = Entry
+	template_name = 'mlog/topview.html'
 	paginate_by=20
 
 	def get_queryset(self):
+		qs = super().get_queryset()
 		try:
-			qs=Entry.objects.all().order_by('-id')
+			return qs.all().order_by('-id')
 		except ObjectDoesNotExist:
-			qs=Entry.objects.none()
-		return qs
+			return qs.none()
 
 
 class TimelineView(LoginRequiredMixin, ListView):
@@ -34,10 +34,9 @@ class TimelineView(LoginRequiredMixin, ListView):
 	paginate_by=20
 
 	def get_queryset(self):
+		qs = super().get_queryset()
 		follows=Follow.objects.filter(user__username=self.request.user.username).values('follower__username')
-		
 		try:
-			qs=Entry.objects.filter(writer__username__in=follows).order_by('-id')
+			return qs.filter(writer__username__in=follows).order_by('-id')
 		except ObjectDoesNotExist:
-			qs=Entry.objects.none()
-		return qs
+			qs.none()

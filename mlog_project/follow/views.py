@@ -27,6 +27,7 @@ class FollowProcess(LoginRequiredMixin,View):
 
 
 class BaseListView(ListView):
+	template_name = 'follow/list.html'
 	model = Follow
 
 	def get_context_data(self, **kwargs):
@@ -39,7 +40,6 @@ class BaseListView(ListView):
 
 
 class FollowingListView(BaseListView):
-	template_name = 'follow/following.html'
 	context_object_name = 'follows'
 
 	def get_queryset(self):
@@ -51,7 +51,6 @@ class FollowingListView(BaseListView):
 
 
 class FollowerListView(BaseListView):
-	template_name = 'follow/follower.html'
 	context_object_name = 'followers'
 
 	def get_queryset(self):

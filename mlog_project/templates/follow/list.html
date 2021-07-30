@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title%} {{this_page_handle}} ({{this_page_username}})の{% if followers %}フォロワー{% elif follows %}フォロー{% endif %}一覧 | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col mt-5">
+			<h1><a href="{% url 'accounts:detail' this_page_username %}">{{this_page_handle}}</a>の{% if followers %}フォロワー{% elif follows %}フォロー{% endif %}一覧</h1>
+
+			{% if followers %}
+				{% if followers %}
+					{% for follower in followers%}
+					<p><a href='{% url 'accounts:detail' follower.user.username%}'><img src="{{MEDIA_URL}}{{follower.user.profile_image}}" class="profile-image profile-image-size-sm"/>{{follower.user.handle}}({{follower.user.username}})</a></p>
+				{% endfor %}
+				{% else %}
+					フォロワーはいません
+				{% endif %}
+			{% endif %}
+
+			{% if follows %}
+				{% if followers %}
+					{% for follow in follows%}
+						<p><a href='{% url 'accounts:detail' follow.follower %}'><img src="{{MEDIA_URL}}{{follow.follower.profile_image}}" class="profile-image profile-image-size-sm"/>{{follow.follower.handle}}({{follow.follower}})</a></p>
+					{% endfor %}
+				{% else %}
+					誰一人フォローしてません
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock content %}

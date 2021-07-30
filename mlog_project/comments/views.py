@@ -15,7 +15,7 @@ from .forms import CommentCreateForm, CommentUpdateForm
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
 	form_class = CommentCreateForm
-	template_name = 'comments/create.html'
+	template_name = 'comments/comment_form.html'
 
 	def form_valid(self, form):
 		form.instance.user_id = User.objects.get(username=self.request.user.username).id
@@ -54,7 +54,7 @@ def get_comment_object(pk, username):
 
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
 	form_class = CommentUpdateForm
-	template_name = 'comments/update.html'
+	template_name = 'comments/comment_form.html'
 
 	def get_object(self):
 		obj,self.entry_pk = get_comment_object(self.kwargs['pk'], self.request.user.username)

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title%}投稿 | {{block.super}}{% endblock title %}
+{% block title%}記事{% if object %}更新{% else %}投稿{% endif %} | {{block.super}}{% endblock title %}
 {% block head %}
 	{{ form.media.css }}
 	<style>
@@ -14,7 +14,7 @@
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
-		<input type="submit" value="投稿">
+		<input type="submit" value="{% if object %}更新{% else %}投稿{% endif %}">
 		</form>
 		<a href="javascript:void(0);" onclick="window.open('{% url 'musics:song_create_popup' %}','subwin_song','width=500,height=500');">曲を追加</a>
 	</div>
