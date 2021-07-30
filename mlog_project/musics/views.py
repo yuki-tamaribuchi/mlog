@@ -55,7 +55,7 @@ class ArtistCreateView(CreateView):
 
 
 class SongDetailView(DetailView):
-	template_name = 'musics/songdetail.html'
+	template_name = 'musics/song_detail.html'
 
 	def get_object(self):
 		current_song = Song.objects.get(pk=self.kwargs['pk'])
