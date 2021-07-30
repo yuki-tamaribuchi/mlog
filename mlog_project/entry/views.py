@@ -42,7 +42,7 @@ class EntryDetailView(DetailView):
 
 class EntryCreateView(LoginRequiredMixin,CreateView):
 	form_class=EntryCreateForm
-	template_name = 'entry/create.html'
+	template_name = 'entry/entry_form.html'
 
 	def form_valid(self, form):
 		form.instance.writer_id = User.objects.get(username=self.request.user.username).id
@@ -53,7 +53,7 @@ class EntryCreateView(LoginRequiredMixin,CreateView):
 
 
 class EntryUpdateView(LoginRequiredMixin, UpdateView):
-	template_name = 'entry/update.html'
+	template_name = 'entry/entry_form.html'
 	fields = ('title','content','song')
 
 	def get_object(self):

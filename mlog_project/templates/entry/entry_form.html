@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title%}投稿 | {{block.super}}{% endblock title %}
+{% block title%}記事{% if object %}更新{% else %}投稿{% endif %} | {{block.super}}{% endblock title %}
 {% block head %}
 	{{ form.media.css }}
 	<style>
