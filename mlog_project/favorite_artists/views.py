@@ -12,20 +12,20 @@ from .models import FavoriteArtist
 
 class FavoriteArtistProcess(LoginRequiredMixin,View):
 
-	def post(self,*args,**kwargs):
+	def post(self, *args, **kwargs):
 
 		user = User.objects.get(username=self.request.user.username)
 		artist = Artist.objects.get(artist_name_id=self.request.POST['artist_name_id'])
 
 		try:
-			fav_status = FavoriteArtist.objects.get(user=user,artist=artist)
+			fav_status = FavoriteArtist.objects.get(user=user, artist=artist)
 		except ObjectDoesNotExist:
 			fav_status = FavoriteArtist.objects.none()
 		
 		if fav_status:
 			fav_status.delete()
 		else:
-			FavoriteArtist.objects.create(user=user,artist=artist)
+			FavoriteArtist.objects.create(user=user, artist=artist)
 		return redirect(self.request.META['HTTP_REFERER'])
 
 
@@ -56,5 +56,5 @@ class UserFavoriteArtistListView(ListView):
 	
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['detail_user']=User.objects.get(username=self.kwargs['username'])
+		context['detail_user'] = User.objects.get(username=self.kwargs['username'])
 		return context
