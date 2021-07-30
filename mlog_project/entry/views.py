@@ -15,6 +15,18 @@ from .forms import EntryCreateForm
 from activity.tasks import entry_read_activity
 
 
+class EntryCreateView(LoginRequiredMixin,CreateView):
+	form_class = EntryCreateForm
+	template_name = 'entry/entry_form.html'
+
+	def form_valid(self, form):
+		form.instance.writer_id = User.objects.get(username=self.request.user.username).id
+		return super().form_valid(form)
+
+	def get_success_url(self):
+		return reverse('entry:detail',kwargs={'pk':self.object.id})
+
+
 class EntryDetailView(DetailView):
 	template_name = 'entry/detail.html'
 
@@ -38,18 +50,6 @@ class EntryDetailView(DetailView):
 		context['view_count'] = EntryReadActivity.objects.filter(entry__id=self.kwargs['pk']).count()
 
 		return context
-
-
-class EntryCreateView(LoginRequiredMixin,CreateView):
-	form_class=EntryCreateForm
-	template_name = 'entry/entry_form.html'
-
-	def form_valid(self, form):
-		form.instance.writer_id = User.objects.get(username=self.request.user.username).id
-		return super().form_valid(form)
-
-	def get_success_url(self):
-		return reverse('entry:detail',kwargs={'pk':self.object.id})
 
 
 class EntryUpdateView(LoginRequiredMixin, UpdateView):
