@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title%}曲登録 | {{block.super}}{% endblock title %}
+{% block title%}曲{% if object %}更新{% else %}登録{% endif %} | {{block.super}}{% endblock title %}
 {% block head %}
 	{{ form.media.css }}
 	<style>
