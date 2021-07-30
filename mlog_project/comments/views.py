@@ -1,5 +1,4 @@
-from django.http import request
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -57,7 +56,7 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
 	template_name = 'comments/comment_form.html'
 
 	def get_object(self):
-		obj,self.entry_pk = get_comment_object(self.kwargs['pk'], self.request.user.username)
+		obj, self.entry_pk = get_comment_object(self.kwargs['pk'], self.request.user.username)
 		return obj
 
 	def get_success_url(self):
@@ -69,7 +68,7 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
 	template_name = 'comments/delete_confirm.html'
 
 	def get_object(self):
-		obj,self.entry_pk = get_comment_object(self.kwargs['pk'], self.request.user.username)
+		obj, self.entry_pk = get_comment_object(self.kwargs['pk'], self.request.user.username)
 		return obj
 
 	def get_success_url(self):
