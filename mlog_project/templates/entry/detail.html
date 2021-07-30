@@ -73,7 +73,7 @@
 
 		<div col="row">
 			{% if entry.writer.username == user.username %}
-			<a href="{% url 'entry:delete' entry.id %}"><input type="button" value="削除する"></a>
+			<a href="{% url 'entry:update' entry.id %}"><input type="button" value="更新する"></a><a href="{% url 'entry:delete' entry.id %}"><input type="button" value="削除する"></a>
 			{% endif %}
 		</div>
 	</div>
