@@ -2,7 +2,7 @@
 {% block title%}{{artist.artist_name}} | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
-	<div class "row mt-5">
+	<div class="row mt-5">
         <h1>{{artist.artist_name}}</h1>
 		<h2>Biograph</h2>
 		{% if artist.artist_biograph %}
@@ -24,15 +24,18 @@
 			{% endfor %}
 			</div>
 		{% endif %}
+	</div>
 
+	<div class="row mt-5">
 		<form method="POST" action="{% url 'favorite_artists:process' %}" >
 			{% csrf_token %}
 			<input type="hidden" value="{{artist.artist_name_id}}" name="artist_name_id">
 			<input type="submit" value="{% if fav_status %}お気に入り解除{% else %}お気に入りに登録{% endif %}">
 		</form>
 		<p><a href="{% url 'favorite_artists:userfavorite' artist.artist_name_id %}">お気に入りに登録しているユーザ一覧</a></p>
+	</div>
 
-
+	<div class="row mt-5">
 		<h2>記事一覧</h2>
 		{% if entries %}
 			{% for entry in entries %}
@@ -42,5 +45,6 @@
 		<p>記事はありません。</p>
 		{% endif %}
 	</div>
+	
 </div>
 {% endblock content %}
