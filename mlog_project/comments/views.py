@@ -10,11 +10,11 @@ from entry.models import Entry
 from accounts.models import User
 
 from .models import Comment
-from .forms import CommentCreateForm, CommentUpdateForm
+from .forms import CommentForm
 
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
-	form_class = CommentCreateForm
+	form_class = CommentForm
 	template_name = 'comments/comment_form.html'
 
 	def form_valid(self, form):
@@ -53,7 +53,7 @@ def get_comment_object(pk, username):
 
 
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
-	form_class = CommentUpdateForm
+	form_class = CommentForm
 	template_name = 'comments/comment_form.html'
 
 	def get_object(self):
