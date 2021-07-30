@@ -13,7 +13,7 @@ class LikeProcess(LoginRequiredMixin,View):
 
 	def post(self, *args, **kwargs):
 		try:
-			like_status = Like.objects.filter(user__username=self.request.user.username,entry=self.request.POST['pk'])
+			like_status = Like.objects.filter(user__username=self.request.user.username, entry=self.request.POST['pk'])
 		except ObjectDoesNotExist:
 			like_status = Like.objects.none()
 
@@ -22,7 +22,7 @@ class LikeProcess(LoginRequiredMixin,View):
 		else:
 			user = User.objects.get(username=self.request.user.username)
 			entry = Entry.objects.get(id=self.request.POST['pk'])
-			Like.objects.create(user=user,entry=entry)
+			Like.objects.create(user=user, entry=entry)
 
 		return redirect(self.request.META['HTTP_REFERER'])
 
@@ -50,7 +50,7 @@ class UsersLikeListView(ListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		liked_entry=Like.objects.filter(user__username=self.kwargs['username']).values('entry__id')
+		liked_entry = Like.objects.filter(user__username=self.kwargs['username']).values('entry__id')
 		return qs.filter(id__in=liked_entry)
 
 	def get_context_data(self,**kwargs):
