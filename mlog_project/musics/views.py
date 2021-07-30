@@ -99,7 +99,6 @@ class GenreCreateView(CreateView):
 	form_class = GenreForm
 	template_name = 'musics/genre_form.html'
 
-
 	def get_success_url(self):
 		return reverse_lazy('entry:create')
 
@@ -113,7 +112,7 @@ class PopupGenreCreateView(GenreCreateView):
 			'object_pk':genre.pk,
 			'function_name':'add_genre'
 		}
-		return render(self.request, 'musics/close.html',context)
+		return render(self.request, 'musics/close.html', context)
 
 
 class GenreListView(ListView):
