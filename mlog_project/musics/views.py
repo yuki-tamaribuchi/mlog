@@ -97,7 +97,7 @@ class PopupArtistCreateView(ArtistCreateView):
 
 class GenreCreateView(CreateView):
 	form_class = GenreForm
-	template_name = 'musics/genrecreate.html'
+	template_name = 'musics/genre_form.html'
 
 
 	def get_success_url(self):
