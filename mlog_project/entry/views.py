@@ -53,8 +53,8 @@ class EntryDetailView(DetailView):
 
 
 class EntryUpdateView(LoginRequiredMixin, UpdateView):
+	form_class = EntryForm
 	template_name = 'entry/entry_form.html'
-	fields = ('title','content','song')
 
 	def get_object(self):
 		return Entry.objects.get(writer__username=self.request.user.username,id=self.kwargs['pk'])
