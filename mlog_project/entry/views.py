@@ -10,13 +10,13 @@ from likes.models import Like
 from comments.models import Comment
 
 from .models import Entry
-from .forms import EntryCreateForm
+from .forms import EntryForm
 
 from activity.tasks import entry_read_activity
 
 
 class EntryCreateView(LoginRequiredMixin,CreateView):
-	form_class = EntryCreateForm
+	form_class = EntryForm
 	template_name = 'entry/entry_form.html'
 
 	def form_valid(self, form):

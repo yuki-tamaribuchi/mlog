@@ -12,7 +12,7 @@ class SongWidget(s2forms.ModelSelect2Widget):
 	]
 
 
-class EntryCreateForm(ModelForm):
+class EntryForm(ModelForm):
 	class Meta:
 		model = Entry
 		fields = ('title', 'content', 'song')
