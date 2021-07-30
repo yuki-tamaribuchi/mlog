@@ -6,6 +6,8 @@ from musics.models import Song, Artist
 
 
 class BaseSeachListView(ListView):
+	template_name = 'search/list.html'
+
 	def get_queryset(self):
 		self.keyword = self.request.GET['keyword']
 		qs = super().get_queryset()
@@ -21,7 +23,6 @@ class BaseSeachListView(ListView):
 
 class ArtistSearchListView(BaseSeachListView):
 	model = Artist
-	template_name = 'search/artist.html'
 
 	def get_queryset(self):
 		qs = super().get_queryset()
@@ -34,7 +35,6 @@ class ArtistSearchListView(BaseSeachListView):
 
 class SongSearchListView(BaseSeachListView):
 	model = Song
-	template_name = 'search/song.html'
 
 	def get_queryset(self):
 		qs = super().get_queryset()
@@ -46,7 +46,6 @@ class SongSearchListView(BaseSeachListView):
 
 class UserSearchListView(BaseSeachListView):
 	model = User
-	template_name = 'search/user.html'
 
 	def get_queryset(self):
 		qs = super().get_queryset()
