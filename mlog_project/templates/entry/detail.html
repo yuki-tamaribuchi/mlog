@@ -50,13 +50,7 @@
 			<h3>Featured Artist</h3>
 			<div class="row">
 				{% for artist in entry.song.artist.all %}
-				<div class="col">
-					<div class="card text-center artist-card" style="width: 10rem;">
-						<div class="card-body">
-							<a href="{% url 'musics:artist_detail' artist.artist_name_id %}" class="stretched-link text-decoration-none">{{artist.artist_name}}</a>
-						</div>
-					</div>
-				</div>
+				{% include 'common_templates/artist_card.html' %}
 				{% endfor %}
 			</div>
 		</div>
