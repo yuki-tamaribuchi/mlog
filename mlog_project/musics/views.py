@@ -13,7 +13,7 @@ from .forms import ArtsitForm, SongForm, GenreForm
 
 
 class ArtistDetailView(DetailView):
-	template_name = 'musics/artistdetail.html'
+	template_name = 'musics/artist_detail.html'
 
 	def get_object(self):
 		current_artist = Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
