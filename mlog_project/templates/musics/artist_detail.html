@@ -18,9 +18,11 @@
 
 		{% if members %}
 			<p>所属メンバー</p>
+			<div class='row'>
 			{% for member in members %}
 				{% include 'common_templates/artist_card.html' with artist=member%}
 			{% endfor %}
+			</div>
 		{% endif %}
 
 		<form method="POST" action="{% url 'favorite_artists:process' %}" >
