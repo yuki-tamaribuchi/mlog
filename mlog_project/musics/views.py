@@ -40,7 +40,7 @@ class ArtistDetailView(DetailView):
 
 class SongCreateView(CreateView):
 	form_class = SongForm
-	template_name = 'musics/songcreate.html'
+	template_name = 'musics/song_form.html'
 
 	def get_success_url(self):
 		return reverse_lazy('musics:song_detail', kwargs={'pk':self.object.id})
