@@ -39,4 +39,4 @@ class TimelineView(LoginRequiredMixin, ListView):
 		try:
 			return qs.filter(writer__username__in=follows).order_by('-id')
 		except ObjectDoesNotExist:
-			qs.none()
+			return qs.none()
