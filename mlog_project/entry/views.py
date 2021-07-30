@@ -24,14 +24,14 @@ class EntryCreateView(LoginRequiredMixin,CreateView):
 		return super().form_valid(form)
 
 	def get_success_url(self):
-		return reverse('entry:detail',kwargs={'pk':self.object.id})
+		return reverse('entry:detail', kwargs={'pk':self.object.id})
 
 
 class EntryDetailView(DetailView):
 	template_name = 'entry/detail.html'
 
 	def get_object(self):
-		current_entry = get_object_or_404(Entry,pk=self.kwargs['pk'])
+		current_entry = get_object_or_404(Entry, pk=self.kwargs['pk'])
 		entry_read_activity.delay(self.kwargs['pk'], self.request.user.username)
 
 		return current_entry
@@ -43,7 +43,7 @@ class EntryDetailView(DetailView):
 		context['comment_count'] = Comment.objects.filter(entry=self.kwargs['pk']).count()
 		
 		try:
-			context['like_status'] = Like.objects.filter(user__username=self.request.user.username,entry=self.kwargs['pk'])
+			context['like_status'] = Like.objects.filter(user__username=self.request.user.username, entry=self.kwargs['pk'])
 		except ObjectDoesNotExist:
 			context['like_status'] = Like.objects.none()
 
@@ -57,14 +57,14 @@ class EntryUpdateView(LoginRequiredMixin, UpdateView):
 	template_name = 'entry/entry_form.html'
 
 	def get_object(self):
-		return Entry.objects.get(writer__username=self.request.user.username,id=self.kwargs['pk'])
+		return Entry.objects.get(writer__username=self.request.user.username, id=self.kwargs['pk'])
 
 
 class EntryDeleteView(LoginRequiredMixin, DeleteView):
 	template_name = 'entry/delete_confirm.html'
 
 	def get_object(self):
-		return Entry.objects.get(writer__username=self.request.user.username,id=self.kwargs['pk'])
+		return Entry.objects.get(writer__username=self.request.user.username, id=self.kwargs['pk'])
 
 	def get_success_url(self):
-		return reverse('accounts:detail',kwargs={'username':self.request.user.username})
+		return reverse('accounts:detail', kwargs={'username':self.request.user.username})

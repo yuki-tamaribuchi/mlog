@@ -22,7 +22,7 @@ class SignUpView(CreateView):
 
 	def get(self, request, *args, **kwargs):
 		if request.user.username:
-			return redirect('accounts:detail',username=self.request.user.username)
+			return redirect('accounts:detail', username=self.request.user.username)
 		return super().get(request, *args, **kwargs)
 
 	def form_valid(self, form):
@@ -31,14 +31,14 @@ class SignUpView(CreateView):
 		return to_return
 
 	def get_success_url(self):
-		return reverse('accounts:detail', kwargs={'username' : self.object.username})
+		return reverse('accounts:detail', kwargs={'username':self.object.username})
 
 class LoginView(auth_login_view):
 	template_name = 'accounts/login.html'
 	redirect_authenticated_user = True
 
 	def get_success_url(self):
-		return reverse('accounts:detail', kwargs={'username' : self.request.user.username})
+		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
 
 
 class UserDetailView(DetailView):
@@ -76,7 +76,7 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
 		return get_object_or_404(User, username=self.request.user.username)
 
 	def get_success_url(self):
-		return reverse('accounts:detail',kwargs={'username':self.request.user.username})
+		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
 
 
 class UserEntryListView(ListView):
