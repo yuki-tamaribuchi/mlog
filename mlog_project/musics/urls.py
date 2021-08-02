@@ -12,6 +12,7 @@ from .views import (
 	GenreListView,
 	ArtistByGenreListView,
 	ArtistUpdateView,
+	SongUpdateView,
 )
 
 
@@ -30,6 +31,7 @@ urlpatterns=[
 	path('create/genre/popup/', PopupGenreCreateView.as_view(), name='genre_create_popup'),
 
 	path('update/artist/<str:artist_name_id>/', ArtistUpdateView.as_view(), name='artist_update'),
+	path('update/song/<int:pk>/', SongUpdateView.as_view(), name='song_update'),
 
 	path('list/genre/', GenreListView.as_view(), name='genre_list'),
 	path('list/genre/<str:genre_name>/artist/', ArtistByGenreListView.as_view(), name='artist_by_genre'),

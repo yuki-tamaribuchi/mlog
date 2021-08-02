@@ -142,3 +142,10 @@ class ArtistUpdateView(UpdateView):
 	def get_object(self):
 		return Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
 
+
+class SongUpdateView(UpdateView):
+	form_class = SongForm
+	template_name = 'musics/song_form.html'
+
+	def get_object(self):
+		return Song.objects.get(pk=self.kwargs['pk'])
