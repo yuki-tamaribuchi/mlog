@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
 	<div class "row mt-5">
-		<h1>{{song.song_name}}</h1>
+		<h1>{{song.song_name}}</h1><a href="{% url 'musics:song_update' song.pk %}">曲情報を編集</a>
 
 		<h2>アーティスト</h2>
 		<p>{% for artist in song.artist.all %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import DetailView, CreateView, ListView
+from django.views.generic import DetailView, CreateView, ListView, UpdateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 
@@ -133,3 +133,19 @@ class ArtistByGenreListView(ListView):
 		context = super().get_context_data(**kwargs)
 		context['genre'] = Genre.objects.get(genre_name=self.kwargs['genre_name'])
 		return context
+
+
+class ArtistUpdateView(UpdateView):
+	form_class = ArtsitForm
+	template_name = 'musics/artist_form.html'
+
+	def get_object(self):
+		return Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
+
+
+class SongUpdateView(UpdateView):
+	form_class = SongForm
+	template_name = 'musics/song_form.html'
+
+	def get_object(self):
+		return Song.objects.get(pk=self.kwargs['pk'])
