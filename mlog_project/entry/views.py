@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
@@ -8,6 +8,7 @@ from activity.models import EntryReadActivity
 from accounts.models import User
 from likes.models import Like
 from comments.models import Comment
+from musics.models import Song
 
 from .models import Entry
 from .forms import EntryForm
@@ -68,3 +69,22 @@ class EntryDeleteView(LoginRequiredMixin, DeleteView):
 
 	def get_success_url(self):
 		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
+
+
+class EntryListBySongView(ListView):
+	model = Entry
+	template_name = 'entry/entry_list_by_song.html'
+	paginate_by = 15
+
+	def get_queryset(self):
+		qs = super().get_queryset()
+
+		try:
+			return qs.filter(song__id=self.kwargs['pk'])
+		except ObjectDoesNotExist:
+			return qs.none()
+
+	def get_context_data(self, *args, **kwargs) :
+		context = super().get_context_data(**kwargs)
+		context['song'] = get_object_or_404(Song, id=self.kwargs['pk'])
+		return context
