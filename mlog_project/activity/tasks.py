@@ -26,7 +26,7 @@ def entry_read_activity(entry_pk, username):
 @app.task()
 def artist_checked_activity(aritst_name_id, username):
 	if username:
-		current_artist = Artist.objects.get(artist_name_id=aritst_name_id)
+		current_artist = Artist.objects.get(slug=aritst_name_id)
 		models.ArtistCheckedActivity.objects.create(
 			artist=current_artist,
 			user=get_current_user(username)

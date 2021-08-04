@@ -11,7 +11,7 @@ class TestMusicsUrls(TestCase):
 
 		test_artist = musics.models.Artist.objects.create(
 			artist_name = 'test artist',
-			artist_name_id = 'testartist',
+			slug = 'testartist',
 			artist_biograph = 'test biograph'
 		)
 		test_artist.genre.add(test_genre)
@@ -24,8 +24,8 @@ class TestMusicsUrls(TestCase):
 
 	def test_artist_detail(self):
 		artist_instance = musics.models.Artist.objects.first()
-		artist_name_id = artist_instance.artist_name_id
-		view = resolve('/musics/detail/artist/%s/'%(artist_name_id))
+		slug = artist_instance.slug
+		view = resolve('/musics/detail/artist/%s/'%(slug))
 		self.assertEqual(view.func.view_class, views.ArtistDetailView)
 
 	def test_song_detail(self):

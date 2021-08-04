@@ -15,7 +15,7 @@ class FavoriteArtistProcess(LoginRequiredMixin,View):
 	def post(self, *args, **kwargs):
 
 		user = User.objects.get(username=self.request.user.username)
-		artist = Artist.objects.get(artist_name_id=self.request.POST['artist_name_id'])
+		artist = Artist.objects.get(slug=self.request.POST['slug'])
 
 		try:
 			fav_status = FavoriteArtist.objects.get(user=user, artist=artist)
@@ -36,12 +36,12 @@ class ArtistFavoriteUserListView(ListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		fav_user = FavoriteArtist.objects.filter(artist__artist_name_id=self.kwargs['artist_name_id']).values('user__id')
+		fav_user = FavoriteArtist.objects.filter(artist__slug=self.kwargs['slug']).values('user__id')
 		return qs.filter(id__in=fav_user)
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['detail_artist'] = Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
+		context['detail_artist'] = Artist.objects.get(slug=self.kwargs['slug'])
 		return context
 
 
