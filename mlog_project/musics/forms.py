@@ -8,14 +8,14 @@ from .models import Artist, Song, Genre
 class ArtistWidget(s2forms.ModelSelect2MultipleWidget):
 	search_fields = [
 		'artist_name__icontains',
-		'artist_name_id__icontains',
+		'slug__icontains',
 	]
 
 
 class ArtistBelongToWidget(s2forms.ModelSelect2Widget):
 	search_fields = [
 		'artist_name__icontains',
-		'artist_name_id__icontains'
+		'slug__icontains'
 	]
 
 
@@ -28,7 +28,7 @@ class GenreWidget(s2forms.ModelSelect2MultipleWidget):
 class ArtsitForm(ModelForm):
 	class Meta:
 		model = Artist
-		fields = ('artist_name', 'genre', 'artist_name_id', 'artist_biograph', 'belong_to')
+		fields = ('artist_name', 'genre', 'slug', 'artist_biograph', 'belong_to')
 		widgets = {
 			'genre':GenreWidget,
 			'belong_to':ArtistBelongToWidget,

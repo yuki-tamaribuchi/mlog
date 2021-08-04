@@ -14,7 +14,7 @@ class TestFavoriteArtistsUrls(TestCase):
 
 		test_artist = musics.models.Artist.objects.create(
 			artist_name = 'test artist',
-			artist_name_id = 'testartist',
+			slug = 'testartist',
 		)
 		test_artist.genre.add(test_genre)
 
@@ -29,8 +29,8 @@ class TestFavoriteArtistsUrls(TestCase):
 
 	def test_artist_favorite_user_list(self):
 		artist_instance = musics.models.Artist.objects.first()
-		artist_name_id = artist_instance.artist_name_id
-		view = resolve('/favorites/artist/%s/'%(artist_name_id))
+		slug = artist_instance.slug
+		view = resolve('/favorites/artist/%s/'%(slug))
 		self.assertEqual(view.func.view_class, views.ArtistFavoriteUserListView)
 
 	def test_favorite_artist_list(self):

@@ -15,7 +15,7 @@ class TestLikeUrls(TestCase):
 
 		test_artist = musics.models.Artist.objects.create(
 			artist_name = 'test artist',
-			artist_name_id = 'testartist',
+			slug = 'testartist',
 		)
 		test_artist.genre.add(test_genre)
 

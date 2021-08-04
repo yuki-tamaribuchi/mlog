@@ -19,7 +19,7 @@ from .views import (
 app_name='musics'
 
 urlpatterns=[
-	path('detail/artist/<str:artist_name_id>/', ArtistDetailView.as_view(), name='artist_detail'),
+	path('detail/artist/<slug:slug>/', ArtistDetailView.as_view(), name='artist_detail'),
 	path('detail/song/<int:pk>/', SongDetailView.as_view(), name='song_detail'),
 
 	path('create/song/', SongCreateView.as_view(), name='song_create'),
@@ -30,7 +30,7 @@ urlpatterns=[
 	path('create/artist/popup/', PopupArtistCreateView.as_view(), name='artist_create_popup'),
 	path('create/genre/popup/', PopupGenreCreateView.as_view(), name='genre_create_popup'),
 
-	path('update/artist/<str:artist_name_id>/', ArtistUpdateView.as_view(), name='artist_update'),
+	path('update/artist/<str:slug>/', ArtistUpdateView.as_view(), name='artist_update'),
 	path('update/song/<int:pk>/', SongUpdateView.as_view(), name='song_update'),
 
 	path('list/genre/', GenreListView.as_view(), name='genre_list'),

@@ -13,24 +13,18 @@ from .forms import ArtsitForm, SongForm, GenreForm
 
 
 class ArtistDetailView(DetailView):
+	model = Artist
 	template_name = 'musics/artist_detail.html'
-
-	def get_object(self):
-		current_artist = Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
-
-		artist_checked_activity.delay(self.kwargs['artist_name_id'], self.request.user.username)
-
-		return current_artist
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.filter(song__artist__artist_name_id=self.kwargs['artist_name_id'])
+		context['entries'] = Entry.objects.filter(song__artist__slug=self.kwargs['slug'])
 
-		context['members'] = Artist.objects.filter(belong_to__artist_name_id=self.kwargs['artist_name_id'])
+		context['members'] = Artist.objects.filter(belong_to__slug=self.kwargs['slug'])
 
 		if self.request.user.username:
 			try:
-				context['fav_status'] = FavoriteArtist.objects.get(user__username=self.request.user.username, artist__artist_name_id=self.kwargs['artist_name_id'])
+				context['fav_status'] = FavoriteArtist.objects.get(user__username=self.request.user.username, artist__slug=self.kwargs['slug'])
 			except ObjectDoesNotExist:
 				context['fav_status'] = FavoriteArtist.objects.none()
 
@@ -51,7 +45,7 @@ class ArtistCreateView(CreateView):
 	template_name = 'musics/artist_form.html'
 
 	def get_success_url(self):
-		return reverse_lazy('musics:artist_detail', kwargs={'artist_name_id':self.object.artist_name_id})
+		return reverse_lazy('musics:artist_detail', kwargs={'slug':self.object.slug})
 
 
 class SongDetailView(DetailView):
@@ -127,7 +121,7 @@ class ArtistByGenreListView(ListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 		genre_checked_activity.delay(self.kwargs['genre_name'], self.request.user.username)
-		return qs.filter(genre__genre_name=self.kwargs['genre_name']).order_by('artist_name_id')
+		return qs.filter(genre__genre_name=self.kwargs['genre_name']).order_by('slug')
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
@@ -140,7 +134,7 @@ class ArtistUpdateView(UpdateView):
 	template_name = 'musics/artist_form.html'
 
 	def get_object(self):
-		return Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
+		return Artist.objects.get(slug=self.kwargs['slug'])
 
 
 class SongUpdateView(UpdateView):

@@ -29,7 +29,7 @@ class TestArtist(TestCase):
 
 		test_artist = Artist.objects.create(
 			artist_name = 'test artist',
-			artist_name_id = 'testartist',
+			slug = 'testartist',
 			artist_biograph = 'test biograph'
 		)
 		test_artist.genre.add(test_genre)
@@ -39,10 +39,10 @@ class TestArtist(TestCase):
 		max_length = artist_instance._meta.get_field('artist_name').max_length
 		self.assertEqual(max_length, 30)
 
-	def test_artist_name_id_max_length(self):
+	def test_slug_max_length(self):
 		artist_instance = Artist.objects.all().first()
-		max_length = artist_instance._meta.get_field('artist_name_id').max_length
-		self.assertEqual(max_length, 30)
+		max_length = artist_instance._meta.get_field('slug').max_length
+		self.assertEqual(max_length, 50)
 
 	def test_artist_biograph_max_length(self):
 		artist_instance = Artist.objects.all().first()
@@ -62,7 +62,7 @@ class TestSong(TestCase):
 
 		test_artist = Artist.objects.create(
 			artist_name = 'test artist',
-			artist_name_id = 'testartist',
+			slug = 'testartist',
 			artist_biograph = 'test biograph'
 		)
 		test_artist.genre.add(test_genre)

@@ -20,7 +20,7 @@ class CommentTests(TestCase):
 			biograph='test biograph',
 			song_name='test song',
 			artist_name='test artist',
-			artist_name_id='testartist',
+			slug='testartist',
 			genre_name='test genre'
 		)
 
