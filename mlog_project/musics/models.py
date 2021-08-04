@@ -12,7 +12,6 @@ class Genre(models.Model):
 class Artist(models.Model):
     artist_name = models.CharField(max_length=30)
     genre = models.ManyToManyField(Genre)
-    artist_name_id = models.CharField(max_length=30, unique=True)
     artist_biograph = models.TextField(max_length=200, blank=True)
     belong_to = models.ForeignKey("self", on_delete=models.PROTECT, blank=True, null=True)
     slug = models.SlugField(blank=True, verbose_name='Unique Artist ID')
