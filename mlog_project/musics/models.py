@@ -14,7 +14,7 @@ class Artist(models.Model):
     genre = models.ManyToManyField(Genre)
     artist_biograph = models.TextField(max_length=200, blank=True)
     belong_to = models.ForeignKey("self", on_delete=models.PROTECT, blank=True, null=True)
-    slug = models.SlugField(blank=True, verbose_name='Unique Artist ID')
+    slug = models.SlugField(verbose_name='Unique Artist ID')
     
     def __str__(self):
         return self.artist_name
