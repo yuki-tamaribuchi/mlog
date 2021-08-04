@@ -42,7 +42,7 @@ class TestArtist(TestCase):
 	def test_slug_max_length(self):
 		artist_instance = Artist.objects.all().first()
 		max_length = artist_instance._meta.get_field('slug').max_length
-		self.assertEqual(max_length, 30)
+		self.assertEqual(max_length, 50)
 
 	def test_artist_biograph_max_length(self):
 		artist_instance = Artist.objects.all().first()
