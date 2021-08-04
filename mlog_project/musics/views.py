@@ -13,20 +13,14 @@ from .forms import ArtsitForm, SongForm, GenreForm
 
 
 class ArtistDetailView(DetailView):
+	model = Artist
 	template_name = 'musics/artist_detail.html'
-
-	def get_object(self):
-		current_artist = Artist.objects.get(artist_name_id=self.kwargs['artist_name_id'])
-
-		artist_checked_activity.delay(self.kwargs['artist_name_id'], self.request.user.username)
-
-		return current_artist
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.filter(song__artist__artist_name_id=self.kwargs['artist_name_id'])
+		context['entries'] = Entry.objects.filter(song__artist__artist_name_id=self.kwargs['slug'])
 
-		context['members'] = Artist.objects.filter(belong_to__artist_name_id=self.kwargs['artist_name_id'])
+		context['members'] = Artist.objects.filter(belong_to__artist_name_id=self.kwargs['slug'])
 
 		if self.request.user.username:
 			try:
