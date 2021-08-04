@@ -19,7 +19,7 @@ from .views import (
 app_name='musics'
 
 urlpatterns=[
-	path('detail/artist/<str:artist_name_id>/', ArtistDetailView.as_view(), name='artist_detail'),
+	path('detail/artist/<slug:slug>/', ArtistDetailView.as_view(), name='artist_detail'),
 	path('detail/song/<int:pk>/', SongDetailView.as_view(), name='song_detail'),
 
 	path('create/song/', SongCreateView.as_view(), name='song_create'),
