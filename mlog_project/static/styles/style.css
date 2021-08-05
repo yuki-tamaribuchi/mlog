@@ -18,6 +18,10 @@ body {
 	background-color: mintcream;
 }
 
+.artist-card-large {
+	width: 20rem;
+}
+
 .profile-image {
 	border-radius: 50%;
 }
