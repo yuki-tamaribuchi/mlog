@@ -18,6 +18,10 @@ body {
 	background-color: mintcream;
 }
 
+.artist-card-large {
+	width: 20rem;
+}
+
 .profile-image {
 	border-radius: 50%;
 }
@@ -32,6 +36,11 @@ body {
 .entry-list-card {
 	width: 45rem;
 	background-color: snow;
+}
+
+.genre-list-card {
+	width: 10rem;
+	background-color: darkgray;
 }
 
 

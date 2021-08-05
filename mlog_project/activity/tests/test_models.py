@@ -25,7 +25,7 @@ class TestEntryReadActivity(TestCase):
 			biograph='test biograph',
 			song_name='test song',
 			artist_name='test artist',
-			artist_name_id='testartist',
+			slug='testartist',
 			genre_name='test genre'
 		)
 
@@ -52,7 +52,7 @@ class TestArtistCheckedActivity(TestCase):
 	def setUp(cls):
 		test_artist = utils_for_test.create_test_artist(
 			artist_name='test artist',
-			artist_name_id='testartist',
+			slug='testartist',
 			genre_name='test genre',
 		)
 
@@ -79,7 +79,7 @@ class TestSongCheckedActivity(TestCase):
 		test_song = utils_for_test.create_test_song(
 			song_name='test song',
 			artist_name='test artist',
-			artist_name_id='testartist',
+			slug='testartist',
 			genre_name='test genre'
 		)
 

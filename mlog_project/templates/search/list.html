@@ -6,7 +6,7 @@
     「{{keyword}}」の検索結果
 	{% if artist_list %}
 		{% for artist in artist_list%}
-		<p><a href="{% url 'musics:artist_detail' artist.artist_name_id %}">{{artist.artist_name}}</a></p>
+		<p><a href="{% url 'musics:artist_detail' artist.slug %}">{{artist.artist_name}}</a></p>
 		{% endfor %}
 	{% elif song_list %}
 		{% for song in song_list%}

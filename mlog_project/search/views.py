@@ -28,7 +28,7 @@ class ArtistSearchListView(BaseSeachListView):
 		qs = super().get_queryset()
 
 		return qs.filter(
-			Q(artist_name__icontains=self.keyword) | Q(artist_name_id__icontains=self.keyword)
+			Q(artist_name__icontains=self.keyword) | Q(slug__icontains=self.keyword)
 		)
 		
 

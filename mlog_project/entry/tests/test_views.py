@@ -14,7 +14,7 @@ def create_test_artist():
 	from musics.models import Artist
 	aritst_instance = Artist.objects.create(
 		artist_name = 'test artist',
-		artist_name_id = 'testartist'
+		slug = 'testartist'
 	)
 	aritst_instance.genre.add(create_test_genre())
 	return aritst_instance

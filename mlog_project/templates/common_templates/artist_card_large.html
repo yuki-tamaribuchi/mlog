@@ -1,0 +1,11 @@
+<div class="row">
+{% for artist in artist_list %}
+	<div class="col-3">
+		<div class="card text-center artist-card-large m-3">
+			<div class="card-body">
+				<a href="{% url 'musics:artist_detail' artist.slug %}" class="stretched-link text-decoration-none">{{artist.artist_name}}</a>
+			</div>
+		</div>
+	</div>
+{% endfor %}
+</div>

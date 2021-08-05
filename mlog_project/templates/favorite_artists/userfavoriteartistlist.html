@@ -6,7 +6,7 @@
 		<h1>{{detail_user.handle}} ({{detail_user.handle}})のお気に入りアーティスト一覧</h1>
 		{% if artist_list %}
 			{% for artist in artist_list%}
-    	    <p><a href="{% url 'musics:artist_detail' artist.artist_name_id %}">{{artist.artist_name}}</a></p>
+    	    <p><a href="{% url 'musics:artist_detail' artist.slug %}">{{artist.artist_name}}</a></p>
     	    {% endfor %}
 		{% else %}
 		<p>お気に入りアーティストはいません。</p>

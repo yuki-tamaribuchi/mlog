@@ -24,15 +24,22 @@
 			{% endfor %}
 			</div>
 		{% endif %}
+
+		<h2>ジャンル</h2>
+		<div class="row">
+			{% for genre in artist.genre.all %}
+				{% include 'common_templates/genre_card.html' %}
+			{% endfor %}
+		</div>
 	</div>
 
 	<div class="row mt-5">
 		<form method="POST" action="{% url 'favorite_artists:process' %}" >
 			{% csrf_token %}
-			<input type="hidden" value="{{artist.artist_name_id}}" name="artist_name_id">
+			<input type="hidden" value="{{artist.slug}}" name="slug">
 			<input type="submit" value="{% if fav_status %}お気に入り解除{% else %}お気に入りに登録{% endif %}">
 		</form>
-		<p><a href="{% url 'favorite_artists:userfavorite' artist.artist_name_id %}">お気に入りに登録しているユーザ一覧</a></p>
+		<p><a href="{% url 'favorite_artists:userfavorite' artist.slug %}">お気に入りに登録しているユーザ一覧</a></p>
 	</div>
 
 	<div class="row mt-5">
@@ -47,7 +54,7 @@
 	</div>
 
 	<div class="row mt-5">
-		<p><a href="{% url 'musics:artist_update' artist.artist_name_id %}">アーティスト情報を編集</a></p>
+		<p><a href="{% url 'musics:artist_update' artist.slug %}">アーティスト情報を編集</a></p>
 	</div>
 	
 </div>
