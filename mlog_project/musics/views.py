@@ -116,6 +116,7 @@ class GenreListView(ListView):
 
 
 class ArtistByGenreListView(ListView):
+	model = Artist
 	template_name = 'musics/artist_by_genre_list.html'
 
 	def get_queryset(self):
