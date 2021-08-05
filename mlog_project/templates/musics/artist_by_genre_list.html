@@ -4,9 +4,7 @@
 <div class="container">
 	<div class "row mt-5">
 	{% if artist_list %}
-		{% for artist in artist_list %}
-		<p><a href="{% url 'musics:artist_detail' artist.slug %}">{{artist.artist_name}}</a></p>
-		{% endfor %}
+	{% include 'common_templates/artist_card_large.html' %}
 	{% else %}
 	<p>{{genre.genre_name}}に登録されいるアーティストはいません。</p>
 	{% endif %}
