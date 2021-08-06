@@ -3,13 +3,14 @@
 {% block content %}
 <div class="container">
 	<div class "row mt-5">
-	{% if entry_list %}
+		<h2>{{song.song_name}}の記事一覧</h2>
+		{% if entry_list %}
 		<div class="col">
 			{% for entry in entry_list %}
 			{% include 'common_templates/entry_card_with_writer.html' %}
 			{% endfor %}
 		</div>
-	{% else %}
+		{% else %}
 	<p>エントリーはありません。</p>
 	{% endif %}
 
