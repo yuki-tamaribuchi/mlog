@@ -144,3 +144,17 @@ class SongUpdateView(UpdateView):
 
 	def get_object(self):
 		return Song.objects.get(pk=self.kwargs['pk'])
+
+
+class SongByArtistListView(ListView):
+	model = Song
+	template_name = 'musics/song_by_artist_list.html'
+
+	def get_queryset(self):
+		qs = super().get_queryset()
+		return qs.filter(artist__slug=self.kwargs['slug'])
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['artist'] = Artist.objects.get(slug=self.kwargs['slug'])
+		return context
