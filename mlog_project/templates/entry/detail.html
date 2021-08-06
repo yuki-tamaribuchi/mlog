@@ -48,11 +48,7 @@
 
 		<div class="row mb-3">
 			<h3>Featured Artist</h3>
-			<div class="row">
-				{% for artist in entry.song.artist.all %}
-				{% include 'common_templates/artist_card.html' %}
-				{% endfor %}
-			</div>
+			{% include 'common_templates/artist_card.html' with artist_list=entry.song.artist.all %}
 		</div>
 
 		<div class="row mb-3">
