@@ -6,9 +6,7 @@
 		<h1>{{song.song_name}}</h1>
 
 		<h2>アーティスト</h2>
-		<p>{% for artist in song.artist.all %}
-		<a href="{% url 'musics:artist_detail' artist.slug %}">{{artist.artist_name}} </a>
-		{% endfor %}</p>
+		{% include 'common_templates/artist_card.html' with artist_list=song.artist.all %}
 	</div>
 
 	<div class="row mt-5">
