@@ -149,6 +149,7 @@ class SongUpdateView(UpdateView):
 class SongByArtistListView(ListView):
 	model = Song
 	template_name = 'musics/song_by_artist_list.html'
+	paginate_by = 20
 
 	def get_queryset(self):
 		qs = super().get_queryset()
