@@ -81,6 +81,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'mlog_project.urls'
@@ -288,3 +289,27 @@ NOSE_ARGS_LIST = {
 
 nose_args_selection = os.environ.get('NOSE_ARGS_SELECTION', 'local')
 NOSE_ARGS = NOSE_ARGS_LIST[nose_args_selection]
+
+
+CSP_DEFAULT_SRC = ["'none'"]
+CSP_SCRIPT_SRC = [
+    "'self'",
+    "https://code.jquery.com",
+    "https://stackpath.bootstrapcdn.com",
+]
+CSP_STYLE_SRC = [
+    "'self'",
+    "https://stackpath.bootstrapcdn.com",
+    "https://cdn.jsdelivr.net",
+    "https://cdnjs.cloudflare.com",
+    ]
+CSP_IMG_SRC = [
+    "'self'",
+]
+CSP_FONT_SRC = [
+    "'self'",
+    "https://cdnjs.cloudflare.com",
+]
+CSP_FRAME_SRC = [
+    "https://open.spotify.com",
+]
