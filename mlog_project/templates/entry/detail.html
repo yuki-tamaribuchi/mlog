@@ -20,7 +20,7 @@
 				<form action="{% url 'likes:process' %}" method="POST">
 					{% csrf_token %}
 					<input type="hidden" name='pk' value="{{entry.id}}">
-					<button type="submit" class="like-btn">{% if like_status %}<i class="fa fa-heart" style="font-size:36px;color: red;"></i>{% else %}<i class="fa fa-heart" style="font-size:36px;color: darkgrey;"></i>{% endif %}</button>
+					<button type="submit" class="like-btn"><i class="fa fa-heart {% if like_status %}like-true{% else %}like-false{% endif %}"></i></button>
 				</form>				
 			</div>
 		</div>
@@ -33,7 +33,7 @@
 		<div class="row mb-3">
 			<h3>Featured Song</h3>
 			<div class="col">
-				<div class="card text-center song-card" style="width: 15rem;">
+				<div class="card text-center song-card">
 					<div class="card-body">
 						<a href="{% url 'musics:song_detail' entry.song.id %}" class="stretched-link text-decoration-none">{{entry.song.song_name}}</a>
 					</div>
