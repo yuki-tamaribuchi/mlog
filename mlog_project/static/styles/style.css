@@ -12,10 +12,17 @@ body {
 
 .song-card {
 	background-color: snow;
+	width: 15rem;
+}
+
+.song-card-with-artist {
+	width: 20rem;
+	height: 15rem;
 }
 
 .artist-card {
 	background-color: mintcream;
+	width: 10rem;
 }
 
 .artist-card-large {
@@ -30,6 +37,15 @@ body {
 	background-color: Transparent;
 	border: none;
 	border-radius: 50%;
+	font-size:36px;
+}
+
+.like-true {
+	color: red;
+}
+
+.like-false {
+	color: darkgrey;
 }
 
 

@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 
+    'sslserver',
 ]
 
 SITE_ID = 1
@@ -81,6 +82,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'mlog_project.urls'
@@ -98,6 +100,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'django.template.context_processors.request',
+                'csp.context_processors.nonce'
             ],
         },
     },
@@ -288,3 +291,30 @@ NOSE_ARGS_LIST = {
 
 nose_args_selection = os.environ.get('NOSE_ARGS_SELECTION', 'local')
 NOSE_ARGS = NOSE_ARGS_LIST[nose_args_selection]
+
+
+CSP_DEFAULT_SRC = ["'none'"]
+CSP_SCRIPT_SRC = [
+    "'self'",
+    "'unsafe-inline'",
+    "https://code.jquery.com",
+    "https://stackpath.bootstrapcdn.com",
+    "https://cdnjs.cloudflare.com",
+]
+CSP_STYLE_SRC = [
+    "'self'",
+    "'unsafe-inline'",
+    "https://stackpath.bootstrapcdn.com",
+    "https://cdn.jsdelivr.net",
+    "https://cdnjs.cloudflare.com",
+    ]
+CSP_IMG_SRC = [
+    "'self'",
+]
+CSP_FONT_SRC = [
+    "'self'",
+    "https://cdnjs.cloudflare.com",
+]
+CSP_FRAME_SRC = [
+    "https://*.spotify.com",
+]

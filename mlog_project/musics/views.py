@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 
 from entry.models import Entry
 from favorite_artists.models import FavoriteArtist
+from activity.models import SongCheckedActivity
 
 from activity.tasks import artist_checked_activity, song_checked_activity, genre_checked_activity
 
@@ -21,6 +22,8 @@ class ArtistDetailView(DetailView):
 		context['entries'] = Entry.objects.filter(song__artist__slug=self.kwargs['slug'])
 
 		context['members'] = Artist.objects.filter(belong_to__slug=self.kwargs['slug'])
+
+		context['song_list'] = Song.objects.filter(artist__slug=self.kwargs['slug']).order_by('song_name')[:4]
 
 		if self.request.user.username:
 			try:
@@ -144,3 +147,18 @@ class SongUpdateView(UpdateView):
 
 	def get_object(self):
 		return Song.objects.get(pk=self.kwargs['pk'])
+
+
+class SongByArtistListView(ListView):
+	model = Song
+	template_name = 'musics/song_by_artist_list.html'
+	paginate_by = 20
+
+	def get_queryset(self):
+		qs = super().get_queryset()
+		return qs.filter(artist__slug=self.kwargs['slug'])
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['artist'] = Artist.objects.get(slug=self.kwargs['slug'])
+		return context

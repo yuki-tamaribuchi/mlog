@@ -1,19 +1,16 @@
 {% extends 'base.html' %}
-{% block title%} {{song.song_name}}の記事一覧 | {{block.super}}{% endblock title %}
+{% block title%} {{artist.artist_name}}の曲一覧 | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
 	<div class "row mt-5">
-		<h2>{{song.song_name}}の記事一覧</h2>
-		{% if entry_list %}
+		<h2>{{artist.artist_name}}の曲一覧</h2>
+		{% if song_list %}
 		<div class="col">
-			{% for entry in entry_list %}
-			{% include 'common_templates/entry_card_with_writer.html' %}
-			{% endfor %}
+			{% include 'common_templates/song_card_with_artist.html' %}
 		</div>
 		{% else %}
-	<p>エントリーはありません。</p>
-	{% endif %}
-
+		<p>曲はありません。</p>
+		{% endif %}
 	</div>
 
 	<div class="pagination">
