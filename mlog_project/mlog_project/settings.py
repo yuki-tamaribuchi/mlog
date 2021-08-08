@@ -82,7 +82,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'csp.middleware.CSPMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'mlog_project.urls'
@@ -293,7 +293,9 @@ nose_args_selection = os.environ.get('NOSE_ARGS_SELECTION', 'local')
 NOSE_ARGS = NOSE_ARGS_LIST[nose_args_selection]
 
 
-CSP_DEFAULT_SRC = ["'none'"]
+CSP_DEFAULT_SRC = [
+    "'self'",
+    ]
 CSP_SCRIPT_SRC = [
     "'self'",
     "'unsafe-inline'",
