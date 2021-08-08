@@ -303,6 +303,7 @@ CSP_SCRIPT_SRC = [
 ]
 CSP_STYLE_SRC = [
     "'self'",
+    "'unsafe-inline'",
     "https://stackpath.bootstrapcdn.com",
     "https://cdn.jsdelivr.net",
     "https://cdnjs.cloudflare.com",
