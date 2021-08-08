@@ -299,6 +299,7 @@ CSP_SCRIPT_SRC = [
     "'unsafe-inline'",
     "https://code.jquery.com",
     "https://stackpath.bootstrapcdn.com",
+    "https://cdnjs.cloudflare.com",
 ]
 CSP_STYLE_SRC = [
     "'self'",
