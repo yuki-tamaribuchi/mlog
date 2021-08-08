@@ -12,3 +12,4 @@ uwsgi==2.0.19.1
 celery==5.1.2
 django-nose==1.4.7
 django-csp==3.6
+django-sslserver==0.22
