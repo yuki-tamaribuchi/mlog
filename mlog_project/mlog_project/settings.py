@@ -295,6 +295,7 @@ NOSE_ARGS = NOSE_ARGS_LIST[nose_args_selection]
 CSP_DEFAULT_SRC = ["'none'"]
 CSP_SCRIPT_SRC = [
     "'self'",
+    "'unsafe-inline'",
     "https://code.jquery.com",
     "https://stackpath.bootstrapcdn.com",
 ]
