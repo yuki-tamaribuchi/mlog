@@ -99,6 +99,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'django.template.context_processors.request',
+                'csp.context_processors.nonce'
             ],
         },
     },
@@ -311,5 +312,5 @@ CSP_FONT_SRC = [
     "https://cdnjs.cloudflare.com",
 ]
 CSP_FRAME_SRC = [
-    "https://open.spotify.com",
+    "https://*.spotify.com",
 ]
