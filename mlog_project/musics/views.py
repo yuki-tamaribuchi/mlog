@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import DetailView, CreateView, ListView, UpdateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
@@ -162,3 +162,11 @@ class SongByArtistListView(ListView):
 		context = super().get_context_data(**kwargs)
 		context['artist'] = Artist.objects.get(slug=self.kwargs['slug'])
 		return context
+
+
+from .spotify_api_endpoints import get_album
+
+def get_album_view(request):
+	resp = get_album(request=request, album_id='5Treq1MbA8Kw8EGwJc0nzy')
+	print(resp)
+	return redirect('mlog:top')

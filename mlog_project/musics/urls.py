@@ -14,6 +14,7 @@ from .views import (
 	ArtistUpdateView,
 	SongUpdateView,
 	SongByArtistListView,
+	get_album_view
 )
 
 
@@ -39,4 +40,6 @@ urlpatterns=[
 	path('list/artist/<str:slug>/song/', SongByArtistListView.as_view(), name='song_by_artist'),
 
 	path('select2/', include('django_select2.urls')),
+
+	path('get/album/', get_album_view, name='get_album')
 ]
