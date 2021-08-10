@@ -76,21 +76,6 @@
 		}
 	});
 
-	$('#search_btn').on('click', function(e){
-		e.preventDefault();
-	
-		$.ajax({
-			'url':'{% url "musics:search_spotify_tracks"%}',
-			'type':'POST',
-			'data':{
-				'search_keywords':$('#search_keywords').val()
-			},
-			'dataType':'json'
-		})
-		.done(function(response){
-			$('.result').prepend('');
-		});
-	});
 
 	function search(){
 		$.ajax({
