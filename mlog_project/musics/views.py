@@ -164,9 +164,12 @@ class SongByArtistListView(ListView):
 		return context
 
 
-from .spotify_api_endpoints import get_album
+
+from .spotify_utils import GetSpotifyData
 
 def get_album_view(request):
-	resp = get_album(request=request, album_id='5Treq1MbA8Kw8EGwJc0nzy')
-	print(resp)
+	sp=GetSpotifyData()
+	result = sp.search_track(search_keywords='dj chari come')
+	
+	
 	return redirect('mlog:top')
