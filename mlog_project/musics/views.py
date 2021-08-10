@@ -166,16 +166,6 @@ class SongByArtistListView(ListView):
 		return context
 
 
-def get_album_view(request):
-	sp=GetSpotifyData()
-	result = sp.search_track(search_keywords='dj chari come')
-
-	print(result)
-	
-	
-	return redirect('mlog:top')
-
-
 def search_spotify_tracks(request):
 	search_keywords = request.POST.get('search_keywords')
 	sp = GetSpotifyData()
@@ -183,5 +173,4 @@ def search_spotify_tracks(request):
 	d = {
 		'results':results,
 	}
-	print(d)
 	return JsonResponse(d)

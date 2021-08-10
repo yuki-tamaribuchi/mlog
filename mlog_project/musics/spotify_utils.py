@@ -1,6 +1,5 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-import os
 
 from mlog_project.settings import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
 
@@ -14,8 +13,6 @@ class GetSpotifyData:
 		)
 		self.spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-	def get_album_tracks(self,album_id):
-		return self.spotify.album_tracks(album_id)
 
 	def search_track(self, search_keywords):
 		artists = []
