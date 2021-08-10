@@ -167,10 +167,23 @@ class SongByArtistListView(ListView):
 
 
 def search_spotify_tracks(request):
-	search_keywords = request.POST.get('search_keywords')
-	sp = GetSpotifyData()
-	results = sp.search_track(search_keywords)
-	d = {
-		'results':results,
-	}
-	return JsonResponse(d)
+	if request.method=='POST':
+		search_keywords = request.POST.get('search_keywords')
+		sp = GetSpotifyData()
+		results = sp.search_track(search_keywords)
+		d = {
+			'results':results,
+		}
+		return JsonResponse(d)
+
+
+def select_spotify_tracks(request):
+	if request.method=='GET':
+		return render(request, 'musics/spotify_track_select.html')
+
+	if request.method=='POST':
+		selected_track_url = request.POST['selected_track']
+		context = {
+			'selected_track_url':selected_track_url
+		}
+		return render(request, 'musics/close_spotify_track_select.html', context)
