@@ -1,3 +1,4 @@
+from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import DetailView, CreateView, ListView, UpdateView
 from django.core.exceptions import ObjectDoesNotExist
@@ -11,6 +12,7 @@ from activity.tasks import artist_checked_activity, song_checked_activity, genre
 
 from .models import Artist, Song, Genre
 from .forms import ArtsitForm, SongForm, GenreForm
+from .spotify_utils import GetSpotifyData
 
 
 class ArtistDetailView(DetailView):
@@ -164,12 +166,22 @@ class SongByArtistListView(ListView):
 		return context
 
 
-
-from .spotify_utils import GetSpotifyData
-
 def get_album_view(request):
 	sp=GetSpotifyData()
 	result = sp.search_track(search_keywords='dj chari come')
+
+	print(result)
 	
 	
 	return redirect('mlog:top')
+
+
+def search_spotify_tracks(request):
+	search_keywords = request.POST.get('search_keywords')
+	sp = GetSpotifyData()
+	results = sp.search_track(search_keywords)
+	d = {
+		'results':results,
+	}
+	print(d)
+	return JsonResponse(d)

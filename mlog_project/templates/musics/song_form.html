@@ -9,10 +9,12 @@
 {% block content %}
 <div class="container">
 	<div class="row mt-5">
-		<form method="POST">
-		{% csrf_token %}
-		{{form.as_p}}
-		<input type="submit" value="登録">
+		<form id="song_form" method="POST">
+			{% csrf_token %}
+			{{form.as_p}}
+			<input type="hidden" value="dj chari come" id="search_keywords">
+			<input type="button" value="検索" id="search_btn" onclick="search()">
+			<input type="submit" value="登録">
 		</form>
 		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:artist_create_popup' %}','subwin_artist')">アーティストを追加</a>
 		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:genre_create_popup' %}','subwin_genre')">ジャンルを追加</a>
@@ -41,23 +43,26 @@
 		select.options[0].selected=true;
 	}
 
-	function getCookie(name){
-		var cookieValue = null;
-		if (document.cookie && document.cookie !== ''){
-			var cookies = document.cookie.split(';');
-			for (var i = 0; i<cookies.length; i++){
-				if (cookie.substring(0, name.length + 1)===(name+'=')){
-					cookieValue = decodeURIComponent(cookie.substring(name.length+1));
-					break;
-				}
-			}
-		}
+	function getCookie(name) {
+    	let cookieValue = null;
+	    if (document.cookie && document.cookie !== '') {
+	        const cookies = document.cookie.split(';');
+	        for (let i = 0; i < cookies.length; i++) {
+	            const cookie = cookies[i].trim();
+	            // Does this cookie string begin with the name we want?
+	            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                break;
+	            }
+	        }
+	    }
+	    return cookieValue;
 	}
+	const csrftoken = getCookie('csrftoken');
 
-	var csrftoken = getCookie('csrftoken');
 
 	function csrfSafeMethod(method){
-		return(/^(GET|HEAD|OPTIONS|TRACE)$/.test(method))
+		return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 	}
 
 	$.ajaxSetup({
@@ -68,14 +73,14 @@
 		}
 	});
 
-	$('#spotify-track-select').on('submit', function(e){
+	$('#search_btn').on('click', function(e){
 		e.preventDefault();
 	
 		$.ajax({
-			'url':'{% url ":"%}',
+			'url':'{% url "musics:search_spotify_tracks"%}',
 			'type':'POST',
 			'data':{
-				'search_keyword':$('#search_keyword').val()
+				'search_keywords':$('#search_keywords').val()
 			},
 			'dataType':'json'
 		})
@@ -83,5 +88,19 @@
 			$('.result').prepend('');
 		});
 	});
+
+	function search(){
+		$.ajax({
+			'url':'{% url "musics:search_spotify_tracks"%}',
+			'type':'POST',
+			'data':{
+				'search_keywords':$('#search_keywords').val()
+			},
+			'dataType':'json'
+		})
+		.done(function(response){
+			$('.result').prepend('');
+		});
+	}
 </script>
 {% endblock content %}
