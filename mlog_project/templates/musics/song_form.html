@@ -40,5 +40,48 @@
 		select.add(option,0);
 		select.options[0].selected=true;
 	}
+
+	function getCookie(name){
+		var cookieValue = null;
+		if (document.cookie && document.cookie !== ''){
+			var cookies = document.cookie.split(';');
+			for (var i = 0; i<cookies.length; i++){
+				if (cookie.substring(0, name.length + 1)===(name+'=')){
+					cookieValue = decodeURIComponent(cookie.substring(name.length+1));
+					break;
+				}
+			}
+		}
+	}
+
+	var csrftoken = getCookie('csrftoken');
+
+	function csrfSafeMethod(method){
+		return(/^(GET|HEAD|OPTIONS|TRACE)$/.test(method))
+	}
+
+	$.ajaxSetup({
+		beforeSend: function(xhr, settings){
+			if (!csrfSafeMethod(settings.type) && !this.crossDomain){
+				xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			}
+		}
+	});
+
+	$('#spotify-track-select').on('submit', function(e){
+		e.preventDefault();
+	
+		$.ajax({
+			'url':'{% url ":"%}',
+			'type':'POST',
+			'data':{
+				'search_keyword':$('#search_keyword').val()
+			},
+			'dataType':'json'
+		})
+		.done(function(response){
+			$('.result').prepend('');
+		});
+	});
 </script>
 {% endblock content %}
