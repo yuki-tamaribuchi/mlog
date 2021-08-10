@@ -186,4 +186,4 @@ def select_spotify_tracks(request):
 		context = {
 			'selected_track':selected_track
 		}
-		return render(request, 'musics/close_spotify_track_select.html', context)
+		return render(request, 'musics/close_select_spotify_tracks.html', context)
