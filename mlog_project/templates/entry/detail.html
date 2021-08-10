@@ -39,9 +39,6 @@
 						<a href="{% url 'musics:song_detail' entry.song.id %}" class="stretched-link text-decoration-none">{{entry.song.song_name}}</a>
 					</div>
 				</div>
-				{% if entry.song.spotify_link %}
-				<iframe src="{{entry.song.spotify_link}}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-				{% endif %}
 			</div>
 		</div>
 
