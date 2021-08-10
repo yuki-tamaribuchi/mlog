@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.http.response import JsonResponse
+from django.shortcuts import redirect, render
 from django.views.generic import DetailView, CreateView, ListView, UpdateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
@@ -11,6 +12,7 @@ from activity.tasks import artist_checked_activity, song_checked_activity, genre
 
 from .models import Artist, Song, Genre
 from .forms import ArtsitForm, SongForm, GenreForm
+from .spotify_utils import GetSpotifyData
 
 
 class ArtistDetailView(DetailView):
@@ -162,3 +164,26 @@ class SongByArtistListView(ListView):
 		context = super().get_context_data(**kwargs)
 		context['artist'] = Artist.objects.get(slug=self.kwargs['slug'])
 		return context
+
+
+def search_spotify_tracks(request):
+	if request.method=='POST':
+		search_keywords = request.POST.get('search_keywords')
+		sp = GetSpotifyData()
+		results = sp.search_track(search_keywords)
+		d = {
+			'results':results,
+		}
+		return JsonResponse(d)
+
+
+def select_spotify_tracks(request):
+	if request.method=='GET':
+		return render(request, 'musics/spotify_track_select.html')
+
+	if request.method=='POST':
+		selected_track = request.POST['selected_track']
+		context = {
+			'selected_track':selected_track
+		}
+		return render(request, 'musics/close_select_spotify_tracks.html', context)

@@ -82,7 +82,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'csp.middleware.CSPMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'mlog_project.urls'
@@ -293,13 +293,16 @@ nose_args_selection = os.environ.get('NOSE_ARGS_SELECTION', 'local')
 NOSE_ARGS = NOSE_ARGS_LIST[nose_args_selection]
 
 
-CSP_DEFAULT_SRC = ["'none'"]
+CSP_DEFAULT_SRC = [
+    "'self'",
+    ]
 CSP_SCRIPT_SRC = [
     "'self'",
     "'unsafe-inline'",
     "https://code.jquery.com",
     "https://stackpath.bootstrapcdn.com",
     "https://cdnjs.cloudflare.com",
+    "https://cdn.jsdelivr.net",
 ]
 CSP_STYLE_SRC = [
     "'self'",
@@ -318,3 +321,7 @@ CSP_FONT_SRC = [
 CSP_FRAME_SRC = [
     "https://*.spotify.com",
 ]
+
+
+SPOTIFY_CLIENT_ID = os.environ.get('MLOG_SPOTIFY_CLIENT_ID')
+SPOTIFY_CLIENT_SECRET = os.environ.get('MLOG_SPOTIFY_CLIENT_SECRET')

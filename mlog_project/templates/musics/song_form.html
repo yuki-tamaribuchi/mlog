@@ -9,13 +9,14 @@
 {% block content %}
 <div class="container">
 	<div class="row mt-5">
-		<form method="POST">
-		{% csrf_token %}
-		{{form.as_p}}
-		<input type="submit" value="登録">
+		<form id="song_form" method="POST">
+			{% csrf_token %}
+			{{form.as_p}}
+			<input type="submit" value="登録">
 		</form>
 		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:artist_create_popup' %}','subwin_artist')">アーティストを追加</a>
 		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:genre_create_popup' %}','subwin_genre')">ジャンルを追加</a>
+		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:select_spotify_tracks' %}','subwin_spotify')">Spotifyで曲を選択</a>
 	</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -39,6 +40,11 @@
 
 		select.add(option,0);
 		select.options[0].selected=true;
+	}
+
+	function add_spotify_preview_url(selected_track){
+		var id_spotify_preview_url_field = document.getElementById('id_spotify_preview_url');
+		id_spotify_preview_url_field.value=selected_track;
 	}
 </script>
 {% endblock content %}
