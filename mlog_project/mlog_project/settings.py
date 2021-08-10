@@ -302,6 +302,7 @@ CSP_SCRIPT_SRC = [
     "https://code.jquery.com",
     "https://stackpath.bootstrapcdn.com",
     "https://cdnjs.cloudflare.com",
+    "https://cdn.jsdelivr.net",
 ]
 CSP_STYLE_SRC = [
     "'self'",
