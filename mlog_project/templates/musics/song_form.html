@@ -12,17 +12,11 @@
 		<form id="song_form" method="POST">
 			{% csrf_token %}
 			{{form.as_p}}
-			<label>Spotify track search:</label>
-			<input type="search" id="search_keywords">
-			<input type="button" value="検索" id="search_btn" onclick="search()">
-			<select id="spotify_track_select">
-				<option selected disabled>曲を選んでください</option>
-			</select>
-			
 			<input type="submit" value="登録">
 		</form>
 		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:artist_create_popup' %}','subwin_artist')">アーティストを追加</a>
 		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:genre_create_popup' %}','subwin_genre')">ジャンルを追加</a>
+		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:select_spotify_tracks' %}','subwin_spotify')">Spotifyで曲を選択</a>
 	</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -48,55 +42,9 @@
 		select.options[0].selected=true;
 	}
 
-	function getCookie(name) {
-    	let cookieValue = null;
-	    if (document.cookie && document.cookie !== '') {
-	        const cookies = document.cookie.split(';');
-	        for (let i = 0; i < cookies.length; i++) {
-	            const cookie = cookies[i].trim();
-	            // Does this cookie string begin with the name we want?
-	            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-	                break;
-	            }
-	        }
-	    }
-	    return cookieValue;
-	}
-	const csrftoken = getCookie('csrftoken');
-
-
-	function csrfSafeMethod(method){
-		return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-	}
-
-	$.ajaxSetup({
-		beforeSend: function(xhr, settings){
-			if (!csrfSafeMethod(settings.type) && !this.crossDomain){
-				xhr.setRequestHeader("X-CSRFToken", csrftoken);
-			}
-		}
-	});
-
-
-	function search(){
-		$.ajax({
-			'url':'{% url "musics:search_spotify_tracks"%}',
-			'type':'POST',
-			'data':{
-				'search_keywords':$('#search_keywords').val()
-			},
-			'dataType':'json'
-		})
-		.done(function(response){
-			console.log(response['results']);
-			results = response['results'];
-			let html_data = '<option value="">--------</option>';
-			results.forEach(function(result){
-				html_data += `<option vlaue="${result.preview_url}">${result.track_name}/${result.artists}</option>`
-			});
-			$("#spotify_track_select").html(html_data);
-		});
+	function add_spotify_preview_url(spotify_preview_url){
+		var id_spotify_preview_url_field = document.getElementById('id_spotify_preview_url');
+		id_spotify_preview_url_field.value=spotify_preview_url;
 	}
 </script>
 {% endblock content %}
