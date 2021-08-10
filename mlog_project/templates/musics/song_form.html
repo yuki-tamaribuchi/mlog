@@ -95,7 +95,6 @@
 			results.forEach(function(result){
 				html_data += `<option vlaue="${result.preview_url}">${result.track_name}/${result.artists}</option>`
 			});
-			console.log(html_data);
 			$("#spotify_track_select").html(html_data);
 		});
 	}
