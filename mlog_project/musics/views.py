@@ -182,8 +182,8 @@ def select_spotify_tracks(request):
 		return render(request, 'musics/spotify_track_select.html')
 
 	if request.method=='POST':
-		selected_track_url = request.POST['selected_track']
+		selected_track = request.POST['selected_track']
 		context = {
-			'selected_track_url':selected_track_url
+			'selected_track':selected_track
 		}
 		return render(request, 'musics/close_spotify_track_select.html', context)
