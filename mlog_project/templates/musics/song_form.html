@@ -12,6 +12,9 @@
 		<form id="song_form" method="POST">
 			{% csrf_token %}
 			{{form.as_p}}
+			<select id="spotify_track_select">
+				<option selected disabled>曲を選んでください</option>
+			</select>
 			<input type="hidden" value="dj chari come" id="search_keywords">
 			<input type="button" value="検索" id="search_btn" onclick="search()">
 			<input type="submit" value="登録">
@@ -99,7 +102,14 @@
 			'dataType':'json'
 		})
 		.done(function(response){
-			$('.result').prepend('');
+			console.log(response['results']);
+			results = response['results'];
+			let html_data = '<option value="">--------</option>';
+			results.forEach(function(result){
+				html_data += `<option vlaue="${result.preview_url}">${result.track_name}/${result.artists}</option>`
+			});
+			console.log(html_data);
+			$("#spotify_track_select").html(html_data);
 		});
 	}
 </script>
