@@ -29,6 +29,12 @@ class GetSpotifyData:
 
 		for item in items:
 			artists = [artist['name'] for artist in item['artists']]
-			item_list.append([item['name'], artists, item['preview_url']])
+			item_list.append(
+				{
+					'track_name':item['name'],
+					'artists':artists,
+					'preview_url':item['preview_url'],
+					}
+				)
 
 		return item_list
