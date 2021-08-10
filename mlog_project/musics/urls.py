@@ -15,6 +15,7 @@ from .views import (
 	SongUpdateView,
 	SongByArtistListView,
 	search_spotify_tracks,
+	select_spotify_tracks,
 )
 
 
@@ -40,6 +41,7 @@ urlpatterns=[
 	path('list/artist/<str:slug>/song/', SongByArtistListView.as_view(), name='song_by_artist'),
 
 	path('search_spotify_tracks/', search_spotify_tracks, name='search_spotify_tracks'),
+	path('select_spotify_tracks/', select_spotify_tracks, name='select_spotify_tracks'),
 
 	path('select2/', include('django_select2.urls')),
 ]
