@@ -64,7 +64,7 @@
 			results = response['results'];
 			let html_data = '<option value="">--------</option>';
 			results.forEach(function(result){
-				html_data += `<option value="{&quot;spotify_link&quot;:&quot;${result.spotify_link}&quot;, &quot;preview_url&quot;:&quot;${result.preview_url}}&quot;}">${result.track_name}/${result.artists}</option>`
+				html_data += `<option value="{&quot;spotify_link&quot;:&quot;${result.spotify_link}&quot;, &quot;preview_url&quot;:&quot;${result.preview_url}&quot;}">${result.track_name}/${result.artists}</option>`
 			});
 			$("#spotify_track_select").html(html_data);
 		});
