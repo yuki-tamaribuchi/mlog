@@ -322,6 +322,10 @@ CSP_FRAME_SRC = [
     "https://*.spotify.com",
 ]
 
+CSP_MEDIA_SRC = [
+    "https://p.scdn.co",
+]
+
 
 SPOTIFY_CLIENT_ID = os.environ.get('MLOG_SPOTIFY_CLIENT_ID')
 SPOTIFY_CLIENT_SECRET = os.environ.get('MLOG_SPOTIFY_CLIENT_SECRET')
