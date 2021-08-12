@@ -32,6 +32,7 @@ class GetSpotifyData:
 					'artists':artists,
 					'spotify_link':item['external_urls']['spotify'],
 					'preview_url':item['preview_url'],
+					'artwork_url':item['album']['images'][0]['url'],
 				}
 			)
 
