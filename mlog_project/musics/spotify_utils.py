@@ -31,7 +31,7 @@ class GetSpotifyData:
 					{
 						'track_name':item['name'],
 						'artists':artists,
-						'link':item['external_urls']['spotify'],
+						'spotify_link':item['external_urls']['spotify'],
 						'preview_url':item['preview_url'],
 					}
 				)
