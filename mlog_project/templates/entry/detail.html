@@ -39,7 +39,10 @@
 					</div>
 				</div>
 				{% if entry.song.spotify_preview_url %}
-				<button value="play" name="play" onclick="play_pause(sound);">Play</button>
+				<p><button value="play" name="play" onclick="play_pause(sound);">Play</button></p>
+				{% endif %}
+				{% if entry.song.spotify_link %}
+				<p><a href={{ entry.song.spotify_link}}><img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Black.png" class="spotify_logo"></a></p>
 				{% endif %}
 			</div>
 		</div>
