@@ -313,6 +313,7 @@ CSP_STYLE_SRC = [
     ]
 CSP_IMG_SRC = [
     "'self'",
+    "https://storage.googleapis.com",
 ]
 CSP_FONT_SRC = [
     "'self'",
