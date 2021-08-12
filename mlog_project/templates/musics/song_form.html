@@ -42,9 +42,11 @@
 		select.options[0].selected=true;
 	}
 
-	function add_spotify_preview_url(selected_track){
+	function add_spotify_preview_url(spotify_link, preview_url){
+		var id_spotify_link_field = document.getElementById('id_spotify_link');
 		var id_spotify_preview_url_field = document.getElementById('id_spotify_preview_url');
-		id_spotify_preview_url_field.value=selected_track;
+		id_spotify_link_field.value=spotify_link;
+		id_spotify_preview_url_field.value=preview_url;
 	}
 </script>
 {% endblock content %}
