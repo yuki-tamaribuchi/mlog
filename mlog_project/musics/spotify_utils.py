@@ -25,15 +25,14 @@ class GetSpotifyData:
 		items = result['tracks']['items']
 
 		for item in items:
-			if item['preview_url']:
-				artists = [artist['name'] for artist in item['artists']]
-				item_list.append(
-					{
-						'track_name':item['name'],
-						'artists':artists,
-						'spotify_link':item['external_urls']['spotify'],
-						'preview_url':item['preview_url'],
-					}
-				)
+			artists = [artist['name'] for artist in item['artists']]
+			item_list.append(
+				{
+					'track_name':item['name'],
+					'artists':artists,
+					'spotify_link':item['external_urls']['spotify'],
+					'preview_url':item['preview_url'],
+				}
+			)
 
 		return item_list
