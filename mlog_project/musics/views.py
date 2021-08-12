@@ -178,12 +178,17 @@ def search_spotify_tracks(request):
 
 
 def select_spotify_tracks(request):
+	import json
+	
 	if request.method=='GET':
 		return render(request, 'musics/spotify_track_select.html')
 
 	if request.method=='POST':
-		selected_track = request.POST['selected_track']
+		selected_track = json.loads(request.POST['selected_track'])
+		spotify_link = selected_track['spotify_link']
+		preview_url = selected_track['preview_url']
 		context = {
-			'selected_track':selected_track
+			'spotify_link':spotify_link,
+			'preview_url':preview_url,
 		}
 		return render(request, 'musics/close_select_spotify_tracks.html', context)
