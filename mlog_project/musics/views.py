@@ -150,6 +150,9 @@ class SongUpdateView(UpdateView):
 	def get_object(self):
 		return Song.objects.get(pk=self.kwargs['pk'])
 
+	def get_success_url(self):
+		return reverse_lazy('musics:song_detail', kwargs={'pk':self.object.id})
+
 
 class SongByArtistListView(ListView):
 	model = Song
