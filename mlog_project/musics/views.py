@@ -190,8 +190,10 @@ def select_spotify_tracks(request):
 		selected_track = json.loads(request.POST['selected_track'])
 		spotify_link = selected_track['spotify_link']
 		preview_url = selected_track['preview_url']
+		artwork_url = selected_track['artwork_url']
 		context = {
 			'spotify_link':spotify_link,
 			'preview_url':preview_url,
+			'artwork_url':artwork_url,
 		}
 		return render(request, 'musics/close_select_spotify_tracks.html', context)
