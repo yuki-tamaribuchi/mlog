@@ -89,3 +89,97 @@ body {
 	width: 300px;
 	height: 300px;
 }
+
+.spotify_logo {
+	width: 150px;
+}
+
+.artwork_for_preview {
+	position: relative;
+	width: 250px;
+}
+
+.artwork_circle {
+	border-radius: 50% !important;
+	animation: rotate_artwork 5s linear infinite;
+}
+
+@keyframes rotate_artwork {
+	0%   { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
+
+#id_artwork_for_preview_in_entry_detail {
+	border-radius: 0%;
+	transition: border-radius 0.3s ease;
+}
+
+
+.div_for_preview {
+	position: relative;
+	width: 250px;
+	height: 250px;
+}
+
+.circle-wrap {
+	position: absolute;
+	width: 70px;
+	height: 70px;
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+.circle-wrap .circle .mask,
+.circle-wrap .circle .fill {
+	width: 70px;
+	height: 70px;
+	position: absolute;
+	border-radius: 50%;
+}
+
+.circle-wrap .circle .mask {
+	clip: rect(0px, 70px, 70px, 35px);
+}
+
+.circle-wrap .circle .mask .fill {
+	clip: rect(0px, 35px, 70px, 0px);
+	background-color: rgba(0, 0, 0, 0.8);
+}
+.circle-wrap .circle .mask.full,
+.circle-wrap .circle .fill {
+	animation: fill linear infinite 30s;
+	animation-play-state: paused;
+	transform: rotate(0deg);
+}
+
+@keyframes fill {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(180deg);
+	}
+}
+
+.inside-circle {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 50px;
+	height: 50px;
+	background-color: white;
+	border-radius: 50%;
+	transform: translate(-50%, -50%);
+}
+
+
+.play_icon, .pause_icon {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

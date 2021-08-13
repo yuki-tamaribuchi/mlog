@@ -27,6 +27,7 @@ class Song(models.Model):
     original = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
     spotify_link = models.URLField(blank=True)
     spotify_preview_url = models.URLField(blank=True)
+    artwork_url = models.URLField(blank=True)
 
     def __str__(self):
         names=', '.join(str(artist) for artist in self.artist.all())

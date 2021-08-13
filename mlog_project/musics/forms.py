@@ -38,7 +38,7 @@ class ArtsitForm(ModelForm):
 class SongForm(ModelForm):
 	class Meta:
 		model = Song
-		fields = ('song_name', 'artist', 'genre', 'spotify_preview_url')
+		fields = ('song_name', 'artist', 'genre', 'spotify_link', 'spotify_preview_url', 'artwork_url')
 		widgets = {
 			'artist':ArtistWidget,
 			'genre':GenreWidget,
