@@ -141,6 +141,31 @@ body {
 	border-radius: 50%;
 }
 
+.circle-wrap .circle .mask {
+	clip: rect(0px, 70px, 70px, 35px);
+}
+
+.circle-wrap .circle .mask .fill {
+	clip: rect(0px, 35px, 70px, 0px);
+	background-color: rgba(0, 0, 0, 0.3);
+}
+.circle-wrap .circle .mask.full,
+.circle-wrap .circle .fill {
+	animation: fill linear 30s;
+	animation-play-state: paused;
+	transform: rotate(0deg);
+}
+
+@keyframes fill {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(180deg);
+	}
+}
+
+
 .play_icon, .pause_icon {
 	position: absolute;
 	top: 50%;
