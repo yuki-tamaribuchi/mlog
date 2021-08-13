@@ -114,21 +114,36 @@ body {
 	transition: border-radius 0.3s ease;
 }
 
+
 .div_for_preview {
 	position: relative;
 	width: 250px;
 	height: 250px;
 }
 
-.play_icon_btn {
+.circle-wrap {
 	position: absolute;
 	width: 70px;
 	height: 70px;
-	top: 50%;
-    left: 50%;
 	transform: translate(-50%, -50%);
-	background-color:rgba(255, 255, 255, 0.5);
-	border: none;
+	top: 50%;
+	left: 50%;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+.circle-wrap .circle .mask,
+.circle-wrap .circle .fill {
+	width: 70px;
+	height: 70px;
+	position: absolute;
 	border-radius: 50%;
 }
 
+.play_icon, .pause_icon {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
