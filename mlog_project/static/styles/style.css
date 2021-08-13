@@ -147,11 +147,11 @@ body {
 
 .circle-wrap .circle .mask .fill {
 	clip: rect(0px, 35px, 70px, 0px);
-	background-color: rgba(0, 0, 0, 0.3);
+	background-color: rgba(0, 0, 0, 0.8);
 }
 .circle-wrap .circle .mask.full,
 .circle-wrap .circle .fill {
-	animation: fill linear 30s;
+	animation: fill linear infinite 30s;
 	animation-play-state: paused;
 	transform: rotate(0deg);
 }
@@ -163,6 +163,17 @@ body {
 	100% {
 		transform: rotate(180deg);
 	}
+}
+
+.inside-circle {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 50px;
+	height: 50px;
+	background-color: white;
+	border-radius: 50%;
+	transform: translate(-50%, -50%);
 }
 
 
