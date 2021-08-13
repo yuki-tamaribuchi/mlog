@@ -314,6 +314,7 @@ CSP_STYLE_SRC = [
 CSP_IMG_SRC = [
     "'self'",
     "https://storage.googleapis.com",
+    "https://i.scdn.co",
 ]
 CSP_FONT_SRC = [
     "'self'",
