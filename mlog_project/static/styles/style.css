@@ -97,3 +97,18 @@ body {
 .artwork_for_preview {
 	width: 250px;
 }
+
+.artwork_circle {
+	border-radius: 50% !important;
+	animation: rotate_artwork 5s linear infinite;
+}
+
+@keyframes rotate_artwork {
+	0%   { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
+
+#id_artwork_for_preview_in_entry_detail {
+	border-radius: 0%;
+	transition: border-radius 0.3s ease;
+}
