@@ -296,6 +296,7 @@ NOSE_ARGS = NOSE_ARGS_LIST[nose_args_selection]
 CSP_DEFAULT_SRC = [
     "'self'",
     "https://ka-f.fontawesome.com",
+    "https://p.scdn.co",
     ]
 CSP_SCRIPT_SRC = [
     "'self'",
