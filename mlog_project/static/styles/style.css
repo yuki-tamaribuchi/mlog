@@ -95,6 +95,7 @@ body {
 }
 
 .artwork_for_preview {
+	position: relative;
 	width: 250px;
 }
 
@@ -112,3 +113,22 @@ body {
 	border-radius: 0%;
 	transition: border-radius 0.3s ease;
 }
+
+.div_for_preview {
+	position: relative;
+	width: 250px;
+	height: 250px;
+}
+
+.play_icon_btn {
+	position: absolute;
+	width: 70px;
+	height: 70px;
+	top: 50%;
+    left: 50%;
+	transform: translate(-50%, -50%);
+	background-color:rgba(255, 255, 255, 0.5);
+	border: none;
+	border-radius: 50%;
+}
+
