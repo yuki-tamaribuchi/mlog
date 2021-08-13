@@ -295,6 +295,7 @@ NOSE_ARGS = NOSE_ARGS_LIST[nose_args_selection]
 
 CSP_DEFAULT_SRC = [
     "'self'",
+    "https://ka-f.fontawesome.com",
     ]
 CSP_SCRIPT_SRC = [
     "'self'",
@@ -303,6 +304,7 @@ CSP_SCRIPT_SRC = [
     "https://stackpath.bootstrapcdn.com",
     "https://cdnjs.cloudflare.com",
     "https://cdn.jsdelivr.net",
+    "https://kit.fontawesome.com",
 ]
 CSP_STYLE_SRC = [
     "'self'",
@@ -319,6 +321,7 @@ CSP_IMG_SRC = [
 CSP_FONT_SRC = [
     "'self'",
     "https://cdnjs.cloudflare.com",
+    "https://ka-f.fontawesome.com",
 ]
 CSP_FRAME_SRC = [
     "https://*.spotify.com",
