@@ -9,7 +9,6 @@ function search(){
 		'dataType':'json'
 	})
 	.done(function(response){
-		console.log(response['results']);
 		results = response['results'];
 		let html_data = '<option value="">--------</option>';
 		results.forEach(function(result){
