@@ -21,19 +21,11 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {{ form.media.js }}
+{% load static %}
+<script src="{% static 'js/add_genre.js' %}"></script>
 <script>
 	function add_artist(name,pk){
 		var select=document.getElementById('id_artist');
-		var option=document.createElement('option');
-		option.setAttribute('value',pk);
-		option.innerHTML=name;
-
-		select.add(option,0);
-		select.options[0].selected=true;
-	}
-
-	function add_genre(name,pk){
-		var select=document.getElementById('id_genre');
 		var option=document.createElement('option');
 		option.setAttribute('value',pk);
 		option.innerHTML=name;
