@@ -23,6 +23,8 @@ function play_pause(sound){
 
 	sound.on('end', function(){
 		$('.circle-wrap .circle .mask.full, .circle-wrap .circle .fill').css("animation-play-state", "paused");
+		$('.pause_icon').remove();
+		$('.inside-circle').append('<i class="fas fa-play fa-2x play_icon"></i>');
 		$('#id_artwork_for_preview_in_entry_detail').removeClass('artwork_circle');
 	})
 }
