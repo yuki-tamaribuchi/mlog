@@ -2,7 +2,7 @@
 {% block title%}Spotifyでトラックを選択 | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
-	<div class "row mt-5">
+	<div class="row mt-5">
 		<form action="{% url 'musics:select_spotify_tracks' %}" method="POST">
 			{% csrf_token %}
 			<p>
@@ -20,25 +20,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% load static %}
 <script src="{% static 'js/ajax_csrf.js' %}"></script>
-<script>
-	function search(){
-		$.ajax({
-			'url':'{% url "musics:search_spotify_tracks"%}',
-			'type':'POST',
-			'data':{
-				'search_keywords':$('#search_keywords').val()
-			},
-			'dataType':'json'
-		})
-		.done(function(response){
-			console.log(response['results']);
-			results = response['results'];
-			let html_data = '<option value="">--------</option>';
-			results.forEach(function(result){
-				html_data += `<option value="{&quot;spotify_link&quot;:&quot;${result.spotify_link}&quot;, &quot;preview_url&quot;:&quot;${result.preview_url}&quot;, &quot;artwork_url&quot;:&quot;${result.artwork_url}&quot;}">${result.track_name}/${result.artists}</option>`
-			});
-			$("#spotify_track_select").html(html_data);
-		});
-	}
-</script>
+<script src="{% static 'js/spotify_search_ajax.js' %}" type="text/javascript" search_url="{% url 'musics:search_spotify_tracks' %}"></script>
 {% endblock content %}
