@@ -23,17 +23,8 @@
 {{ form.media.js }}
 {% load static %}
 <script src="{% static 'js/add_genre.js' %}"></script>
+<script src="{% static 'js/add_artist.js' %}"></script>
 <script>
-	function add_artist(name,pk){
-		var select=document.getElementById('id_artist');
-		var option=document.createElement('option');
-		option.setAttribute('value',pk);
-		option.innerHTML=name;
-
-		select.add(option,0);
-		select.options[0].selected=true;
-	}
-
 	function add_spotify_preview_url(spotify_link, preview_url, artwork_url){
 		var id_spotify_link_field = document.getElementById('id_spotify_link');
 		var id_spotify_preview_url_field = document.getElementById('id_spotify_preview_url');
