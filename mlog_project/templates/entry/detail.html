@@ -63,7 +63,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				{% endif %}
 				{% if entry.song.spotify_link %}
 				<p class="mt-3"><a href={{ entry.song.spotify_link}}><img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Black.png" class="spotify_logo"></a></p>
@@ -97,33 +97,7 @@
 </div>
 {% if entry.song.spotify_preview_url %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-	var sound = new Howl({
-		src: ['{{entry.song.spotify_preview_url}}'],
-		format:['mp3']
-	});
-
-	function play_pause(sound){
-		if (sound.playing()){
-			$('#id_artwork_for_preview_in_entry_detail').removeClass('artwork_circle');
-			sound.pause();
-			$('.circle-wrap .circle .mask.full, .circle-wrap .circle .fill').css("animation-play-state", "paused");
-			$('.pause_icon').remove();
-			$('.inside-circle').append('<i class="fas fa-play fa-2x play_icon"></i>');
-		}else{
-			$('#id_artwork_for_preview_in_entry_detail').addClass('artwork_circle');
-			sound.play();
-			$('.circle-wrap .circle .mask.full, .circle-wrap .circle .fill').css("animation-play-state", "running");
-			$('.play_icon').remove();
-			$('.inside-circle').append('<i class="fas fa-pause fa-2x pause_icon"></i>');
-
-		}
-
-		sound.on('end', function(){
-			$('.circle-wrap .circle .mask.full, .circle-wrap .circle .fill').css("animation-play-state", "paused");
-			$('#id_artwork_for_preview_in_entry_detail').removeClass('artwork_circle');
-		})
-	}
-</script>
+{% load static %}
+<script src="{% static 'js/howler-handler.js' %}" spotify_preview_url="{{entry.song.spotify_preview_url}}"></script>
 {% endif %}
 {% endblock content %}
