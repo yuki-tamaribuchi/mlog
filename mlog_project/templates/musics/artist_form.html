@@ -8,18 +8,18 @@
 {% endblock head %}
 {% block content %}
 <div class="container">
-	<div class "row mt-5">
+	<div class="row mt-5">
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
 		<input type="submit" value="登録">
 		</form>
-		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:genre_create_popup' %}','subwin_genre')">ジャンルを追加</a>
+		<a href="#" id="add_genre_link">ジャンルを追加</a>
 	</div>
 </div>
 </form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {{ form.media.js }}
 {% load static %}
-<script src="{% static 'js/add_genre.js' %}"></script>
+<script src="{% static 'js/add_genre.js' %}" genre_create_popup_url="{% url 'musics:genre_create_popup' %}"></script>
 {% endblock content %}

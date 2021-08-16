@@ -15,14 +15,14 @@
 			<input type="submit" value="登録">
 		</form>
 		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:artist_create_popup' %}','subwin_artist')">アーティストを追加</a>
-		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:genre_create_popup' %}','subwin_genre')">ジャンルを追加</a>
+		<a href="#" id="add_genre_link">ジャンルを追加</a>
 		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:select_spotify_tracks' %}','subwin_spotify')">Spotifyで曲を選択</a>
 	</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {{ form.media.js }}
 {% load static %}
-<script src="{% static 'js/add_genre.js' %}"></script>
+<script src="{% static 'js/add_genre.js' %}" genre_create_popup_url="{% url 'musics:genre_create_popup' %}"></script>
 <script src="{% static 'js/add_artist.js' %}"></script>
 <script src="{% static 'js/add_spotify_preview_url.js' %}"></script>
 {% endblock content %}
