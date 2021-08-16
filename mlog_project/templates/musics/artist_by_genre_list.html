@@ -2,7 +2,7 @@
 {% block title%} {{genre.genre_name}}に登録されいるアーティスト一覧 | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
-	<div class "row mt-5">
+	<div class="row mt-5">
 	{% if artist_list %}
 	{% include 'common_templates/artist_card_large.html' %}
 	{% else %}

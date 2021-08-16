@@ -2,7 +2,7 @@
 {% block title%}コメント{% if object %}更新{% else %}投稿{% endif %} | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
-	<div class "row mt-5">
+	<div class="row mt-5">
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}

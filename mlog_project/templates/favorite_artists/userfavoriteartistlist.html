@@ -2,7 +2,7 @@
 {% block title%} {{detail_user.handle}} ({{detail_user.handle}})のお気に入りアーティスト一覧 | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
-	<div class "row mt-5">
+	<div class="row mt-5">
 		<h1>{{detail_user.handle}} ({{detail_user.handle}})のお気に入りアーティスト一覧</h1>
 		{% if artist_list %}
 			{% for artist in artist_list%}
