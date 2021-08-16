@@ -5,7 +5,10 @@ var sound = new Howl({
 	format:['mp3']
 });
 
-function play_pause(sound){
+var play_preview_element = document.getElementById('id_play_preview');
+play_preview_element.addEventListener('click', play_pause, false);
+
+function play_pause(){
 	if (sound.playing()){
 		$('#id_artwork_for_preview_in_entry_detail').removeClass('artwork_circle');
 		sound.pause();
