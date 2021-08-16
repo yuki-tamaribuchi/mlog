@@ -1,4 +1,8 @@
 var search_url = document.currentScript.getAttribute('search_url');
+
+var search_btn = document.getElementById('search_btn');
+search_btn.addEventListener('click', search, false);
+
 function search(){
 	$.ajax({
 		'url':search_url,
