@@ -1,10 +1,7 @@
 var genre_create_popup_url = document.currentScript.getAttribute('genre_create_popup_url');
-console.log(genre_create_popup_url);
 
 function open_add_genre_window(){
-	console.log('called');
 	window.open(genre_create_popup_url, 'subwin_genre');
-	console.log('finished');
 }
 
 var add_genre_link = document.getElementById('add_genre_link');
