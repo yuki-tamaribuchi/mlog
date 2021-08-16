@@ -16,7 +16,7 @@
 		</form>
 		<a href="#" id="add_artist_link">アーティストを追加</a>
 		<a href="#" id="add_genre_link">ジャンルを追加</a>
-		<a href="javascript:void(0)" onclick="window.open('{% url 'musics:select_spotify_tracks' %}','subwin_spotify')">Spotifyで曲を選択</a>
+		<a href="#" id="add_spotify_preview_url_link">Spotifyで曲を選択</a>
 	</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -24,5 +24,5 @@
 {% load static %}
 <script src="{% static 'js/add_genre.js' %}" genre_create_popup_url="{% url 'musics:genre_create_popup' %}"></script>
 <script src="{% static 'js/add_artist.js' %}" add_artist_link_url="{% url 'musics:artist_create_popup' %}"></script>
-<script src="{% static 'js/add_spotify_preview_url.js' %}"></script>
+<script src="{% static 'js/add_spotify_preview_url.js' %}" add_spotify_preview_url_url="{% url 'musics:select_spotify_tracks' %}"></script>
 {% endblock content %}
