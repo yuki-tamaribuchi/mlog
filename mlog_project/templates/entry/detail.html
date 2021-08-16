@@ -39,7 +39,7 @@
 					</div>
 				</div>
 				{% if entry.song.spotify_preview_url %}
-				{% include 'common_templates/spotify_preview.html' %}
+				{% include 'common_templates/spotify_preview.html' with artwork_url=entry.song.artwork_url %}
 				{% endif %}
 				{% if entry.song.spotify_link %}
 				<p class="mt-3"><a href={{ entry.song.spotify_link}}><img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Black.png" class="spotify_logo"></a></p>
