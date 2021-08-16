@@ -1,8 +1,6 @@
 <html>
 	<body>
-		<script type="text/javascript">
-			window.opener.add_spotify_preview_url('{{spotify_link}}', '{{preview_url}}', '{{artwork_url}}');
-			window.close();
-		</script>
+		{% load static %}
+		<script src="{% static 'js/close_select_spotify_tracks.js' %}" spotify_link="{{spotify_link}}" preview_url="{{preview_url}}" artwork_url="{{artwork_url}}"></script>
 	</body>
 </html>

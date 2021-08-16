@@ -3,11 +3,7 @@
 
 	</head>
 	<body>
-		<script type="text/javascript">
-			var object_name='{{object_name}}';
-			var object_pk='{{object_pk}}';
-			window.opener.{{function_name}}(object_name,object_pk);
-			window.close();
-		</script>
+		{% load static %}
+		<script src="{% static 'js/close.js' %}" object_name="{{object_name}}" object_pk="{{object_pk}}" function_name="{{function_name}}"></script>
 	</body>
 </html>

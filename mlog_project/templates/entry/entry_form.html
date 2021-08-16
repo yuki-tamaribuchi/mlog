@@ -10,17 +10,17 @@
 
 {% block content %}
 <div class="container">
-	<div class "row mt-5">
+	<div class="row mt-5">
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
 		<input type="submit" value="{% if object %}更新{% else %}投稿{% endif %}">
 		</form>
-		<a href="javascript:void(0);" onclick="window.open('{% url 'musics:song_create_popup' %}','subwin_song','width=500,height=500');">曲を追加</a>
+		<a href="#" id="add_song_link">曲を追加</a>
 	</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {{ form.media.js }}
 {% load static %}
-<script src="{% static 'js/add_song.js' %}"></script>
+<script src="{% static 'js/add_song.js' %}" song_create_popup_url="{% url 'musics:song_create_popup' %}"></script>
 {% endblock content %}

@@ -300,7 +300,6 @@ CSP_DEFAULT_SRC = [
     ]
 CSP_SCRIPT_SRC = [
     "'self'",
-    "'unsafe-inline'",
     "https://code.jquery.com",
     "https://stackpath.bootstrapcdn.com",
     "https://cdnjs.cloudflare.com",

@@ -1,4 +1,8 @@
 var search_url = document.currentScript.getAttribute('search_url');
+
+var search_btn = document.getElementById('search_btn');
+search_btn.addEventListener('click', search, false);
+
 function search(){
 	$.ajax({
 		'url':search_url,
@@ -9,7 +13,6 @@ function search(){
 		'dataType':'json'
 	})
 	.done(function(response){
-		console.log(response['results']);
 		results = response['results'];
 		let html_data = '<option value="">--------</option>';
 		results.forEach(function(result){
