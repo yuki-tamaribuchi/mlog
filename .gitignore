@@ -167,3 +167,4 @@ sql/
 *.env
 mlog_project/result/*
 mlog_project/media/images/users/*
+coverage.svg
