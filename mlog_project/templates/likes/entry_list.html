@@ -2,7 +2,7 @@
 {% block title%} Likeリスト | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
-	<div class "row mt-5">
+	<div class="row mt-5">
         <h2><a href="{% url 'entry:detail' entry.id %}">{{entry.title}}</a>へのLike</h2>
 	    {% if like_list%}
             {% for like in like_list %}
