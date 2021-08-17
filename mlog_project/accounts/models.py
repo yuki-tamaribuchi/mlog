@@ -7,7 +7,7 @@ class User(AbstractUser):
 		from uuid import uuid4
 		import os
 
-		prefix = 'accounts/images/profile/'
+		prefix = 'images/users/accounts/profile/'
 		name = str(uuid4()).replace('-', '')
 		ext = os.path.splitext(filename)[-1]
 		
