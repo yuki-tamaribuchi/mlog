@@ -1,61 +1,50 @@
-'''
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
-from entry.views import EntryDetailView
+from utils import utils_for_test
 
+from entry.models import Entry
+from entry.views import EntryCreateView
 
-def create_test_genre():
-	from musics.models import Genre
-	genre_instance = Genre.objects.create(genre_name = 'test genre')
-	return genre_instance
+class EntryCreateViewTest(TestCase):
 
-def create_test_artist():
-	from musics.models import Artist
-	aritst_instance = Artist.objects.create(
-		artist_name = 'test artist',
-		slug = 'testartist'
-	)
-	aritst_instance.genre.add(create_test_genre())
-	return aritst_instance
-
-def create_test_song():
-	from musics.models import Song
-	song_instance = Song.objects.create(
-		song_name = 'test song'
-	)
-	song_instance.artist.add(create_test_artist())
-	song_instance.genre.add(create_test_genre())
-	return song_instance
-
-def create_test_user():
-	from accounts.models import User
-	user_instance = User.objects.create(
-		username = 'testuser',
-		handle = 'test handle',
-		biograph = 'test biograph'
-	)
-	return user_instance
-
-
-def create_test_entry():
-	from entry.models import Entry
-	entry_instance = Entry.objects.create(
-		title = 'test entry',
-		content = 'test content',
-		writer = create_test_user(),
-		song = create_test_song()
-	)
-	return entry_instance
+	def setUp(self):
+		self.user = utils_for_test.create_test_user(
+			username='testuser',
+			handle='test user',
+			biograph='test biograph',
+		)
+		self.user.set_password('password')
+		self.factory = RequestFactory()
+	
+	def test_create_template(self):
+		request = self.factory.get(reverse('entry:create'))
+		request.user = self.user
+		response = EntryCreateView.as_view()(request)
+		self.assertEqual(response.status_code, 200)
+		with self.assertTemplateUsed('entry/entry_form.html'):
+			response.render()
 
 
 class EntryDetailViewTest(TestCase):
 
-	@classmethod
-	def setUp(cls):
-		create_test_entry()
+	def setUp(self):
+		utils_for_test.create_test_entry(
+			title='test title',
+			content='test content',
+			username='testuser',
+			handle='test user',
+			biograph='test biograph',
+			song_name='test song',
+			artist_name='test artist',
+			slug='testartist',
+			genre_name='test genre'
+		)
 
-	def test_not_exist_entry(self):
-		response = self.client.get(reverse('entry:detail',args = (2,)))
-		self.assertEqual(response.status_code, 404)
-'''
+	def test_detail_template(self):
+		entry = Entry.objects.first()
+		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
+		self.assertEqual(response.status_code, 200)
+		self.assertTemplateUsed(response, 'entry/detail.html')
+
+	
