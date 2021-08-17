@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block title%}{{song.song_name}} | {{block.super}}{% endblock title %}
+{% block head %}
+<script src="https://kit.fontawesome.com/e7f7c15297.js" crossorigin="anonymous"></script>
+{% endblock head %}
 {% block content %}
 <div class="container">
 	<div class="row mt-5">
@@ -44,4 +47,9 @@
 		<a href="{% url 'musics:song_update' song.pk %}">曲情報を編集</a>
 	</div>
 </div>
+{% if song.spotify_preview_url %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% load static %}
+<script src="{% static 'js/howler-handler.js' %}" spotify_preview_url="{{song.spotify_preview_url}}"></script>
+{% endif %}
 {% endblock content %}
