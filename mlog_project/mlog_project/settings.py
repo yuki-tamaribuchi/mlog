@@ -120,6 +120,9 @@ DATABASES_LIST = {
         'PASSWORD': os.environ.get('MLOG_DB_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        }
     },
     'docker':{
         'ENGINE': 'django.db.backends.mysql',
@@ -128,6 +131,9 @@ DATABASES_LIST = {
         'PASSWORD': 'password',
         'HOST': 'db',
         'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        }
     }
 }
 
