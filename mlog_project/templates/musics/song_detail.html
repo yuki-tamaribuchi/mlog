@@ -10,6 +10,15 @@
 	</div>
 
 	<div class="row mt-5">
+		<h3>プレビュー</h3>
+		{% if song.spotify_preview_url %}
+		{% include 'common_templates/spotify_preview.html' with artwork_url=song.artwork_url %}
+		{% endif %}
+	</div>
+
+
+
+	<div class="row mt-5">
 		<h2>この曲の記事一覧</h2>
 		{% for entry in entries %}
 		<div class="card m-3 entry-list-card text-center">
