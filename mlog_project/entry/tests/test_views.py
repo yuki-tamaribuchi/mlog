@@ -1,3 +1,4 @@
+from django.template import context
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
@@ -83,23 +84,31 @@ class EntryDetailViewTest(TestCase):
 		self.assertTemplateUsed(response, 'entry/detail.html')
 
 
-'''
-	def test_context_context(self):
-		entry = Entry.objects.first()
-		request = RequestFactory().get(reverse('entry:detail', kwargs={'pk':entry.id}))
-		request.user = User.objects.first()
-		view = EntryDetailView()
-		view.setup(request, pk=entry.id)
 
-		view.get_object()
-		context = view.get_context_data()
+	def test_context_like_count(self):
+		entry = Entry.objects.first()
+		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
+		context = response.context
 		self.assertIn('like_count', context)
+
+	def test_context_comment_count(self):
+		entry = Entry.objects.first()
+		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
+		context = response.context
 		self.assertIn('comment_count', context)
+
+	def test_context_like_status(self):
+		entry = Entry.objects.first()
+		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
+		context = response.context
 		self.assertIn('like_status', context)
+
+
+	def test_context_view_count(self):
+		entry = Entry.objects.first()
+		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
+		context = response.context
 		self.assertIn('view_count', context)
-ERROR
-AttributeError: 'EntryDetailView' object has no attribute 'object'
-'''
 
 '''
 class EntryUpdateViewTest(TestCase):
