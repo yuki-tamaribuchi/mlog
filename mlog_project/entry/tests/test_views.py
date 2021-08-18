@@ -15,7 +15,24 @@ class EntryCreateViewTest(TestCase):
 			biograph='test biograph',
 		)
 		self.user.set_password('password')
+
+		self.song = utils_for_test.create_test_song(
+			song_name='test song',
+			artist_name='test artist',
+			slug='testartist',
+			genre_name='test genre'
+		)
+
 		self.factory = RequestFactory()
+
+	'''
+	def test_create_form(self):
+		request = self.factory.get(reverse('entry:create'))
+		request.user = self.user
+		response = EntryCreateView.as_view()(request)
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response)
+	'''
 	
 	def test_create_template(self):
 		request = self.factory.get(reverse('entry:create'))
@@ -24,6 +41,22 @@ class EntryCreateViewTest(TestCase):
 		self.assertEqual(response.status_code, 200)
 		with self.assertTemplateUsed('entry/entry_form.html'):
 			response.render()
+
+	'''
+	def test_create_success_url(self):
+		request = self.factory.post(
+			path=reverse('entry:create'),
+			data={
+				'title':'test title',
+				'content':'test content',
+				'song':self.song.id,
+				'writer':self.user.id,
+			}
+		)
+		request.user = self.user
+		response = EntryCreateView.as_view()(request)
+		self.assertEqual(response.status_code, 200)
+	'''
 
 
 class EntryDetailViewTest(TestCase):
