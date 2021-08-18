@@ -6,7 +6,7 @@ from accounts.models import User
 from utils import utils_for_test
 
 from entry.models import Entry
-from entry.views import EntryCreateView, EntryUpdateView
+from entry.views import EntryCreateView, EntryUpdateView, EntryDetailView
 
 class EntryCreateViewTest(TestCase):
 
@@ -81,6 +81,25 @@ class EntryDetailViewTest(TestCase):
 		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
 		self.assertEqual(response.status_code, 200)
 		self.assertTemplateUsed(response, 'entry/detail.html')
+
+
+'''
+	def test_context_context(self):
+		entry = Entry.objects.first()
+		request = RequestFactory().get(reverse('entry:detail', kwargs={'pk':entry.id}))
+		request.user = User.objects.first()
+		view = EntryDetailView()
+		view.setup(request, pk=entry.id)
+
+		view.get_object()
+		context = view.get_context_data()
+		self.assertIn('like_count', context)
+		self.assertIn('comment_count', context)
+		self.assertIn('like_status', context)
+		self.assertIn('view_count', context)
+ERROR
+AttributeError: 'EntryDetailView' object has no attribute 'object'
+'''
 
 '''
 class EntryUpdateViewTest(TestCase):
