@@ -1,4 +1,5 @@
 from django.http import response
+from django.template import context
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
@@ -224,9 +225,21 @@ class EntryListBySongViewTest(TestCase):
 		)
 
 		self.song = Song.objects.first()
+
+		self.song_for_no_entry = utils_for_test.create_test_song(
+			song_name='song for no entry',
+			artist_name='test artist',
+			slug='testartist',
+			genre_name='test genre no entry',
+		)
 	
 	def test_template(self):
 		response = self.client.get(reverse('entry:entry_list_by_song', kwargs={'pk':self.song.id}))
 		self.assertEqual(response.status_code, 200)
 		self.assertTemplateUsed('entry/entry_list_by_song.html')
-		
+
+	def test_object_does_not_exist(self):
+		object = Entry.objects.none()
+		response = self.client.get(reverse('entry:entry_list_by_song', kwargs={'pk':self.song_for_no_entry.id}))
+		self.assertEqual(response.status_code, 200)
+		self.assertQuerysetEqual(response.context['object_list'], object)
