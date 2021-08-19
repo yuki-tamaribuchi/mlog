@@ -128,7 +128,6 @@ class EntryDetailViewTest(TestCase):
 		request = self.factory.get(reverse('entry:detail', kwargs={'pk':self.entry.id}))
 		request.user = self.user_for_like
 		response = EntryDetailView.as_view()(request, pk=self.entry.id)
-		print(response.context_data)
 		self.assertEqual(response.context_data['like_status'], like_object)
 		
 	def test_like_status_not_exist(self):
