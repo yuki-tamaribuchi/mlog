@@ -48,8 +48,7 @@ class EntryCreateViewTest(TestCase):
 		with self.assertTemplateUsed('entry/entry_form.html'):
 			response.render()
 
-	'''
-	def test_create_success_url(self):
+	def test_success_url(self):
 		request = self.factory.post(
 			path=reverse('entry:create'),
 			data={
@@ -61,9 +60,10 @@ class EntryCreateViewTest(TestCase):
 		)
 		request.user = self.user
 		response = EntryCreateView.as_view()(request)
+		response.client = self.client
 		entry = Entry.objects.first()
 		self.assertEqual(response.status_code, 302)
-	'''
+		self.assertRedirects(response, reverse('entry:detail', kwargs={'pk':entry.id}))
 
 
 class EntryDetailViewTest(TestCase):
