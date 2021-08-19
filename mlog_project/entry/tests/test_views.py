@@ -147,6 +147,12 @@ class EntryDetailViewTest(TestCase):
 		response = EntryDetailView.as_view()(request, pk=self.entry.id)
 		self.assertEqual(response.context_data['like_count'], 1)
 
+	def test_like_count_zero(self):
+		request = self.factory.get(reverse('entry:detail', kwargs={'pk':self.entry.id}))
+		request.user = self.user_for_like
+		response = EntryDetailView.as_view()(request, pk=self.entry.id)
+		self.assertEqual(response.context_data['like_count'], 0)
+
 
 class EntryUpdateViewTest(TestCase):
 
