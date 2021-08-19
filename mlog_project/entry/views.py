@@ -32,23 +32,23 @@ class EntryDetailView(DetailView):
 	template_name = 'entry/detail.html'
 
 	def get_object(self):
-		current_entry = get_object_or_404(Entry, pk=self.kwargs['pk'])
-		entry_read_activity.delay(self.kwargs['pk'], self.request.user.username)
+		current_entry = get_object_or_404(Entry, pk=self.kwargs.get('pk'))
+		entry_read_activity.delay(self.kwargs.get('pk'), self.request.user.username)
 
 		return current_entry
 
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['like_count'] = Like.objects.filter(entry=self.kwargs['pk']).count()
-		context['comment_count'] = Comment.objects.filter(entry=self.kwargs['pk']).count()
+		context['like_count'] = Like.objects.filter(entry=self.kwargs.get('pk')).count()
+		context['comment_count'] = Comment.objects.filter(entry=self.kwargs.get('pk')).count()
 		
 		try:
-			context['like_status'] = Like.objects.filter(user__username=self.request.user.username, entry=self.kwargs['pk'])
+			context['like_status'] = Like.objects.filter(user__username=self.request.user.username, entry=self.kwargs.get('pk'))
 		except ObjectDoesNotExist:
 			context['like_status'] = Like.objects.none()
 
-		context['view_count'] = EntryReadActivity.objects.filter(entry__id=self.kwargs['pk']).count()
+		context['view_count'] = EntryReadActivity.objects.filter(entry__id=self.kwargs.get('pk')).count()
 
 		return context
 
@@ -58,14 +58,14 @@ class EntryUpdateView(LoginRequiredMixin, UpdateView):
 	template_name = 'entry/entry_form.html'
 
 	def get_object(self):
-		return Entry.objects.get(writer__username=self.request.user.username, id=self.kwargs['pk'])
+		return Entry.objects.get(writer__username=self.request.user.username, id=self.kwargs.get('pk'))
 
 
 class EntryDeleteView(LoginRequiredMixin, DeleteView):
 	template_name = 'entry/delete_confirm.html'
 
 	def get_object(self):
-		return Entry.objects.get(writer__username=self.request.user.username, id=self.kwargs['pk'])
+		return Entry.objects.get(writer__username=self.request.user.username, id=self.kwargs.get('pk'))
 
 	def get_success_url(self):
 		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
@@ -80,11 +80,11 @@ class EntryListBySongView(ListView):
 		qs = super().get_queryset()
 
 		try:
-			return qs.filter(song__id=self.kwargs['pk'])
+			return qs.filter(song__id=self.kwargs.get('pk'))
 		except ObjectDoesNotExist:
 			return qs.none()
 
 	def get_context_data(self, *args, **kwargs) :
 		context = super().get_context_data(**kwargs)
-		context['song'] = get_object_or_404(Song, id=self.kwargs['pk'])
+		context['song'] = get_object_or_404(Song, id=self.kwargs.get('pk'))
 		return context
