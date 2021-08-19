@@ -26,13 +26,13 @@ jobs:
       - run: 
           name: Test
           command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run --name app_test app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/"
-      - run:
-          name: Copy test results from container
-          command: |
-              docker cp app_test:/mlog_project/result/unittest.xml mlog_project/result/
-      - run: ls -la mlog_project/result
-      - store_test_results:
-          path: mlog_project/result
+#      - run:
+#          name: Copy test results from container
+#          command: |
+#              docker cp app_test:/mlog_project/result/unittest.xml mlog_project/result/
+#      - run: ls -la mlog_project/result
+#      - store_test_results:
+#          path: mlog_project/result
       - run: 
           name: Down containers
           command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
