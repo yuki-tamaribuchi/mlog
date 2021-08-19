@@ -1,6 +1,6 @@
 from django.http.response import Http404, HttpResponseNotAllowed
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
@@ -54,26 +54,23 @@ class EntryDetailView(DetailView):
 		return context
 
 
-class EntryUpdateView(LoginRequiredMixin, UpdateView):
+class EntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Entry
 	form_class = EntryForm
 	template_name = 'entry/entry_form.html'
 
-	def get_object(self):
-		object = super().get_object()
-		if object.writer_id == self.request.user.id:
-			return object
-		raise Http404
+	def test_func(self):
+		object = self.get_object()
+		return object.writer.id == self.request.user.id
 
-class EntryDeleteView(LoginRequiredMixin, DeleteView):
+
+class EntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 	model = Entry
 	template_name = 'entry/delete_confirm.html'
 
-	def get_object(self):
-		object = super().get_object()
-		if object.writer_id == self.request.user.id:
-			return object
-		raise Http404
+	def test_func(self):
+		object = self.get_object()
+		return object.writer.id == self.request.user.id
 
 	def get_success_url(self):
 		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
