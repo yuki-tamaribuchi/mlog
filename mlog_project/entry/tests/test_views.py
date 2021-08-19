@@ -60,7 +60,8 @@ class EntryCreateViewTest(TestCase):
 		)
 		request.user = self.user
 		response = EntryCreateView.as_view()(request)
-		self.assertEqual(response.status_code, 200)
+		entry = Entry.objects.first()
+		self.assertEqual(response.status_code, 302)
 	'''
 
 
