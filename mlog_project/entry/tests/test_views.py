@@ -1,13 +1,15 @@
+from django.http import response
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
 from accounts.models import User
 from musics.models import Song
+from likes.models import Like
 
 from utils import utils_for_test
 
 from entry.models import Entry
-from entry.views import EntryCreateView, EntryUpdateView, EntryDeleteView
+from entry.views import EntryCreateView, EntryUpdateView, EntryDeleteView, EntryDetailView
 
 class EntryCreateViewTest(TestCase):
 
@@ -66,7 +68,7 @@ class EntryCreateViewTest(TestCase):
 class EntryDetailViewTest(TestCase):
 
 	def setUp(self):
-		utils_for_test.create_test_entry(
+		self.entry = utils_for_test.create_test_entry(
 			title='test title',
 			content='test content',
 			username='testuser',
@@ -77,6 +79,13 @@ class EntryDetailViewTest(TestCase):
 			slug='testartist',
 			genre_name='test genre'
 		)
+		self.user_for_like = utils_for_test.create_test_user(
+			username='userforlike',
+			handle='user for like',
+			biograph='biograph for user for like',
+		)
+
+		self.factory = RequestFactory()
 
 	def test_template(self):
 		entry = Entry.objects.first()
@@ -111,7 +120,17 @@ class EntryDetailViewTest(TestCase):
 		context = response.context
 		self.assertIn('view_count', context)
 
-
+	def test_like_status_exitst(self):
+		like_object = Like.objects.create(
+			user=self.user_for_like,
+			entry=self.entry
+		)
+		request = self.factory.get(reverse('entry:detail', kwargs={'pk':self.entry.id}))
+		request.user = self.user_for_like
+		response = EntryDetailView.as_view()(request, pk=self.entry.id)
+		print(response.context_data)
+		self.assertEqual(response.context_data['like_status'], like_object)
+		
 
 class EntryUpdateViewTest(TestCase):
 
