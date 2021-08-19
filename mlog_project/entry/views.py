@@ -40,7 +40,7 @@ class EntryDetailView(DetailView):
 		context['comment_count'] = Comment.objects.filter(entry=self.kwargs.get('pk')).count()
 		
 		try:
-			context['like_status'] = Like.objects.filter(user__username=self.request.user.username, entry=self.kwargs.get('pk'))
+			context['like_status'] = Like.objects.get(user__username=self.request.user.username, entry=self.kwargs.get('pk'))
 		except ObjectDoesNotExist:
 			context['like_status'] = Like.objects.none()
 
