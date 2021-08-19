@@ -131,6 +131,12 @@ class EntryDetailViewTest(TestCase):
 		print(response.context_data)
 		self.assertEqual(response.context_data['like_status'], like_object)
 		
+	def test_like_status_not_exist(self):
+		like_object = Like.objects.none()
+		request = self.factory.get(reverse('entry:detail', kwargs={'pk':self.entry.id}))
+		request.user = self.user_for_like
+		response = EntryDetailView.as_view()(request, pk=self.entry.id)
+		self.assertQuerysetEqual(response.context_data['like_status'], like_object)
 
 class EntryUpdateViewTest(TestCase):
 
