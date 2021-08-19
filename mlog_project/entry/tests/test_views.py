@@ -1,8 +1,10 @@
+from django.http import response
 from django.template import context
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
 from accounts.models import User
+from musics.models import Song
 
 from utils import utils_for_test
 
@@ -171,3 +173,27 @@ class EntryDeleteViewTest(TestCase):
 		with self.assertTemplateUsed('entry/delete_confirm.html'):
 			response.render()
 '''
+
+
+class EntryListBySongViewTest(TestCase):
+
+	def setUp(self):
+		self.entry = utils_for_test.create_test_entry(
+			title='test title',
+			content='test content',
+			username='testuser',
+			handle='test user',
+			biograph='test biograph',
+			song_name='test song',
+			artist_name='test artist',
+			slug='testartist',
+			genre_name='test genre'
+		)
+
+		self.song = Song.objects.first()
+	
+	def test_list_template(self):
+		response = self.client.get(reverse('entry:entry_list_by_song', kwargs={'pk':self.song.id}))
+		self.assertEqual(response.status_code, 200)
+		self.assertTemplateUsed('entry/entry_list_by_song.html')
+		
