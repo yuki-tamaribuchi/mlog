@@ -1,5 +1,3 @@
-from django.http import response
-from django.template import context
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
@@ -9,7 +7,7 @@ from musics.models import Song
 from utils import utils_for_test
 
 from entry.models import Entry
-from entry.views import EntryCreateView, EntryUpdateView, EntryDetailView, EntryDeleteView
+from entry.views import EntryCreateView, EntryUpdateView, EntryDeleteView
 
 class EntryCreateViewTest(TestCase):
 
@@ -39,7 +37,7 @@ class EntryCreateViewTest(TestCase):
 		self.assertEqual(response)
 	'''
 	
-	def test_create_template(self):
+	def test_template(self):
 		request = self.factory.get(reverse('entry:create'))
 		request.user = self.user
 		response = EntryCreateView.as_view()(request)
@@ -80,7 +78,7 @@ class EntryDetailViewTest(TestCase):
 			genre_name='test genre'
 		)
 
-	def test_detail_template(self):
+	def test_template(self):
 		entry = Entry.objects.first()
 		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
 		self.assertEqual(response.status_code, 200)
@@ -186,7 +184,7 @@ class EntryListBySongViewTest(TestCase):
 
 		self.song = Song.objects.first()
 	
-	def test_list_template(self):
+	def test_template(self):
 		response = self.client.get(reverse('entry:entry_list_by_song', kwargs={'pk':self.song.id}))
 		self.assertEqual(response.status_code, 200)
 		self.assertTemplateUsed('entry/entry_list_by_song.html')
