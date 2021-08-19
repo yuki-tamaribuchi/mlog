@@ -30,13 +30,8 @@ class EntryCreateView(LoginRequiredMixin,CreateView):
 
 
 class EntryDetailView(DetailView):
+	model = Entry
 	template_name = 'entry/detail.html'
-
-	def get_object(self):
-		current_entry = get_object_or_404(Entry, pk=self.kwargs.get('pk'))
-		entry_read_activity.delay(self.kwargs.get('pk'), self.request.user.username)
-
-		return current_entry
 
 
 	def get_context_data(self, **kwargs):
