@@ -66,10 +66,14 @@ class EntryUpdateView(LoginRequiredMixin, UpdateView):
 		raise Http404
 
 class EntryDeleteView(LoginRequiredMixin, DeleteView):
+	model = Entry
 	template_name = 'entry/delete_confirm.html'
 
 	def get_object(self):
-		return Entry.objects.get(writer__username=self.request.user.username, id=self.kwargs.get('pk'))
+		object = super().get_object()
+		if object.writer_id == self.request.user.id:
+			return object
+		raise Http404
 
 	def get_success_url(self):
 		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
