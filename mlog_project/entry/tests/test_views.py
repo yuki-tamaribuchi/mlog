@@ -141,8 +141,6 @@ class EntryUpdateViewTest(TestCase):
 		with self.assertTemplateUsed('entry/entry_form.html'):
 			response.render()
 
-'''
-QUERY DOESN'T MATCH
 
 class EntryDeleteViewTest(TestCase):
 	def setUp(self):
@@ -162,14 +160,13 @@ class EntryDeleteViewTest(TestCase):
 
 		self.factory = RequestFactory()
 
-	def test_create_template(self):
+	def test_template(self):
 		request = self.factory.get(reverse('entry:update', kwargs={'pk':self.entry.id}))
 		request.user = self.user
-		response = EntryDeleteView.as_view()(request, kwargs={'pk':self.entry.id})
+		response = EntryDeleteView.as_view()(request, pk=self.entry.id)
 		self.assertEqual(response.status_code, 200)
 		with self.assertTemplateUsed('entry/delete_confirm.html'):
 			response.render()
-'''
 
 
 class EntryListBySongViewTest(TestCase):
