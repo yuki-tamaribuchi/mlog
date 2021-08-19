@@ -86,26 +86,26 @@ class EntryDetailViewTest(TestCase):
 
 
 
-	def test_context_like_count(self):
+	def test_context_like_count_assertin(self):
 		entry = Entry.objects.first()
 		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
 		context = response.context
 		self.assertIn('like_count', context)
 
-	def test_context_comment_count(self):
+	def test_context_comment_count_assertin(self):
 		entry = Entry.objects.first()
 		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
 		context = response.context
 		self.assertIn('comment_count', context)
 
-	def test_context_like_status(self):
+	def test_context_like_status_assertin(self):
 		entry = Entry.objects.first()
 		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
 		context = response.context
 		self.assertIn('like_status', context)
 
 
-	def test_context_view_count(self):
+	def test_context_view_count_assertin(self):
 		entry = Entry.objects.first()
 		response = self.client.get(reverse('entry:detail', kwargs={'pk':entry.id}))
 		context = response.context
