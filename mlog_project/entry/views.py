@@ -1,5 +1,6 @@
+from django.http.response import Http404, HttpResponseNotAllowed
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
@@ -29,43 +30,42 @@ class EntryCreateView(LoginRequiredMixin,CreateView):
 
 
 class EntryDetailView(DetailView):
+	model = Entry
 	template_name = 'entry/detail.html'
-
-	def get_object(self):
-		current_entry = get_object_or_404(Entry, pk=self.kwargs['pk'])
-		entry_read_activity.delay(self.kwargs['pk'], self.request.user.username)
-
-		return current_entry
 
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['like_count'] = Like.objects.filter(entry=self.kwargs['pk']).count()
-		context['comment_count'] = Comment.objects.filter(entry=self.kwargs['pk']).count()
+		context['like_count'] = Like.objects.filter(entry=self.kwargs.get('pk')).count()
+		context['comment_count'] = Comment.objects.filter(entry=self.kwargs.get('pk')).count()
 		
 		try:
-			context['like_status'] = Like.objects.filter(user__username=self.request.user.username, entry=self.kwargs['pk'])
+			context['like_status'] = Like.objects.get(user__username=self.request.user.username, entry=self.kwargs.get('pk'))
 		except ObjectDoesNotExist:
 			context['like_status'] = Like.objects.none()
 
-		context['view_count'] = EntryReadActivity.objects.filter(entry__id=self.kwargs['pk']).count()
+		context['view_count'] = EntryReadActivity.objects.filter(entry__id=self.kwargs.get('pk')).count()
 
 		return context
 
 
-class EntryUpdateView(LoginRequiredMixin, UpdateView):
+class EntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+	model = Entry
 	form_class = EntryForm
 	template_name = 'entry/entry_form.html'
 
-	def get_object(self):
-		return Entry.objects.get(writer__username=self.request.user.username, id=self.kwargs['pk'])
+	def test_func(self):
+		object = self.get_object()
+		return object.writer.id == self.request.user.id
 
 
-class EntryDeleteView(LoginRequiredMixin, DeleteView):
+class EntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+	model = Entry
 	template_name = 'entry/delete_confirm.html'
 
-	def get_object(self):
-		return Entry.objects.get(writer__username=self.request.user.username, id=self.kwargs['pk'])
+	def test_func(self):
+		object = self.get_object()
+		return object.writer.id == self.request.user.id
 
 	def get_success_url(self):
 		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
@@ -80,11 +80,11 @@ class EntryListBySongView(ListView):
 		qs = super().get_queryset()
 
 		try:
-			return qs.filter(song__id=self.kwargs['pk'])
+			return qs.filter(song__id=self.kwargs.get('pk'))
 		except ObjectDoesNotExist:
 			return qs.none()
 
 	def get_context_data(self, *args, **kwargs) :
 		context = super().get_context_data(**kwargs)
-		context['song'] = get_object_or_404(Song, id=self.kwargs['pk'])
+		context['song'] = get_object_or_404(Song, id=self.kwargs.get('pk'))
 		return context
