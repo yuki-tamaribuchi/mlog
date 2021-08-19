@@ -7,7 +7,7 @@ from accounts.models import User
 from utils import utils_for_test
 
 from entry.models import Entry
-from entry.views import EntryCreateView, EntryUpdateView, EntryDetailView
+from entry.views import EntryCreateView, EntryUpdateView, EntryDetailView, EntryDeleteView
 
 class EntryCreateViewTest(TestCase):
 
@@ -139,5 +139,35 @@ class EntryUpdateViewTest(TestCase):
 		response = EntryUpdateView.as_view()(request, kwargs={'pk':self.entry.id})
 		self.assertEqual(response.status_code, 200)
 		with self.assertTemplateUsed('entry/entry_form.html'):
+			response.render()
+'''
+
+'''
+QUERY DOESN'T MATCH
+
+class EntryDeleteViewTest(TestCase):
+	def setUp(self):
+		self.entry = utils_for_test.create_test_entry(
+			title='test title',
+			content='test content',
+			username='testuser',
+			handle='test user',
+			biograph='test biograph',
+			song_name='test song',
+			artist_name='test artist',
+			slug='testartist',
+			genre_name='test genre'
+		)
+
+		self.user = User.objects.get(username='testuser')
+
+		self.factory = RequestFactory()
+
+	def test_create_template(self):
+		request = self.factory.get(reverse('entry:update', kwargs={'pk':self.entry.id}))
+		request.user = self.user
+		response = EntryDeleteView.as_view()(request, kwargs={'pk':self.entry.id})
+		self.assertEqual(response.status_code, 200)
+		with self.assertTemplateUsed('entry/delete_confirm.html'):
 			response.render()
 '''
