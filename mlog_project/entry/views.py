@@ -1,3 +1,4 @@
+from django.http.response import Http404, HttpResponseNotAllowed
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
@@ -54,12 +55,15 @@ class EntryDetailView(DetailView):
 
 
 class EntryUpdateView(LoginRequiredMixin, UpdateView):
+	model = Entry
 	form_class = EntryForm
 	template_name = 'entry/entry_form.html'
 
 	def get_object(self):
-		return Entry.objects.get(writer__username=self.request.user.username, id=self.kwargs.get('pk'))
-
+		object = super().get_object()
+		if object.writer_id == self.request.user.id:
+			return object
+		raise Http404
 
 class EntryDeleteView(LoginRequiredMixin, DeleteView):
 	template_name = 'entry/delete_confirm.html'
