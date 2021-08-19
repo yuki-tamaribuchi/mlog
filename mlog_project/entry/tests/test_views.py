@@ -114,8 +114,6 @@ class EntryDetailViewTest(TestCase):
 		self.assertIn('view_count', context)
 
 
-'''
-QUERY DOESN'T MATCH
 
 class EntryUpdateViewTest(TestCase):
 
@@ -133,17 +131,15 @@ class EntryUpdateViewTest(TestCase):
 		)
 
 		self.user = User.objects.get(username='testuser')
-
 		self.factory = RequestFactory()
 
-	def test_create_template(self):
+	def test_template(self):
 		request = self.factory.get(reverse('entry:update', kwargs={'pk':self.entry.id}))
 		request.user = self.user
-		response = EntryUpdateView.as_view()(request, kwargs={'pk':self.entry.id})
+		response = EntryUpdateView.as_view()(request, pk=self.entry.id)
 		self.assertEqual(response.status_code, 200)
 		with self.assertTemplateUsed('entry/entry_form.html'):
 			response.render()
-'''
 
 '''
 QUERY DOESN'T MATCH
