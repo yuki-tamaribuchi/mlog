@@ -123,3 +123,9 @@ class ArtistDetailViewTest(TestCase):
 			response = self.client.get(reverse('musics:song_detail', kwargs={'pk':song.id}))
 			self.assertEqual(response.status_code, 200)
 			self.assertTemplateUsed(response, 'musics/song_detail.html')
+
+		def test_entries_in_context(self):
+			response = self.client.get(reverse('musics:song_detail', kwargs={'pk':self.song.id}))
+			context = response.context
+			self.assertEqual(response.status_code, 200)
+			self.assertIn('entries', context)
