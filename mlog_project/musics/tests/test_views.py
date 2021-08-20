@@ -86,3 +86,11 @@ class ArtistDetailViewTest(TestCase):
 			song = Song.objects.first()
 			self.assertEqual(response.status_code, 302)
 			self.assertRedirects(response, reverse('musics:song_detail', kwargs={'pk':song.id}))
+
+	
+	class ArtistCreateViewTest(TestCase):
+
+		def test_template(self):
+			response = self.client.get(reverse('musics:artist_create'))
+			self.assertEqual(response.status_code, 200)
+			self.assertTemplateUsed(response, 'musics/artist_forms.html')
