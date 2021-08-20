@@ -101,7 +101,7 @@ class ArtistCreateViewTest(TestCase):
 			data={
 				'artist_name':'test aritst',
 				'slug':'testartist',
-				'genre':genre
+				'genre':genre.id
 			}
 		)
 		artist = Artist.objects.first()
