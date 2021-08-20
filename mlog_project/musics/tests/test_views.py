@@ -3,6 +3,8 @@ from django.urls import reverse
 
 from utils import utils_for_test
 
+from musics.views import ArtistDetailView
+
 
 class ArtistDetailViewTest(TestCase):
 
@@ -41,3 +43,17 @@ class ArtistDetailViewTest(TestCase):
 		context = response.context
 		self.assertEqual(response.status_code, 200)
 		self.assertNotIn('fav_status', context)
+
+	def test_fav_status_in_context_loggedin(self):
+		user = utils_for_test.create_test_user(
+			username='testuser',
+			handle='test user',
+			biograph='test biograph'
+		)
+		factory = RequestFactory()
+		request = factory.get(reverse('musics:artist_detail', kwargs={'slug':self.artist.slug}))
+		request.user = user
+		response = ArtistDetailView.as_view()(request, slug=self.artist.slug)
+		context = response.context_data
+		self.assertEqual(response.status_code, 200)
+		self.assertIn('fav_status', context)
