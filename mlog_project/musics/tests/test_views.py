@@ -1,10 +1,9 @@
-from django.http import response
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
 from utils import utils_for_test
 
-from musics.models import Genre, Song
+from musics.models import Genre, Song, Artist
 from musics.views import ArtistDetailView
 
 
@@ -94,3 +93,17 @@ class ArtistDetailViewTest(TestCase):
 			response = self.client.get(reverse('musics:artist_create'))
 			self.assertEqual(response.status_code, 200)
 			self.assertTemplateUsed(response, 'musics/artist_forms.html')
+
+		def test_success_url(self):
+			genre = utils_for_test.create_test_genre('test genre')
+			response = self.client.post(
+				path=reverse('musics:artist_create'),
+				data={
+					'artist_name':'test aritst',
+					'slug':'testartist',
+					'genre':genre
+				}
+			)
+			artist = Artist.objects.first()
+			self.assertEqual(response.status_code, 302)
+			self.assertRedirects(response, reverse('musics:artist_detail', kwargs={'slug':artist.slug}))
