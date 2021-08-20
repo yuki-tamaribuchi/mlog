@@ -120,7 +120,7 @@ class ArtistDetailViewTest(TestCase):
 			)
 
 		def test_template(self):
-			response = self.client.get(reverse('musics:song_detail', kwargs={'pk':song.id}))
+			response = self.client.get(reverse('musics:song_detail', kwargs={'pk':self.song.id}))
 			self.assertEqual(response.status_code, 200)
 			self.assertTemplateUsed(response, 'musics/song_detail.html')
 
