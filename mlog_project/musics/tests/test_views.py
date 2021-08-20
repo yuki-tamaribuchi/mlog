@@ -62,7 +62,7 @@ class ArtistDetailViewTest(TestCase):
 
 	
 class SongCreateViewTest(TestCase):
-	
+
 	def test_template(self):
 		response = self.client.get(reverse('musics:song_create'))
 		self.assertEqual(response.status_code, 200)
@@ -92,7 +92,7 @@ class ArtistCreateViewTest(TestCase):
 	def test_template(self):
 		response = self.client.get(reverse('musics:artist_create'))
 		self.assertEqual(response.status_code, 200)
-		self.assertTemplateUsed(response, 'musics/artist_forms.html')
+		self.assertTemplateUsed(response, 'musics/artist_form.html')
 
 	def test_success_url(self):
 		genre = utils_for_test.create_test_genre('test genre')
