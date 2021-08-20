@@ -28,7 +28,7 @@ jobs:
               docker cp . docker_app_1:.
       - run: 
           name: Test
-          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run --name app_test app bash -c "sleep 60 && coverage run --source='mlog_project' mlog_project/manage.py test --noinput mlog_project/"
+          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run --name app_test app bash -c "sleep 60 && coverage run --source='mlog_project' mlog_project/manage.py test --noinput mlog_project/ && coverage html"
 #      - run:
 #          name: Copy test results from container
 #          command: |
@@ -40,9 +40,9 @@ jobs:
       - run:
           name: Copy htmlcov
           command: |
-              docker cp app_test:/mlog_project/htmlcov mlog_project/htmlcov
+              docker cp app_test:/mlog_project/htmlcov/ mlog_project/htmlcov/
       - store_artifacts:
-          path: mlog_project/htmlcov
+          path: mlog_project/htmlcov/
       - run: 
           name: Down containers
           command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
