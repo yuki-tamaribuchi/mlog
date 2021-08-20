@@ -1,3 +1,4 @@
+from django.http import response
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
@@ -129,3 +130,11 @@ class ArtistDetailViewTest(TestCase):
 			context = response.context
 			self.assertEqual(response.status_code, 200)
 			self.assertIn('entries', context)
+
+
+	class GenreCreateViewTest(TestCase):
+
+		def test_template(self):
+			response = self.client.get(reverse('musics:genre_create'))
+			self.assertEqual(response.status_code, 200)
+			self.assertTemplateUsed(response, 'musics/genre_form.html')
