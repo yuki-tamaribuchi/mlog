@@ -12,9 +12,6 @@ jobs:
 #          name: Make Directory for result
 #          command: mkdir mlog_project/result/
       - run:
-          name: Make dir for htmlcov
-          command: mkdir mlog_project/htmlcov
-      - run:
           name: Set environment variables
           command: |
               echo $MLOG_OAUTH_GOOGLE_CLIENT_ID
@@ -40,9 +37,9 @@ jobs:
       - run:
           name: Copy htmlcov
           command: |
-              docker cp app_test:/mlog_project/htmlcov/ mlog_project/htmlcov/
+              docker cp app_test:htmlcov/ htmlcov/
       - store_artifacts:
-          path: mlog_project/htmlcov/
+          path: htmlcov/
       - run: 
           name: Down containers
           command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
