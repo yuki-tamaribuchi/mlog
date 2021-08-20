@@ -79,8 +79,8 @@ class SongCreateViewTest(TestCase):
 			path=reverse('musics:song_create'),
 			data={
 				'song_name':'test song',
-				'artist':artist,
-				'genre':genre
+				'artist':artist.id,
+				'genre':genre.id
 				}
 			)
 		song = Song.objects.first()
