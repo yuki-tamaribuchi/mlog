@@ -8,9 +8,9 @@ jobs:
       - run: set -x
       - setup_remote_docker
       - checkout
-      - run:
-          name: Make Directory for result
-          command: mkdir mlog_project/result/
+#      - run:
+#          name: Make Directory for result
+#          command: mkdir mlog_project/result/
       - run:
           name: Set environment variables
           command: |
@@ -25,7 +25,7 @@ jobs:
               docker cp . docker_app_1:.
       - run: 
           name: Test
-          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run --name app_test app bash -c "sleep 60 && python mlog_project/manage.py test --noinput mlog_project/"
+          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run --name app_test app bash -c "sleep 60 && coverage run --source='mlog_project' mlog_project/manage.py test --noinput mlog_project/ && coverage html"
 #      - run:
 #          name: Copy test results from container
 #          command: |
@@ -33,6 +33,13 @@ jobs:
 #      - run: ls -la mlog_project/result
 #      - store_test_results:
 #          path: mlog_project/result
+
+      - run:
+          name: Copy htmlcov
+          command: |
+              docker cp app_test:htmlcov/ htmlcov/
+      - store_artifacts:
+          path: htmlcov/
       - run: 
           name: Down containers
           command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down

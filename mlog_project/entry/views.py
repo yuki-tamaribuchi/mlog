@@ -58,6 +58,9 @@ class EntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 		object = self.get_object()
 		return object.writer.id == self.request.user.id
 
+	def get_success_url(self):
+		return reverse('entry:detail', kwargs={'pk':self.object.id})
+
 
 class EntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 	model = Entry

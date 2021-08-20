@@ -48,8 +48,7 @@ class EntryCreateViewTest(TestCase):
 		with self.assertTemplateUsed('entry/entry_form.html'):
 			response.render()
 
-	'''
-	def test_create_success_url(self):
+	def test_success_url(self):
 		request = self.factory.post(
 			path=reverse('entry:create'),
 			data={
@@ -61,9 +60,10 @@ class EntryCreateViewTest(TestCase):
 		)
 		request.user = self.user
 		response = EntryCreateView.as_view()(request)
+		response.client = self.client
 		entry = Entry.objects.first()
 		self.assertEqual(response.status_code, 302)
-	'''
+		self.assertRedirects(response, reverse('entry:detail', kwargs={'pk':entry.id}))
 
 
 class EntryDetailViewTest(TestCase):
@@ -181,6 +181,28 @@ class EntryUpdateViewTest(TestCase):
 		with self.assertTemplateUsed('entry/entry_form.html'):
 			response.render()
 
+	'''
+	def test_success_url(self):
+		entry = Entry.objects.first()
+		request = self.factory.get(reverse('entry:update', kwargs={'pk':entry.id}))
+		request.user = self.user
+		response = EntryUpdateView.as_view()(request, pk=entry.id)
+		response.client = self.client
+		entry_in_response = response.context_data['entry']
+		request = self.factory.post(
+			path=reverse('entry:update', kwargs={'pk':entry_in_response.id}),
+			data={
+				'title':entry_in_response.title,
+				'content':'canged content',
+				'song':entry_in_response.song,
+				'writer':entry_in_response.writer,
+			}
+		)
+		request.user = self.user
+		response = EntryUpdateView.as_view()(request, pk=entry_in_response.id)
+		self.assertEqual(response.status_code, 200)
+	'''
+	
 
 class EntryDeleteViewTest(TestCase):
 	def setUp(self):
