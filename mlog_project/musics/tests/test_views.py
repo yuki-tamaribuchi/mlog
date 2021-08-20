@@ -61,90 +61,86 @@ class ArtistDetailViewTest(TestCase):
 		self.assertIn('fav_status', context)
 
 	
-	class SongCreateViewTest(TestCase):
-
-		def test_template(self):
-			response = self.client.get(reverse('musics:song_create'))
-			self.assertEqual(response.status_code, 200)
-			self.assertTemplateUsed('musics/song_form.html')
-
-		def test_success_url(self):
-			artist = utils_for_test.create_test_artist(
-				artist_name='test artist',
-				slug='testartist',
-				genre_name='test genre'
-			)
-			genre = Genre.objects.first()
-			response = self.client.post(
-				path=reverse('musics:song_create'),
-				data={
-					'song_name':'test song',
-					'artist':artist,
-					'genre':genre
-					}
-				)
-			song = Song.objects.first()
-			self.assertEqual(response.status_code, 302)
-			self.assertRedirects(response, reverse('musics:song_detail', kwargs={'pk':song.id}))
-
+class SongCreateViewTest(TestCase):
 	
-	class ArtistCreateViewTest(TestCase):
+	def test_template(self):
+		response = self.client.get(reverse('musics:song_create'))
+		self.assertEqual(response.status_code, 200)
+		self.assertTemplateUsed('musics/song_form.html')
 
-		def test_template(self):
-			response = self.client.get(reverse('musics:artist_create'))
-			self.assertEqual(response.status_code, 200)
-			self.assertTemplateUsed(response, 'musics/artist_forms.html')
-
-		def test_success_url(self):
-			genre = utils_for_test.create_test_genre('test genre')
-			response = self.client.post(
-				path=reverse('musics:artist_create'),
-				data={
-					'artist_name':'test aritst',
-					'slug':'testartist',
-					'genre':genre
+	def test_success_url(self):
+		artist = utils_for_test.create_test_artist(
+			artist_name='test artist',
+			slug='testartist',
+			genre_name='test genre'
+		)
+		genre = Genre.objects.first()
+		response = self.client.post(
+			path=reverse('musics:song_create'),
+			data={
+				'song_name':'test song',
+				'artist':artist,
+				'genre':genre
 				}
 			)
-			artist = Artist.objects.first()
-			self.assertEqual(response.status_code, 302)
-			self.assertRedirects(response, reverse('musics:artist_detail', kwargs={'slug':artist.slug}))
+		song = Song.objects.first()
+		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, reverse('musics:song_detail', kwargs={'pk':song.id}))
 
 
-	class SongDetailViewTest(TestCase):
+class ArtistCreateViewTest(TestCase):
+	def test_template(self):
+		response = self.client.get(reverse('musics:artist_create'))
+		self.assertEqual(response.status_code, 200)
+		self.assertTemplateUsed(response, 'musics/artist_forms.html')
 
-		def setUp(self):
-			self.song = utils_for_test.create_test_song(
-				song_name='test song',
-				artist_name='test artist',
-				slug='testartist',
-				genre_name='test genre'
-			)
-
-		def test_template(self):
-			response = self.client.get(reverse('musics:song_detail', kwargs={'pk':self.song.id}))
-			self.assertEqual(response.status_code, 200)
-			self.assertTemplateUsed(response, 'musics/song_detail.html')
-
-		def test_entries_in_context(self):
-			response = self.client.get(reverse('musics:song_detail', kwargs={'pk':self.song.id}))
-			context = response.context
-			self.assertEqual(response.status_code, 200)
-			self.assertIn('entries', context)
+	def test_success_url(self):
+		genre = utils_for_test.create_test_genre('test genre')
+		response = self.client.post(
+			path=reverse('musics:artist_create'),
+			data={
+				'artist_name':'test aritst',
+				'slug':'testartist',
+				'genre':genre
+			}
+		)
+		artist = Artist.objects.first()
+		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, reverse('musics:artist_detail', kwargs={'slug':artist.slug}))
 
 
-	class GenreCreateViewTest(TestCase):
+class SongDetailViewTest(TestCase):
+	def setUp(self):
+		self.song = utils_for_test.create_test_song(
+			song_name='test song',
+			artist_name='test artist',
+			slug='testartist',
+			genre_name='test genre'
+		)
 
-		def test_template(self):
-			response = self.client.get(reverse('musics:genre_create'))
-			self.assertEqual(response.status_code, 200)
-			self.assertTemplateUsed(response, 'musics/genre_form.html')
+	def test_template(self):
+		response = self.client.get(reverse('musics:song_detail', kwargs={'pk':self.song.id}))
+		self.assertEqual(response.status_code, 200)
+		self.assertTemplateUsed(response, 'musics/song_detail.html')
 
-		def test_success_url(self):
-			response = self.client.post(
-				path=reverse('musics:genre_create'),
-				data={
-					'genre_name':'test genre'
-				}
-			)
-			self.assertEqual(response.status_code, 302)
-			self.assertRedirects(response, reverse('entry:create'))
+	def test_entries_in_context(self):
+		response = self.client.get(reverse('musics:song_detail', kwargs={'pk':self.song.id}))
+		context = response.context
+		self.assertEqual(response.status_code, 200)
+		self.assertIn('entries', context)
+
+
+class GenreCreateViewTest(TestCase):
+	def test_template(self):
+		response = self.client.get(reverse('musics:genre_create'))
+		self.assertEqual(response.status_code, 200)
+		self.assertTemplateUsed(response, 'musics/genre_form.html')
+	def test_success_url(self):
+		response = self.client.post(
+			path=reverse('musics:genre_create'),
+			data={
+				'genre_name':'test genre'
+			}
+		)
+		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, reverse('entry:create'))
