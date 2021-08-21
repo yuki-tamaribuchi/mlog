@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
 
     'sslserver',
+    'debug_toolbar',
 ]
 
 SITE_ID = 1
@@ -83,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'csp.middleware.CSPMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'mlog_project.urls'
@@ -340,3 +342,8 @@ CSP_MEDIA_SRC = [
 
 SPOTIFY_CLIENT_ID = os.environ.get('MLOG_SPOTIFY_CLIENT_ID')
 SPOTIFY_CLIENT_SECRET = os.environ.get('MLOG_SPOTIFY_CLIENT_SECRET')
+
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
