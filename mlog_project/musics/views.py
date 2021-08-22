@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import DetailView, CreateView, ListView, UpdateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 
 from entry.models import Entry
 from favorite_artists.models import FavoriteArtist
@@ -31,7 +31,12 @@ class ArtistDetailView(DetailView):
 			).order_by(
 				'song_name'
 				).prefetch_related(
-					'artist',
+					Prefetch(
+						'artist',
+						queryset=Artist.objects.filter(
+							Q(belong_to__slug=self.kwargs['slug']) | Q(slug=self.kwargs['slug'])
+						)
+					)
 				)[:4]
 
 		if self.request.user.username:
