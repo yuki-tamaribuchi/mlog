@@ -89,7 +89,12 @@ class SongDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.filter(song=self.kwargs['pk'])[:3]
+		context['entries'] = Entry.objects.filter(
+			song=self.kwargs['pk']
+			).select_related(
+				'song',
+				'writer'
+			)[:3]
 		return context
 
 
