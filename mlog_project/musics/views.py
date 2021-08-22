@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import DetailView, CreateView, ListView, UpdateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
+from django.db.models import Prefetch, Q
 
 from entry.models import Entry
 from favorite_artists.models import FavoriteArtist
@@ -21,11 +22,29 @@ class ArtistDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.filter(song__artist__slug=self.kwargs['slug'])
+
+		context['entries'] = Entry.objects.filter(
+			song__artist__slug=self.kwargs['slug']
+			).select_related(
+				'writer',
+				'song'
+			)
+
 
 		context['members'] = Artist.objects.filter(belong_to__slug=self.kwargs['slug'])
 
-		context['song_list'] = Song.objects.filter(artist__slug=self.kwargs['slug']).order_by('song_name')[:4]
+		context['song_list'] = Song.objects.filter(
+			artist__slug=self.kwargs['slug']
+			).order_by(
+				'song_name'
+				).prefetch_related(
+					Prefetch(
+						'artist',
+						queryset=Artist.objects.filter(
+							Q(belong_to__slug=self.kwargs['slug']) | Q(slug=self.kwargs['slug'])
+						)
+					)
+				)[:4]
 
 		if self.request.user.username:
 			try:
@@ -57,7 +76,11 @@ class SongDetailView(DetailView):
 	template_name = 'musics/song_detail.html'
 
 	def get_object(self):
-		current_song = Song.objects.get(pk=self.kwargs['pk'])
+		current_song = Song.objects.prefetch_related(
+			'artist'
+		).get(
+			pk=self.kwargs['pk']
+		)
 
 		song_checked_activity.delay(self.kwargs['pk'], self.request.user.username)
 
