@@ -83,7 +83,7 @@ class EntryListBySongView(ListView):
 		qs = super().get_queryset()
 
 		try:
-			return qs.select_related('writer').filter(song__id=self.kwargs.get('pk'))
+			return qs.select_related('writer', 'song').filter(song__id=self.kwargs.get('pk'))
 		except ObjectDoesNotExist:
 			return qs.none()
 
