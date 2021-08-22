@@ -45,7 +45,7 @@ class EntrysLikeListView(ListView):
 
 
 class UsersLikeListView(ListView):
-	model = Like
+	model = Entry
 	template_name = 'likes/user_list.html'
 
 	def get_queryset(self):
