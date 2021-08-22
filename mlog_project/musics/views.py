@@ -76,7 +76,11 @@ class SongDetailView(DetailView):
 	template_name = 'musics/song_detail.html'
 
 	def get_object(self):
-		current_song = Song.objects.get(pk=self.kwargs['pk'])
+		current_song = Song.objects.prefetch_related(
+			'artist'
+		).get(
+			pk=self.kwargs['pk']
+		)
 
 		song_checked_activity.delay(self.kwargs['pk'], self.request.user.username)
 
