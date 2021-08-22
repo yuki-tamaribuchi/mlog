@@ -22,7 +22,14 @@ class ArtistDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.filter(song__artist__slug=self.kwargs['slug']).select_related('writer', 'song')
+
+		context['entries'] = Entry.objects.filter(
+			song__artist__slug=self.kwargs['slug']
+			).select_related(
+				'writer',
+				'song'
+			)
+
 
 		context['members'] = Artist.objects.filter(belong_to__slug=self.kwargs['slug'])
 
