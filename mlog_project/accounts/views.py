@@ -86,7 +86,7 @@ class UserEntryListView(ListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		return qs.select_related('writer', 'song').filter(writer__username=self.kwargs['username']).order_by('-id')
+		return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__username=self.kwargs['username']).order_by('-id')
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
