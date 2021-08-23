@@ -54,7 +54,7 @@ class UserDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.select_related('writer', 'song').filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
+		context['entries'] = Entry.objects.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
 		context['follow_count'] = Follow.objects.filter(user__username=self.kwargs['username']).count()
 		context['follower_count'] = Follow.objects.filter(follower__username=self.kwargs['username']).count()
 		context['liked_entry_count'] = Like.objects.filter(user__username=self.kwargs['username']).count()
