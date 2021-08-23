@@ -37,6 +37,6 @@ class TimelineView(LoginRequiredMixin, ListView):
 		qs = super().get_queryset()
 		follows = Follow.objects.filter(user__username=self.request.user.username).values('follower__username')
 		try:
-			return qs.filter(writer__username__in=follows).order_by('-id')
+			return qs.select_related('song' ,'writer').prefetch_related('song__artist').filter(writer__username__in=follows).order_by('-id')
 		except ObjectDoesNotExist:
 			return qs.none()
