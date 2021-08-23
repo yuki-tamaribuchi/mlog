@@ -23,7 +23,7 @@ class TopView(ListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 		try:
-			return qs.all().order_by('-id')
+			return qs.select_related('writer', 'song').prefetch_related('song__artist').all().order_by('-id')
 		except ObjectDoesNotExist:
 			return qs.none()
 
