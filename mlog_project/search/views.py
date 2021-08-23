@@ -39,7 +39,7 @@ class SongSearchListView(BaseSeachListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 
-		return qs.filter(
+		return qs.prefetch_related('artist').filter(
 			Q(song_name__icontains = self.keyword)
 		)
 
