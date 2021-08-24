@@ -37,9 +37,7 @@
 		<div class="row mt-5">
 			<h2>投稿</h2>
 			{% if entries %}
-			{% for entry in entries %}
-			{% include 'common_templates/entry_card_without_writer.html' %}
-			{% endfor %}
+				{% include 'common_templates/entry_card_without_writer.html' with entry_list=entries %}
 			<p><a href="{% url 'accounts:userentrylist' detail_user.username %}">もっと見る</a></p>
 			{% else %}
 			表示する記事がありません。

@@ -1,13 +1,17 @@
-<div class="card m-3 entry-list-card text-center">
-	<div class="card-body">
-		<div class="row">
-			<div class="col">
-				<a href="{% url 'entry:detail' entry.id %}"><h4 class="card-title">{{entry.title}}</h4></a>
-			</div>
-			<div class="col">
-				<p>Song:<a href="{% url 'musics:song_detail' entry.song.id %}" class="card-link">{{entry.song.song_name}}</a></p>
-				<p>Artist:{% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.slug %}" class="card-link">{{artist.artist_name}} </a>{% endfor %}</p>
+{% for entry in entry_list %}
+	<div class="col-lg-4 col-md-6 col-sm-12">
+		<div class="card m-3 entry-list-card text-center">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-lg-6 col-sm-12 my-auto">
+						<a href="{% url 'entry:detail' entry.id %}"><h4 class="card-title">{{entry.title}}</h4></a>
+					</div>
+					<div class="col-lg-6 col-sm-12 my-auto">
+						<p>Song:<a href="{% url 'musics:song_detail' entry.song.id %}" class="card-link">{{entry.song.song_name}}</a></p>
+						<p>Artist:{% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.slug %}" class="card-link">{{artist.artist_name}} </a>{% endfor %}</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>	
+{% endfor %}
