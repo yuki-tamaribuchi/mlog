@@ -31,7 +31,8 @@ DEBUG = os.environ.get('MLOG_DEBUG_STATE', False)
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '0.0.0.0'
+    '0.0.0.0',
+    '192.168.11.13'
 ]
 
 
