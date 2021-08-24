@@ -40,12 +40,7 @@ class ArtistDetailView(DetailView):
 			).order_by(
 				'song_name'
 				).prefetch_related(
-					Prefetch(
-						'artist',
-						queryset=Artist.objects.filter(
-							Q(belong_to__slug=self.kwargs['slug']) | Q(slug=self.kwargs['slug'])
-						)
-					)
+					'artist'
 				)[:4]
 
 		if self.request.user.username:
