@@ -28,6 +28,8 @@ class ArtistDetailView(DetailView):
 			).select_related(
 				'writer',
 				'song'
+			).prefetch_related(
+				'song__artist'
 			)
 
 
