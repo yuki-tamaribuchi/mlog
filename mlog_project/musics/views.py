@@ -91,6 +91,8 @@ class SongDetailView(DetailView):
 			).select_related(
 				'song',
 				'writer'
+			).prefetch_related(
+				'song__artist',
 			)[:3]
 		return context
 
