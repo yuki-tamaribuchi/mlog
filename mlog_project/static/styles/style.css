@@ -16,7 +16,7 @@ body {
 }
 
 .song-card-with-artist {
-	height: 15rem;
+	
 }
 
 .artist-card {
@@ -181,4 +181,9 @@ body {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+}
+
+.artwork-in-song-card {
+	width: 70%;
+	height: auto;
 }
