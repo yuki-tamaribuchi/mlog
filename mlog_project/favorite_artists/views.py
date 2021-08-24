@@ -31,7 +31,7 @@ class FavoriteArtistProcess(LoginRequiredMixin,View):
 
 class UserListByFavoritedArtistView(ListView):
 	model = User
-	template_name = 'favorite_artists/artistfavoriteuserlist.html'
+	template_name = 'favorite_artists/user_list_by_favorited_artist.html'
 	context_object_name = 'fav_users'
 
 	def get_queryset(self):
