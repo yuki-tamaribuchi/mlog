@@ -57,6 +57,7 @@
 		<h2>曲一覧</h2>
 		{% if song_list %}
 			{% include 'common_templates/song_card_with_artist.html' %}
+			<a href="{% url 'musics:song_by_artist' artist.slug %}">もっと見る</a>
 		{% else %}
 		<p>曲はありません。</p>
 		{% endif %}
