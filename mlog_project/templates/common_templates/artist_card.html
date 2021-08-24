@@ -1,9 +1,9 @@
-<div class="row">
-	{% for artist in artist_list %}
-	<div class="card text-center artist-card">
-		<div class="card-body">
-			<a href="{% url 'musics:artist_detail' artist.slug %}" class="stretched-link text-decoration-none">{{artist.artist_name}}</a>
+{% for artist in artist_list %}
+	<div class="col-lg-2 col-md-4 col-sm-6">
+		<div class="card text-center artist-card">
+			<div class="card-body">
+				<a href="{% url 'musics:artist_detail' artist.slug %}" class="stretched-link text-decoration-none">{{artist.artist_name}}</a>
+			</div>
 		</div>
 	</div>
-	{% endfor %}
-</div>
+{% endfor %}
