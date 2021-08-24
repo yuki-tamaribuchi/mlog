@@ -45,7 +45,7 @@ class UserListByFavoritedArtistView(ListView):
 		return context
 
 
-class UserFavoriteArtistListView(ListView):
+class UserFavoritesArtistListView(ListView):
 	model = Artist
 	template_name = 'favorite_artists/userfavoriteartistlist.html'
 
