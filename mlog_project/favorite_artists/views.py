@@ -29,7 +29,7 @@ class FavoriteArtistProcess(LoginRequiredMixin,View):
 		return redirect(self.request.META['HTTP_REFERER'])
 
 
-class ArtistFavoriteUserListView(ListView):
+class UserListByFavoritedArtistView(ListView):
 	model = User
 	template_name = 'favorite_artists/artistfavoriteuserlist.html'
 	context_object_name = 'fav_users'
