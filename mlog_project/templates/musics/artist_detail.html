@@ -39,7 +39,7 @@
 			<input type="hidden" value="{{artist.slug}}" name="slug">
 			<input type="submit" value="{% if fav_status %}お気に入り解除{% else %}お気に入りに登録{% endif %}">
 		</form>
-		<p><a href="{% url 'favorite_artists:userfavorite' artist.slug %}">お気に入りに登録しているユーザ一覧</a></p>
+		<p><a href="{% url 'favorite_artists:user_list_by_favorited_artist' artist.slug %}">お気に入りに登録しているユーザ一覧</a></p>
 	</div>
 
 	<div class="row mt-5">
