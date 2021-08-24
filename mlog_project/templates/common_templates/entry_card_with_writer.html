@@ -1,17 +1,19 @@
-<div class="col">
-	<div class="card m-3 entry-list-card text-center mx-auto">
-		<div class="card-body">
-			<div class="row">
-				<div class="col">
-					<a href="{% url 'entry:detail' entry.id %}"><h4 class="card-title">{{entry.title}}</h4></a>
-					<a href="{% url 'accounts:detail' entry.writer.username %}"><img src="{{MEDIA_URL}}{{entry.writer.profile_image}}"  class="profile-image profile-image-size-xs" /><h6 class="card-subtitle">{{entry.writer.handle}} ({{entry.writer.username}})</h6></a>
-				</div>
-			
-				<div class="col">
-					<p>Song:<a href="{% url 'musics:song_detail' entry.song.id %}" class="card-link">{{entry.song.song_name}}</a></p>
-					<p>Artist:{% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.slug %}" class="card-link">{{artist.artist_name}} </a>{% endfor %}</p>
+{% for entry in entry_list %}
+	<div class="col-lg-4 col-md-6 col-sm-12">
+		<div class="card m-3 entry-list-card text-center mx-auto">
+			<div class="card-body">
+				<div class="row">
+					<div class="col">
+						<a href="{% url 'entry:detail' entry.id %}"><h4 class="card-title">{{entry.title}}</h4></a>
+						<a href="{% url 'accounts:detail' entry.writer.username %}"><img src="{{MEDIA_URL}}{{entry.writer.profile_image}}"  class="profile-image profile-image-size-xs" /><h6 class="card-subtitle">{{entry.writer.handle}} ({{entry.writer.username}})</h6></a>
+					</div>
+
+					<div class="col">
+						<p>Song:<a href="{% url 'musics:song_detail' entry.song.id %}" class="card-link">{{entry.song.song_name}}</a></p>
+						<p>Artist:{% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.slug %}" class="card-link">{{artist.artist_name}} </a>{% endfor %}</p>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+{% endfor %}

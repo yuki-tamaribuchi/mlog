@@ -45,9 +45,7 @@
 	<div class="row mt-5">
 		<h2>記事一覧</h2>
 		{% if entries %}
-			{% for entry in entries %}
-			{% include 'common_templates/entry_card_with_writer.html' %}	
-			{% endfor %}
+			{% include 'common_templates/entry_card_with_writer.html' with entry_list=entries %}
 		{% else %}
 		<p>記事はありません。</p>
 		{% endif %}
