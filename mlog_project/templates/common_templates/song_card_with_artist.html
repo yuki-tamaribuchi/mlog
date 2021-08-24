@@ -1,24 +1,20 @@
-<div class="row">
-	{% for song in song_list %}
-		<div class="col-3">
-			<div class="card text-center m-3 song-card-with-artist">
-				<div class="card-body">
-					<div class="col">
-						<div class="row mx-auto">
-							<h3><a href="{% url 'musics:song_detail' song.id %}" class="stretched-link text-decoration-none">{{song.song_name}}</a></h3>
-						</div>
-						<div class="row">
-							<ul style="list-style-type:none;"">
-							{% for song_artist in song.artist.all  %}
-							<li>{{song_artist.artist_name}}</li>
-							{% endfor %}
-							</ul>
-						</div>
-
+{% for song in song_list %}
+	<div class="col-lg-3 col-md-6 col-sm-12">
+		<div class="card text-center m-3 song-card-with-artist">
+			<div class="card-body">
+				<div class="col">
+					<div class="row mx-auto">
+						<h3><a href="{% url 'musics:song_detail' song.id %}" class="stretched-link text-decoration-none">{{song.song_name}}</a></h3>
 					</div>
-					
+					<div class="row">
+						<ul style="list-style-type:none;"">
+						{% for song_artist in song.artist.all  %}
+						<li>{{song_artist.artist_name}}</li>
+						{% endfor %}
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
-	{% endfor %}
 	</div>
+{% endfor %}

@@ -5,7 +5,7 @@
 	<div class="row mt-5">
 		<h2>{{artist.artist_name}}の曲一覧</h2>
 		{% if song_list %}
-		<div class="col">
+		<div class="row">
 			{% include 'common_templates/song_card_with_artist.html' %}
 		</div>
 		{% else %}
