@@ -47,7 +47,7 @@ class UserListByFavoritedArtistView(ListView):
 
 class UserFavoritesArtistListView(ListView):
 	model = Artist
-	template_name = 'favorite_artists/userfavoriteartistlist.html'
+	template_name = 'favorite_artists/user_favorites_artist_list.html'
 
 	def get_queryset(self):
 		qs = super().get_queryset()
