@@ -258,7 +258,7 @@ class EntryListBySongViewTest(TestCase):
 	def test_template(self):
 		response = self.client.get(reverse('entry:entry_list_by_song', kwargs={'pk':self.song.id}))
 		self.assertEqual(response.status_code, 200)
-		self.assertTemplateUsed('entry/entry_list_by_song.html')
+		self.assertTemplateUsed('entry/entry_list.html')
 
 	def test_object_does_not_exist(self):
 		object = Entry.objects.none()
