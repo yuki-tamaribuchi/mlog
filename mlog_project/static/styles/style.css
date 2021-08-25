@@ -31,7 +31,7 @@ body {
 	border-radius: 50%;
 }
 
-.like-btn {
+#like-btn {
 	background-color: Transparent;
 	border: none;
 	border-radius: 50%;
