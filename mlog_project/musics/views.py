@@ -74,19 +74,12 @@ class ArtistCreateView(CreateView):
 
 
 class SongDetailView(DetailView):
+	model = Song
 	template_name = 'musics/song_detail.html'
 
-	def get_object(self):
-		current_song = Song.objects.prefetch_related(
-			'artist'
-		).get(
-			pk=self.kwargs['pk']
-		)
-
-		song_checked_activity.delay(self.kwargs['pk'], self.request.user.username)
-
-		return current_song
-
+	def get(self, request, *args, **kwargs):
+		song_checked_activity.delay(self.kwargs['pk'], request.user.username)
+		return super().get(request, *args, **kwargs)
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
