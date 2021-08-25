@@ -17,11 +17,7 @@
 		</div>
 		<div class="row my-4">
 			<div class="col">
-				<form action="{% url 'likes:process' %}" method="POST">
-					{% csrf_token %}
-					<input type="hidden" name='pk' value="{{entry.id}}">
-					<button type="submit" class="like-btn"><i class="fa fa-heart {% if like_status %}like-true{% else %}like-false{% endif %}"></i></button>
-				</form>				
+				<button type="submit" id="like-btn"><i class="fa fa-heart {% if like_status %}like-true{% else %}like-false{% endif %}"></i></button>			
 			</div>
 		</div>
 		
@@ -76,4 +72,8 @@
 {% load static %}
 <script src="{% static 'js/howler-handler.js' %}" spotify_preview_url="{{entry.song.spotify_preview_url}}"></script>
 {% endif %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% load static %}
+<script src="{% static 'js/ajax_csrf.js' %}"></script>
+<script src="{% static 'js/like-handler.js' %}" like_url="{% url 'likes:like' %}" liked_entry="{{entry.id}}"></script>
 {% endblock content %}
