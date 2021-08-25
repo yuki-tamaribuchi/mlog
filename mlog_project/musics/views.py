@@ -20,6 +20,10 @@ class ArtistDetailView(DetailView):
 	model = Artist
 	template_name = 'musics/artist_detail.html'
 
+	def get(self, request, *args, **kwargs):
+		artist_checked_activity(self.kwargs.get('slug'), request.user.username)
+		return super().get(request, *args, **kwargs)
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 
