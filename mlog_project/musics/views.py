@@ -155,9 +155,12 @@ class ArtistByGenreListView(ListView):
 	model = Artist
 	template_name = 'musics/artist_by_genre_list.html'
 
+	def get(self, request, *args, **kwargs):
+		genre_checked_activity.delay(self.kwargs['genre_name'], request.user.username)
+		return super().get(request, *args, **kwargs)
+
 	def get_queryset(self):
 		qs = super().get_queryset()
-		genre_checked_activity.delay(self.kwargs['genre_name'], self.request.user.username)
 		return qs.filter(genre__genre_name=self.kwargs['genre_name']).order_by('slug')
 
 	def get_context_data(self, **kwargs):
