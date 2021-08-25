@@ -1,3 +1,4 @@
+from django.http.response import JsonResponse
 from django.shortcuts import redirect
 from django.views.generic import ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +26,28 @@ class LikeProcess(LoginRequiredMixin,View):
 			Like.objects.create(user=user, entry=entry)
 
 		return redirect(self.request.META['HTTP_REFERER'])
+
+def like_process(request):
+	if request.method == 'POST':
+		try:
+			like_instance = Like.objects.filter(user__username=request.user.username, entry=request.POST.get('liked_entry'))
+		except ObjectDoesNotExist:
+			like_instance = Like.objects.none()
+
+		if like_instance:
+			like_instance.delete()
+			like_status = False
+		else:
+			user = User.objects.get(username=request.user.username)
+			entry = Entry.objects.get(id=request.POST.get('liked_entry'))
+			Like.objects.create(user=user, entry=entry)
+			like_status = True
+		
+		d = {
+			'like_status':like_status
+		}
+
+		return JsonResponse(d)
 
 
 class EntrysLikeListView(ListView):
