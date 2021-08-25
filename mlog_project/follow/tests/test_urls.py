@@ -23,10 +23,10 @@ class TestFollowUrls(TestCase):
 			user = test_follow_user,
 			follower = test_follower_user
 		)
-	
-	def test_process(self):
-		view = resolve('/follow/process/')
-		self.assertEqual(view.func.view_class, views.FollowProcess)
+
+	def test_follow(self):
+		view = resolve('/follow/follow/')
+		self.assertEqual(view.func, views.follow_process)
 	
 	def test_following_list(self):
 		view = resolve('/follow/following/testfollowuser/')
