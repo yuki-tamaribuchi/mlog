@@ -33,6 +33,9 @@ class EntryDetailView(DetailView):
 	model = Entry
 	template_name = 'entry/detail.html'
 
+	def get(self, request, *args, **kwargs):
+		entry_read_activity(self.kwargs.get('pk'), request.user.username)
+		return super().get(request, *args, **kwargs)
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
