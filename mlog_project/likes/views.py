@@ -10,23 +10,6 @@ from entry.models import Entry
 from .models import Like
 
 
-class LikeProcess(LoginRequiredMixin,View):
-
-	def post(self, *args, **kwargs):
-		try:
-			like_status = Like.objects.filter(user__username=self.request.user.username, entry=self.request.POST['pk'])
-		except ObjectDoesNotExist:
-			like_status = Like.objects.none()
-
-		if like_status:
-			like_status.delete()
-		else:
-			user = User.objects.get(username=self.request.user.username)
-			entry = Entry.objects.get(id=self.request.POST['pk'])
-			Like.objects.create(user=user, entry=entry)
-
-		return redirect(self.request.META['HTTP_REFERER'])
-
 def like_process(request):
 	if request.method == 'POST':
 		try:
