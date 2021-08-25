@@ -46,6 +46,7 @@
 		<h2>記事一覧</h2>
 		{% if entries %}
 			{% include 'common_templates/entry_card_with_writer.html' with entry_list=entries %}
+			<a href="{% url 'entry:entry_list_by_artist' artist.slug %}">もっと見る</a>
 		{% else %}
 		<p>記事はありません。</p>
 		{% endif %}
