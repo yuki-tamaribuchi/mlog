@@ -15,15 +15,11 @@
 			<p>自己紹介が入力されていません。</p>
 			{% endif %}
 
-			<p><a href="{% url 'follow:following' detail_user.username %}">{{follow_count}}フォロー</a> | <a href="{% url 'follow:follower' detail_user.username %}"> {{follower_count}}フォロワー</a></p>
+			<p><a href="{% url 'follow:following' detail_user.username %}">{{follow_count}}フォロー</a> | <a href="{% url 'follow:follower' detail_user.username %}" id="follower_link"> {{follower_count}}フォロワー</a></p>
 
 			{% if not is_myself %}
 				{% if user.username %}
-				<form action="{% url 'follow:process' %}" method="POST">
-					{% csrf_token %}
-					<input type="hidden" name='username' value="{{detail_user.username}}">
-					<input type="submit" value="{% if is_following %}フォローをやめる{% else %}フォローする{% endif %}">
-				</form>
+				<input type="button" id="follow_btn" value="{% if is_following %}フォローをやめる{% else %}フォローする{% endif %}">
 				{% else %}
 				<a href="{% url 'accounts:login' %}"><input type="button" value="フォローする"></a>
 				{% endif %}
@@ -45,4 +41,8 @@
 		</div>
 	</div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% load static %}
+<script src="{% static 'js/ajax_csrf.js' %}"></script>
+<script src="{% static 'js/follow_handler.js' %}" follow_url="{% url 'follow:follow' %}" follower_user="{{detail_user.username}}"></script>
 {% endblock content %}
