@@ -1,4 +1,5 @@
-from django.shortcuts import redirect
+from django.http.response import JsonResponse
+from django.shortcuts import redirect, resolve_url
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, ListView
 from django.core.exceptions import ObjectDoesNotExist
@@ -24,6 +25,29 @@ class FollowProcess(LoginRequiredMixin, View):
 			Follow.objects.create(user=user, follower=follow_user)
 
 		return redirect(self.request.META['HTTP_REFERER'])
+
+def follow_process(request):
+
+	if request.method == 'POST':
+		user = User.objects.get(username=request.user.username)
+		follower_user = User.objects.get(username=request.POST.get('follower_user'))
+		follow_instance = Follow.objects.filter(user__username=user.username, follower__username=follower_user.username)
+		
+		if follow_instance.exists():
+			follow_instance.delete()
+			follow_status = False
+		else:
+			Follow.objects.create(user=user, follower=follower_user)
+			follow_status = True
+		
+		follower_count = Follow.objects.filter(follower__username=request.POST.get('follower_user')).count()
+
+		d = {
+			'follow_status':follow_status,
+			'follower_count':follower_count,
+		}
+		return JsonResponse(d)
+		
 
 
 class BaseListView(ListView):
