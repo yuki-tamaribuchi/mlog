@@ -77,7 +77,7 @@ class EntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class EntryListBySongView(ListView):
 	model = Entry
 	template_name = 'entry/entry_list.html'
-	paginate_by = 15
+	paginate_by = 12
 
 	def get_queryset(self):
 		qs = super().get_queryset()
