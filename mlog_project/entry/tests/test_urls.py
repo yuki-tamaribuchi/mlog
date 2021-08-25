@@ -49,3 +49,11 @@ class TestEntryUrls(TestCase):
 	def test_delete(self):
 		view = resolve('/entry/delete/%s/'%(self.entry_instance.pk))
 		self.assertEqual(view.func.view_class, views.EntryDeleteView)
+
+	def test_entry_list_by_song(self):
+		view = resolve('/entry/list/song/%s/'%(self.test_song.pk))
+		self.assertEqual(view.func.view_class, views.EntryListBySongView)
+	
+	def test_entry_list_by_artist(self):
+		view = resolve('/entry/list/artist/%s/'%(self.test_artist.slug))
+		self.assertEqual(view.func.view_class, views.EntryListByArtistView)
