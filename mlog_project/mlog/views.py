@@ -46,6 +46,8 @@ class TimelineView(LoginRequiredMixin, ListView):
 				'song__artist'
 			).filter(
 				Q(writer__username__in=follows) | Q(song__artist__slug__in=favorite_artists)
+			).exclude(
+				writer__username=self.request.user.username
 			).order_by(
 				'-id'
 			)
