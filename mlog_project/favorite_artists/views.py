@@ -1,3 +1,4 @@
+from django.http.response import JsonResponse
 from django.shortcuts import redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView, View
@@ -27,6 +28,30 @@ class FavoriteArtistProcess(LoginRequiredMixin,View):
 		else:
 			FavoriteArtist.objects.create(user=user, artist=artist)
 		return redirect(self.request.META['HTTP_REFERER'])
+
+
+def favorite_process(request):
+	if request.method == 'POST':
+		user = User.objects.get(username=request.user.username)
+		artist = Artist.objects.get(slug=request.POST.get('favorited_artist'))
+
+		try:
+			fav_instance = FavoriteArtist.objects.get(user=user, artist=artist)
+		except ObjectDoesNotExist:
+			fav_instance = FavoriteArtist.objects.none()
+		
+		if fav_instance:
+			fav_instance.delete()
+			fav_status = False
+		else:
+			FavoriteArtist.objects.create(user=user, artist=artist)
+			fav_status = True
+		
+		d = {
+			'fav_status':fav_status
+		}
+
+		return JsonResponse(d)
 
 
 class UserListByFavoritedArtistView(ListView):
