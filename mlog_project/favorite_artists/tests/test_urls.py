@@ -22,10 +22,15 @@ class TestFavoriteArtistsUrls(TestCase):
 			username = 'testuser',
 			handle = 'testuser',
 		)
-
+	'''
 	def test_process(self):
 		view = resolve('/favorites/process/')
 		self.assertEqual(view.func.view_class, views.FavoriteArtistProcess)
+	'''
+
+	def test_favorite(self):
+		view = resolve('/favorites/favorite/')
+		self.assertEqual(view.func, views.favorite_process)
 
 	def test_user_favorites_artist_list(self):
 		artist_instance = musics.models.Artist.objects.first()
