@@ -22,11 +22,6 @@ class TestFavoriteArtistsUrls(TestCase):
 			username = 'testuser',
 			handle = 'testuser',
 		)
-	'''
-	def test_process(self):
-		view = resolve('/favorites/process/')
-		self.assertEqual(view.func.view_class, views.FavoriteArtistProcess)
-	'''
 
 	def test_favorite(self):
 		view = resolve('/favorites/favorite/')
