@@ -19,9 +19,7 @@
 		{% if members %}
 			<h2>所属メンバー</h2>
 			<div class='row'>
-			{% for member in members %}
-				{% include 'common_templates/artist_card_for_list.html' with artist=member%}
-			{% endfor %}
+				{% include 'common_templates/artist_card_for_list.html' with artist_list=members %}
 			</div>
 		{% endif %}
 
