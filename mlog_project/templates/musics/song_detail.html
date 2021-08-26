@@ -13,6 +13,11 @@
 	</div>
 
 	<div class="row mt-5">
+		<h2>ジャンル</h2>
+		{% include 'common_templates/genre_card.html' with genre_list=song.genre.all %}
+	</div>
+
+	<div class="row mt-5">
 		<h3>プレビュー</h3>
 		{% if song.spotify_preview_url %}
 		{% include 'common_templates/spotify_preview.html' with artwork_url=song.artwork_url %}
