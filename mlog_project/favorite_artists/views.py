@@ -11,25 +11,6 @@ from musics.models import Artist
 from .models import FavoriteArtist
 
 
-class FavoriteArtistProcess(LoginRequiredMixin,View):
-
-	def post(self, *args, **kwargs):
-
-		user = User.objects.get(username=self.request.user.username)
-		artist = Artist.objects.get(slug=self.request.POST['slug'])
-
-		try:
-			fav_status = FavoriteArtist.objects.get(user=user, artist=artist)
-		except ObjectDoesNotExist:
-			fav_status = FavoriteArtist.objects.none()
-		
-		if fav_status:
-			fav_status.delete()
-		else:
-			FavoriteArtist.objects.create(user=user, artist=artist)
-		return redirect(self.request.META['HTTP_REFERER'])
-
-
 def favorite_process(request):
 	if request.method == 'POST':
 		user = User.objects.get(username=request.user.username)
