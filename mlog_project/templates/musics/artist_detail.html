@@ -34,11 +34,7 @@
 	</div>
 
 	<div class="row mt-5">
-		<form method="POST" action="{% url 'favorite_artists:process' %}" >
-			{% csrf_token %}
-			<input type="hidden" value="{{artist.slug}}" name="slug">
-			<input type="submit" value="{% if fav_status %}お気に入り解除{% else %}お気に入りに登録{% endif %}">
-		</form>
+		<input type="button" id="favorite-btn" value="{% if fav_status %}お気に入り解除{% else %}お気に入りに登録{% endif %}">
 		<p><a href="{% url 'favorite_artists:user_list_by_favorited_artist' artist.slug %}">お気に入りに登録しているユーザ一覧</a></p>
 	</div>
 
@@ -67,4 +63,8 @@
 	</div>
 	
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% load static %}
+<script src="{% static 'js/ajax_csrf.js' %}"></script>
+<script src="{% static 'js/favorite-handler.js' %}" favorite_url="{% url 'favorite_artists:favorite' %}" favorited_artist="{{artist.slug}}"></script>
 {% endblock content %}
