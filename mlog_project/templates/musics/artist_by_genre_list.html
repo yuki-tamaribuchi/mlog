@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row mt-5">
 	{% if artist_list %}
-	{% include 'common_templates/artist_card.html' %}
+	{% include 'common_templates/artist_card_for_list.html' %}
 	{% else %}
 	<p>{{genre.genre_name}}に登録されいるアーティストはいません。</p>
 	{% endif %}

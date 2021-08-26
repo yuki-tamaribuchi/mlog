@@ -13,14 +13,14 @@
 
 		{% if artist.belong_to %}
 			<h2>所属グループ</h2>
-			{% include 'common_templates/artist_card.html' with artist=artist.belong_to %}
+			{% include 'common_templates/artist_card.html' with artist_object=artist.belong_to %}
 		{% endif %}
 
 		{% if members %}
 			<h2>所属メンバー</h2>
 			<div class='row'>
 			{% for member in members %}
-				{% include 'common_templates/artist_card.html' with artist=member%}
+				{% include 'common_templates/artist_card_for_list.html' with artist=member%}
 			{% endfor %}
 			</div>
 		{% endif %}
