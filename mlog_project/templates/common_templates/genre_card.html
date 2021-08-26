@@ -1,10 +1,10 @@
 {% for genre in genre_list %}
 <div class="col-lg-2 col-md-4 col-sm-12">
-	<div class="card m-3 text-center genre-list-card">
+	<div class="card text-center genre-list-card">
 		<div class="card-body">
 			<div class="row">
 				<div class="col">
-					<a href="{% url 'musics:artist_by_genre' genre.genre_name %}" class="stretched-link text-decoration-none"><h4 class="card-title">{{genre.genre_name}}</h4></a>
+					<a href="{% url 'musics:artist_by_genre' genre.genre_name %}" class="stretched-link text-decoration-none">{{genre.genre_name}}</a>
 				</div>
 			</div>
 		</div>
