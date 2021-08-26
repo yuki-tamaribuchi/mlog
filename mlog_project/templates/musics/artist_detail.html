@@ -25,9 +25,7 @@
 
 		<h2>ジャンル</h2>
 		<div class="row">
-			{% for genre in artist.genre.all %}
-				{% include 'common_templates/genre_card.html' %}
-			{% endfor %}
+			{% include 'common_templates/genre_card.html' with genre_list=artist.genre.all %}
 		</div>
 	</div>
 
