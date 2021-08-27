@@ -45,9 +45,9 @@ class TestLikeUrls(TestCase):
 			entry = test_entry
 		)
 
-	def test_process(self):
-		view = resolve('/likes/process/')
-		self.assertEqual(view.func.view_class, views.LikeProcess)
+	def test_like(self):
+		view = resolve('/likes/like/')
+		self.assertEqual(view.func, views.like_process)
 
 	def test_user_like_list(self):
 		view = resolve('/likes/userlist/testuserforlike/')

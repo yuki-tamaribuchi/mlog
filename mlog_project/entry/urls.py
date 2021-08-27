@@ -6,6 +6,7 @@ from .views import (
 	EntryUpdateView,
 	EntryDeleteView,
 	EntryListBySongView,
+	EntryListByArtistView
 )
 
 app_name='entry'
@@ -17,6 +18,7 @@ urlpatterns=[
 	path('delete/<int:pk>/', EntryDeleteView.as_view(), name='delete'),
 
 	path('list/song/<int:pk>/', EntryListBySongView.as_view(), name='entry_list_by_song'),
+	path('list/artist/<slug:slug>/', EntryListByArtistView.as_view(), name='entry_list_by_artist'),
 
 	path('select2/', include('django_select2.urls')),
 ]

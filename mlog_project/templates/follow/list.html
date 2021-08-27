@@ -17,7 +17,7 @@
 			{% endif %}
 
 			{% if follows %}
-				{% if followers %}
+				{% if follows %}
 					{% for follow in follows%}
 						<p><a href='{% url 'accounts:detail' follow.follower %}'><img src="{{MEDIA_URL}}{{follow.follower.profile_image}}" class="profile-image profile-image-size-sm"/>{{follow.follower.handle}}({{follow.follower}})</a></p>
 					{% endfor %}

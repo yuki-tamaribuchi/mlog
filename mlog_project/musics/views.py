@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import DetailView, CreateView, ListView, UpdateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
+from django.db.models import Prefetch, Q
 
 from entry.models import Entry
 from favorite_artists.models import FavoriteArtist
@@ -19,13 +20,32 @@ class ArtistDetailView(DetailView):
 	model = Artist
 	template_name = 'musics/artist_detail.html'
 
+	def get(self, request, *args, **kwargs):
+		artist_checked_activity.delay(self.kwargs.get('slug'), request.user.username)
+		return super().get(request, *args, **kwargs)
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.filter(song__artist__slug=self.kwargs['slug'])
+
+		context['entries'] = Entry.objects.filter(
+			song__artist__slug=self.kwargs['slug']
+			).select_related(
+				'writer',
+				'song'
+			).prefetch_related(
+				'song__artist'
+			)
+
 
 		context['members'] = Artist.objects.filter(belong_to__slug=self.kwargs['slug'])
 
-		context['song_list'] = Song.objects.filter(artist__slug=self.kwargs['slug']).order_by('song_name')[:4]
+		context['song_list'] = Song.objects.filter(
+			artist__slug=self.kwargs['slug']
+			).order_by(
+				'song_name'
+				).prefetch_related(
+					'artist'
+				)[:4]
 
 		if self.request.user.username:
 			try:
@@ -54,19 +74,23 @@ class ArtistCreateView(CreateView):
 
 
 class SongDetailView(DetailView):
+	model = Song
 	template_name = 'musics/song_detail.html'
 
-	def get_object(self):
-		current_song = Song.objects.get(pk=self.kwargs['pk'])
-
-		song_checked_activity.delay(self.kwargs['pk'], self.request.user.username)
-
-		return current_song
-
+	def get(self, request, *args, **kwargs):
+		song_checked_activity.delay(self.kwargs['pk'], request.user.username)
+		return super().get(request, *args, **kwargs)
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.filter(song=self.kwargs['pk'])[:3]
+		context['entries'] = Entry.objects.filter(
+			song=self.kwargs['pk']
+			).select_related(
+				'song',
+				'writer'
+			).prefetch_related(
+				'song__artist',
+			)[:3]
 		return context
 
 
@@ -124,9 +148,12 @@ class ArtistByGenreListView(ListView):
 	model = Artist
 	template_name = 'musics/artist_by_genre_list.html'
 
+	def get(self, request, *args, **kwargs):
+		genre_checked_activity.delay(self.kwargs['genre_name'], request.user.username)
+		return super().get(request, *args, **kwargs)
+
 	def get_queryset(self):
 		qs = super().get_queryset()
-		genre_checked_activity.delay(self.kwargs['genre_name'], self.request.user.username)
 		return qs.filter(genre__genre_name=self.kwargs['genre_name']).order_by('slug')
 
 	def get_context_data(self, **kwargs):

@@ -4,11 +4,7 @@
 <div class="container">
 	<div class="row mt-5">
 	{% if entry_list %}
-		<div class="col">
-			{% for entry in entry_list %}
-			{% include 'common_templates/entry_card_with_writer.html' %}
-			{% endfor %}
-		</div>
+		{% include 'common_templates/entry_card_with_writer.html' %}
 	{% else %}
 	<p>エントリーはありません。</p>
 	{% endif %}

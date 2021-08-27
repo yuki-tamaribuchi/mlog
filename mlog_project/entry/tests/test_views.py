@@ -4,7 +4,7 @@ from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
 from accounts.models import User
-from musics.models import Song
+from musics.models import Artist, Song
 from likes.models import Like
 
 from utils import utils_for_test
@@ -258,10 +258,45 @@ class EntryListBySongViewTest(TestCase):
 	def test_template(self):
 		response = self.client.get(reverse('entry:entry_list_by_song', kwargs={'pk':self.song.id}))
 		self.assertEqual(response.status_code, 200)
-		self.assertTemplateUsed('entry/entry_list_by_song.html')
+		self.assertTemplateUsed(response, 'entry/entry_list.html')
 
 	def test_object_does_not_exist(self):
 		object = Entry.objects.none()
 		response = self.client.get(reverse('entry:entry_list_by_song', kwargs={'pk':self.song_for_no_entry.id}))
+		self.assertEqual(response.status_code, 200)
+		self.assertQuerysetEqual(response.context['object_list'], object)
+
+
+class EntryListByArtistViewTest(TestCase):
+
+	def setUp(self):
+		self.entry = utils_for_test.create_test_entry(
+			title='test title',
+			content='test content',
+			username='testuser',
+			handle='test user',
+			biograph='test biograph',
+			song_name='test song',
+			artist_name='test artist',
+			slug='testartist',
+			genre_name='test genre'
+		)
+
+		self.artist = Artist.objects.first()
+
+		self.artist_for_no_entry = utils_for_test.create_test_artist(
+			artist_name='artist for no entry',
+			slug='artistfornoentry',
+			genre_name='test genre',
+		)
+	
+	def test_template(self):
+		response = self.client.get(reverse('entry:entry_list_by_artist', kwargs={'slug':self.artist.slug}))
+		self.assertEqual(response.status_code, 200)
+		self.assertTemplateUsed(response, 'entry/entry_list.html')
+
+	def test_object_does_not_exist(self):
+		object = Entry.objects.none()
+		response = self.client.get(reverse('entry:entry_list_by_artist', kwargs={'slug':self.artist_for_no_entry.slug}))
 		self.assertEqual(response.status_code, 200)
 		self.assertQuerysetEqual(response.context['object_list'], object)

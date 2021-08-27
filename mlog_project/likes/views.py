@@ -1,3 +1,4 @@
+from django.http.response import JsonResponse
 from django.shortcuts import redirect
 from django.views.generic import ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,22 +10,27 @@ from entry.models import Entry
 from .models import Like
 
 
-class LikeProcess(LoginRequiredMixin,View):
-
-	def post(self, *args, **kwargs):
+def like_process(request):
+	if request.method == 'POST':
 		try:
-			like_status = Like.objects.filter(user__username=self.request.user.username, entry=self.request.POST['pk'])
+			like_instance = Like.objects.filter(user__username=request.user.username, entry=request.POST.get('liked_entry'))
 		except ObjectDoesNotExist:
-			like_status = Like.objects.none()
+			like_instance = Like.objects.none()
 
-		if like_status:
-			like_status.delete()
+		if like_instance:
+			like_instance.delete()
+			like_status = False
 		else:
-			user = User.objects.get(username=self.request.user.username)
-			entry = Entry.objects.get(id=self.request.POST['pk'])
+			user = User.objects.get(username=request.user.username)
+			entry = Entry.objects.get(id=request.POST.get('liked_entry'))
 			Like.objects.create(user=user, entry=entry)
+			like_status = True
+		
+		d = {
+			'like_status':like_status
+		}
 
-		return redirect(self.request.META['HTTP_REFERER'])
+		return JsonResponse(d)
 
 
 class EntrysLikeListView(ListView):
@@ -45,13 +51,13 @@ class EntrysLikeListView(ListView):
 
 
 class UsersLikeListView(ListView):
-	model = Like
+	model = Entry
 	template_name = 'likes/user_list.html'
 
 	def get_queryset(self):
 		qs = super().get_queryset()
 		liked_entry = Like.objects.filter(user__username=self.kwargs['username']).values('entry__id')
-		return qs.filter(id__in=liked_entry)
+		return qs.select_related('writer', 'song').filter(id__in=liked_entry)
 
 	def get_context_data(self,**kwargs):
 		context = super().get_context_data(**kwargs)

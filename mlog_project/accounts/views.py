@@ -45,16 +45,16 @@ class UserDetailView(DetailView):
 	template_name = 'accounts/userdetail.html'
 	context_object_name = 'detail_user'
 
+	def get(self, request, *args, **kwargs):
+		user_checked_activity.delay(self.kwargs['username'], request.user.username)
+		return super().get(request, *args, **kwargs)
+
 	def get_object(self):
-		detail_user = get_object_or_404(User, username=self.kwargs['username'])
-
-		user_checked_activity.delay(self.kwargs['username'], self.request.user.username)
-
-		return detail_user
+		return get_object_or_404(User, username=self.kwargs['username'])
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
+		context['entries'] = Entry.objects.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
 		context['follow_count'] = Follow.objects.filter(user__username=self.kwargs['username']).count()
 		context['follower_count'] = Follow.objects.filter(follower__username=self.kwargs['username']).count()
 		context['liked_entry_count'] = Like.objects.filter(user__username=self.kwargs['username']).count()
@@ -86,7 +86,7 @@ class UserEntryListView(ListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		return qs.filter(writer__username=self.kwargs['username']).order_by('-id')
+		return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__username=self.kwargs['username']).order_by('-id')
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)

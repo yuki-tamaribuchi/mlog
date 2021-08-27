@@ -9,7 +9,12 @@
 		<h1>{{song.song_name}}</h1>
 
 		<h2>アーティスト</h2>
-		{% include 'common_templates/artist_card.html' with artist_list=song.artist.all %}
+		{% include 'common_templates/artist_card_for_list.html' with artist_list=song.artist.all %}
+	</div>
+
+	<div class="row mt-5">
+		<h2>ジャンル</h2>
+		{% include 'common_templates/genre_card.html' with genre_list=song.genre.all %}
 	</div>
 
 	<div class="row mt-5">
