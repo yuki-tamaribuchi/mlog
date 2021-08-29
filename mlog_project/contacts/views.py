@@ -34,3 +34,41 @@ class CreateContactThreadAndConentView(LoginRequiredMixin, CreateView):
 
 	def get_success_url(self):
 		return reverse('contacts:detail', kwargs={'pk':self.object.id})
+
+
+class ContactThreadDetailView(LoginRequiredMixin, UserPassesTestMixin, FormMixin, DetailView):
+	model = ContactThreads
+	form_class = ContactContentForm
+	template_name = 'contacts/detail.html'
+	
+
+	def test_func(self):
+		object = self.get_object()
+		return object.user == self.request.user or self.request.user.is_staff
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['contact_content_list'] = ContactContent.objects.filter(
+			parent_thread__id=self.object.id
+		).order_by(
+			'datetime'
+		)
+
+		return context
+
+	def post(self, request, *args, **kwargs):
+		self.object = self.get_object()
+		form = self.get_form()
+		if form.is_valid():
+			return self.form_vaild(form)
+		else:
+			return self.form_invalid(form)
+
+	def form_vaild(self, form):
+		form.instance.user = self.request.user
+		form.instance.parent_thread = self.object
+		form.save()
+		return super().form_valid(form)
+	
+	def get_success_url(self):
+		return reverse('contacts:detail', kwargs={'pk':self.object.id})
