@@ -110,3 +110,16 @@ class ContactThreadDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteVie
 	
 	def get_success_url(self):
 		return reverse('contacts:create')
+
+
+class ContactListView(LoginRequiredMixin, ListView):
+	model = ContactThreads
+	template_name = 'contacts/list.html'
+
+	def get_queryset(self):
+		qs = super().get_queryset()
+		
+		if self.request.user.is_staff:
+			return qs
+		else:
+			return qs.filter(user=self.request.user)
