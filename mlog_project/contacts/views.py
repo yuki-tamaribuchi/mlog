@@ -72,3 +72,16 @@ class ContactThreadDetailView(LoginRequiredMixin, UserPassesTestMixin, FormMixin
 	
 	def get_success_url(self):
 		return reverse('contacts:detail', kwargs={'pk':self.object.id})
+
+
+class ContactContentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+	model = ContactContent
+	form_class = ContactContentForm
+	template_name = 'contacts/content_form.html'
+
+	def test_func(self):
+		object = self.get_object()
+		return object.user == self.request.user
+
+	def get_success_url(self):
+		return reverse('contacts:detail', kwargs={'pk':self.object.parent_thread.id})
