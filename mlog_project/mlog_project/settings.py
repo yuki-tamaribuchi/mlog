@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'activity',
     'musics',
     'entry',
+    'notifications',
     'django_select2',
     'django_nose',
 
