@@ -104,7 +104,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'django.template.context_processors.request',
-                'csp.context_processors.nonce'
+                'csp.context_processors.nonce',
+                'notifications.context_processors.unread_notifications',
             ],
         },
     },
