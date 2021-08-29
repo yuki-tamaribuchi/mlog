@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import User
 from entry.models import Entry
+from notifications.tasks import add_notification
 
 from .models import Like
 
@@ -25,10 +26,18 @@ def like_process(request):
 			entry = Entry.objects.get(id=request.POST.get('liked_entry'))
 			Like.objects.create(user=user, entry=entry)
 			like_status = True
+
+			add_notification.delay(
+				user_from=request.user.username,
+				user_to=entry.writer.username,
+				notification_type='like',
+			)
 		
 		d = {
 			'like_status':like_status
 		}
+		
+		
 
 		return JsonResponse(d)
 
