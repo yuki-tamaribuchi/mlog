@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'musics',
     'entry',
     'notifications',
+    'contacts',
     'django_select2',
     'django_nose',
 
