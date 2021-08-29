@@ -5,6 +5,7 @@ from django.views.generic import View, ListView
 from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import User
+from notifications.tasks import add_notification
 
 from .models import Follow
 
@@ -22,6 +23,13 @@ def follow_process(request):
 		else:
 			Follow.objects.create(user=user, follower=follower_user)
 			follow_status = True
+
+			add_notification.delay(
+				user_from=request.user.username,
+				user_to=follower_user.username,
+				notification_type='follow',
+			)
+
 		
 		follower_count = Follow.objects.filter(follower__username=request.POST.get('follower_user')).count()
 
