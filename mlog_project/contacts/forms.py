@@ -16,3 +16,8 @@ class ContactThreadAndContentForm(ModelForm):
 	class Meta:
 		model = ContactThreads
 		fields = ('category',)
+
+class ContactContentForm(ModelForm):
+	class Meta:
+		model = ContactContent
+		fields = ('content',)
