@@ -22,3 +22,10 @@ def add_notification(user_from, user_to, notification_type):
 		user_to=user_to_obj,
 		content=content_prefix+content_suffix,
 	)
+
+
+@app.task()
+def notification_read(pk):
+	notification_obj = Notifications.objects.get(pk=pk)
+	notification_obj.is_read = 1
+	notification_obj.save()
