@@ -29,6 +29,18 @@
 				
 			</div>
 		</div>
+		{% if user.id %}
+		<div class="dropdown">
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">通知{% if unread_notifications_count != 0 %}({{unread_notifications_count}}){% endif %}</button>
+			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownNotificationButton">
+				{% for notification in unread_notifications_list %}
+				<li><a class="dropdown-item" href="{% url 'notifications:redirect' pk=notification.id username=notification.user_from.username %}">{{notification.content}}</a></li>
+				{% endfor %}
+				<li><hr class="dropdown-divider"></li>
+				<li><a class="dropdown-item " href="">すべての通知を見る</a></li>
+			</div>
+		</div>
+		{% endif %}
 		<div class="dropdown">
 			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
