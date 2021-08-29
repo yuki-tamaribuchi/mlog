@@ -85,3 +85,28 @@ class ContactContentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateVi
 
 	def get_success_url(self):
 		return reverse('contacts:detail', kwargs={'pk':self.object.parent_thread.id})
+
+
+class ContactThreadDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+	model = ContactThreads
+	template_name = 'contacts/delete_confirm.html'
+
+	def test_func(self) :
+		object = self.get_object()
+		return object.user == self.request.user or self.request.user.is_staff
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		context['first_content'] = ContactContent.objects.filter(
+			parent_thread__id=self.kwargs.get('pk')
+			).select_related(
+				'user',
+			).order_by(
+				'datetime'
+			)[0]
+		
+		return context
+	
+	def get_success_url(self):
+		return reverse('contacts:create')
