@@ -8,7 +8,7 @@ from contacts.models import ContactThreads, ContactContent
 from contacts.forms import ContactThreadAndContentForm, ContactContentForm
 
 
-class CreateContactThreadAndConentView(LoginRequiredMixin, CreateView):
+class CreateContactThreadAndContentView(LoginRequiredMixin, CreateView):
 	form_class = ContactThreadAndContentForm
 	template_name = 'contacts/contact_thread_form.html'
 
