@@ -23,10 +23,8 @@ class UserUpdateForm(UserChangeForm):
 class UserPasswordChangeForm(PasswordChangeForm):
 	class Meta:
 		model = User
-		fields = '__all__'
 
 
 class UserActiveStatusUpdateForm(ModelForm):
 	class Meta:
-		model = User
-		fields = ('is_active',)
+		model = User		fields = ('is_active',)
