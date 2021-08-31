@@ -27,4 +27,8 @@ class UserPasswordChangeForm(PasswordChangeForm):
 
 class UserActiveStatusUpdateForm(ModelForm):
 	class Meta:
-		model = User		fields = ('is_active',)
+		model = User
+		fields = ('is_active',)
+		labels = {
+			'is_active':'アクティブ状態'
+		}
