@@ -1,3 +1,4 @@
+from django.forms.models import ModelForm
 from .models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 
@@ -17,3 +18,9 @@ class UserPasswordChangeForm(PasswordChangeForm):
 	class Meta:
 		model = User
 		fields = '__all__'
+
+
+class UserActiveStatusUpdateForm(ModelForm):
+	class Meta:
+		model = User
+		fields = ('is_active',)
