@@ -32,3 +32,7 @@ class UserActiveStatusUpdateForm(ModelForm):
 		labels = {
 			'is_active':'アクティブ状態'
 		}
+
+		help_texts = {
+			'is_active':'',
+		}
