@@ -125,7 +125,7 @@ class UserPasswordResetCompleteView(PasswordResetCompleteView):
 	template_name = 'accounts/password_reset_complete.html'
 
 
-class UserActiveStatusUpdateView(UpdateView):
+class UserActiveStatusUpdateView(LoginRequiredMixin, UpdateView):
 	form_class = UserActiveStatusUpdateForm
 	template_name = 'accounts/active_status.html'
 
