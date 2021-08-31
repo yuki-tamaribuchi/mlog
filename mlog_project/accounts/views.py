@@ -4,6 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView as auth_login_view, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.contrib.auth import login
 
@@ -11,7 +12,7 @@ from entry.models import Entry
 from likes.models import Like
 from follow.models import Follow
 
-from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
+from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm, UserActiveStatusUpdateForm
 from .models import User
 from activity.tasks import user_checked_activity
 
@@ -122,3 +123,15 @@ class UserPasswordResetConfirmView(PasswordResetConfirmView):
 
 class UserPasswordResetCompleteView(PasswordResetCompleteView):
 	template_name = 'accounts/password_reset_complete.html'
+
+
+class UserActiveStatusUpdateView(UpdateView):
+	form_class = UserActiveStatusUpdateForm
+	template_name = 'accounts/active_status.html'
+
+	def get_object(self):
+		obj = User.objects.get(username=self.request.user.username)
+		return obj
+	
+	def get_success_url(self):
+		return reverse('mlog:top')
