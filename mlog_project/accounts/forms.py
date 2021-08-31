@@ -9,10 +9,11 @@ class SignUpForm(UserCreationForm):
 
 
 class UserUpdateForm(UserChangeForm):
+	password = None
+
 	class Meta:
 		model = User
 		fields = ('handle', 'biograph', 'profile_image')
-
 
 class UserPasswordChangeForm(PasswordChangeForm):
 	class Meta:
