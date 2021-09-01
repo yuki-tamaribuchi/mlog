@@ -14,11 +14,7 @@ class UserUpdateForm(UserChangeForm):
 	class Meta:
 		model = User
 		fields = ('handle', 'biograph', 'profile_image')
-		labels = {
-			'handle':'ハンドルネーム',
-			'biograph':'自己紹介',
-			'profile_image':'プロフィール画像',
-		}
+
 
 class UserPasswordChangeForm(PasswordChangeForm):
 	class Meta:
