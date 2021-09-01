@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}退会しますか？ | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col mt-5">
+			退会するにはチェックマークを外してください。
+			<form method="POST">
+				{% csrf_token %}
+				{{form.as_p}}
+				<input type="submit" value="退会する">
+			</form>
+			<a href="{% url 'accounts:update' %}"><input type="button" value="キャンセル"></a>
+		</div>
+	</div>
+</div>
+{% endblock content %}
