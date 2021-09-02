@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-03 08:17+0900\n"
+"POT-Creation-Date: 2021-09-03 08:25+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,3 +33,11 @@ msgstr "プロフィール画像"
 #: comments/models.py:8
 msgid "comment"
 msgstr "コメント"
+
+#: contacts/models.py:26
+msgid "category"
+msgstr "カテゴリ"
+
+#: contacts/models.py:28
+msgid "created at"
+msgstr "作成日時"
