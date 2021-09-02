@@ -1,4 +1,7 @@
+from datetime import time
 from django.db import models
+from django.utils import timezone
+
 from accounts.models import User
 
 MLOG = 'MLG'
@@ -32,7 +35,14 @@ class ContactContent(models.Model):
 	parent_thread = models.ForeignKey(ContactThreads, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	content = models.TextField()
-	created_at = models.DateTimeField(auto_now=True)
+	created_at = models.DateTimeField(editable=False)
+	updated_at = models.DateTimeField(null=True)
+
+	def save(self, *args, **kwargs):
+		if not self.id:
+			self.created_at = timezone.now()
+		self.created_at = timezone.now()
+		return super(ContactContent, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return 'Content from %s to %s by %s'%(self.user.username, self.parent_thread.category, self.parent_thread.user)
