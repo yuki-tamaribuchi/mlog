@@ -36,7 +36,7 @@ class ContactContent(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	content = models.TextField()
 	created_at = models.DateTimeField(editable=False)
-	updated_at = models.DateTimeField(null=True)
+	updated_at = models.DateTimeField()
 
 	def save(self, *args, **kwargs):
 		if not self.id:
