@@ -54,7 +54,7 @@ class ContactThreadDetailView(LoginRequiredMixin, UserPassesTestMixin, FormMixin
 		context['contact_content_list'] = ContactContent.objects.filter(
 			parent_thread__id=self.object.id
 		).order_by(
-			'datetime'
+			'created_at'
 		)
 
 		return context
