@@ -10,4 +10,4 @@ class Comment(models.Model):
 	author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('author'))
 
 	def __str__(self):
-		return '%s comment to %s'%(self.user.username, self.entry.title)
+		return '%s comment to %s'%(self.author.username, self.entry.title)
