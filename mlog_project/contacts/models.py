@@ -41,7 +41,7 @@ class ContactContent(models.Model):
 	def save(self, *args, **kwargs):
 		if not self.id:
 			self.created_at = timezone.now()
-		self.created_at = timezone.now()
+		self.updated_at = timezone.now()
 		return super(ContactContent, self).save(*args, **kwargs)
 
 	def __str__(self):
