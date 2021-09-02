@@ -6,7 +6,7 @@ from entry.models import Entry
 
 class Comment(models.Model):
 	comment = models.TextField(verbose_name=_('comment'), max_length=200)
-	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+	entry = models.ForeignKey(Entry, on_delete=models.CASCADE, verbose_name=_('entry'))
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	def __str__(self):
