@@ -3,6 +3,7 @@ from django.views.generic.edit import FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse
 from django.db.transaction import atomic
+from django.utils import timezone
 
 from contacts.models import ContactThreads, ContactContent
 from contacts.forms import ContactThreadAndContentForm, ContactContentForm
@@ -24,7 +25,9 @@ class CreateContactThreadAndContentView(LoginRequiredMixin, CreateView):
 				contact_content = ContactContent(
 					parent_thread=form.instance,
 					user=self.request.user,
-					content = form.cleaned_data['content']
+					content = form.cleaned_data['content'],
+					created_at=timezone.now(),
+					updated_at=timezone.now()
 				)
 				contact_content.save()
 				return super().form_valid(form)
