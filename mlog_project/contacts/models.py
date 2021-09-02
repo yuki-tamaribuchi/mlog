@@ -24,7 +24,7 @@ CONTACT_CATEGORY_CHOICES = (
 class ContactThreads(models.Model):
 
 	category = models.CharField(verbose_name=_('category'), max_length=3, choices=CONTACT_CATEGORY_CHOICES)
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('user'))
 	created_at = models.DateTimeField(verbose_name=_('created at'), auto_now=True)
 
 	def __str__(self):
