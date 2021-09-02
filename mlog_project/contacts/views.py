@@ -26,8 +26,6 @@ class CreateContactThreadAndContentView(LoginRequiredMixin, CreateView):
 					parent_thread=form.instance,
 					user=self.request.user,
 					content = form.cleaned_data['content'],
-					created_at=timezone.now(),
-					updated_at=timezone.now()
 				)
 				contact_content.save()
 				return super().form_valid(form)
