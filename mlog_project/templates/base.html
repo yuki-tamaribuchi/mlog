@@ -21,13 +21,13 @@
 	<nav class="navbar navbar-dark bg-dark fixed-top">
 		<a class="navbar-brand brand text-white" href="{% if user.username %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}">mlog</a>
 		<div class="dropdown ms-auto">
-			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownSearchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownSearchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Search' %}</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownSearchButton">
 				<form method="GET">
-					<input type="search" placeholder="検索" name="keyword">
-					<input type="submit" value="アーティストを検索" formaction="{% url 'search:artist'%}">
-					<input type="submit" value="曲を検索" formaction="{% url 'search:song'%}">
-					<input type="submit" value="ユーザを検索" formaction="{% url 'search:user'%}">
+					<input type="search" placeholder="{% trans 'Search' %}" name="keyword">
+					<input type="submit" value="{% trans 'Search Aritst' %}" formaction="{% url 'search:artist'%}">
+					<input type="submit" value="{% trans 'Search Song' %}" formaction="{% url 'search:song'%}">
+					<input type="submit" value="{% trans 'Search User' %}" formaction="{% url 'search:user'%}">
 				</form>
 				
 			</div>
