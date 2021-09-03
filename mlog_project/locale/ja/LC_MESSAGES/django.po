@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-03 10:01+0900\n"
+"POT-Creation-Date: 2021-09-03 10:11+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,6 +82,42 @@ msgstr "曲"
 msgid "artist"
 msgstr "アーティスト"
 
+#: templates/base.html:37
+msgid "Notifications"
+msgstr "通知"
+
+#: templates/base.html:43
+msgid "Check all notifications"
+msgstr "すべての通知を見る"
+
 #: templates/base.html:48
 msgid "Menu"
 msgstr "メニュー"
+
+#: templates/base.html:51
+msgid "Post Entry"
+msgstr "投稿"
+
+#: templates/base.html:52
+msgid "Logged in as"
+msgstr "ログイン中"
+
+#: templates/base.html:53
+msgid "Account Manage"
+msgstr "アカウント管理"
+
+#: templates/base.html:54
+msgid "Logout"
+msgstr "ログアウト"
+
+#: templates/base.html:56
+msgid "Signup"
+msgstr "新規登録"
+
+#: templates/base.html:57
+msgid "Login"
+msgstr "ログイン"
+
+#: templates/base.html:59
+msgid "Contact"
+msgstr "お問い合わせ"

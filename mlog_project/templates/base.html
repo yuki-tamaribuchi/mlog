@@ -34,13 +34,13 @@
 		</div>
 		{% if user.id %}
 		<div class="dropdown">
-			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">通知{% if unread_notifications_count != 0 %}({{unread_notifications_count}}){% endif %}</button>
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Notifications' %}{% if unread_notifications_count != 0 %}({{unread_notifications_count}}){% endif %}</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownNotificationButton">
 				{% for notification in unread_notifications_list %}
 				<li><a class="dropdown-item" href="{% url 'notifications:redirect' pk=notification.id username=notification.user_from.username %}">{{notification.content}}</a></li>
 				{% endfor %}
 				<li><hr class="dropdown-divider"></li>
-				<li><a class="dropdown-item " href="">すべての通知を見る</a></li>
+				<li><a class="dropdown-item " href="">{% trans 'Check all notifications' %}</a></li>
 			</div>
 		</div>
 		{% endif %}
@@ -48,15 +48,15 @@
 			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Menu' %}</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
 				{% if user.id %}
-				<a class="dropdown-item" href="{% url 'entry:create' %}">投稿する</a>		
-				<a class="dropdown-item" href="{% url 'accounts:detail' user.username %}">ログイン中:{{user.handle}} ({{user.username}})</a>
-				<a class="dropdown-item" href="{% url 'accounts:update' %}">アカウント管理</a>
-				<a class="dropdown-item" href="{% url 'account_logout' %}">ログアウト</a>
+				<a class="dropdown-item" href="{% url 'entry:create' %}">{% trans 'Post Entry' %}</a>		
+				<a class="dropdown-item" href="{% url 'accounts:detail' user.username %}">{% trans 'Logged in as' %}:{{user.handle}} ({{user.username}})</a>
+				<a class="dropdown-item" href="{% url 'accounts:update' %}">{% trans 'Account Manage' %}</a>
+				<a class="dropdown-item" href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
 				{% else %}
-				<a class="dropdown-item" href="{% url 'account_signup' %}">新規登録</a>
-				<a class="dropdown-item" href="{% url 'account_login' %}">ログイン</a>
+				<a class="dropdown-item" href="{% url 'account_signup' %}">{% trans 'Signup' %}</a>
+				<a class="dropdown-item" href="{% url 'account_login' %}">{% trans 'Login' %}</a>
 				{% endif %}
-				<a class="dropdown-item" href="{% url 'contacts:create' %}">お問い合わせ</a>
+				<a class="dropdown-item" href="{% url 'contacts:create' %}">{% trans 'Contact' %}</a>
 			</div>
 		</div>
 	</nav>
