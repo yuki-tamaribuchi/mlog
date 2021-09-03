@@ -33,11 +33,11 @@ class ContactThreads(models.Model):
 
 class ContactContent(models.Model):
 
-	parent_thread = models.ForeignKey(ContactThreads, on_delete=models.CASCADE)
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	content = models.TextField()
-	created_at = models.DateTimeField(editable=False)
-	updated_at = models.DateTimeField()
+	parent_thread = models.ForeignKey(ContactThreads, on_delete=models.CASCADE, verbose_name=_('parent thread'))
+	user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('user'))
+	content = models.TextField(verbose_name=_('content'))
+	created_at = models.DateTimeField(editable=False, verbose_name=_('created at'))
+	updated_at = models.DateTimeField(verbose_name=_('updated at'))
 
 	def save(self, *args, **kwargs):
 		if not self.id:
