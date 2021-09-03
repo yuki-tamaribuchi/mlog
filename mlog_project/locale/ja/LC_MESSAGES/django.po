@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-03 08:45+0900\n"
+"POT-Creation-Date: 2021-09-03 09:02+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,6 +46,22 @@ msgstr "作成者"
 msgid "category"
 msgstr "カテゴリ"
 
-#: contacts/models.py:28
+#: contacts/models.py:27 contacts/models.py:37
+msgid "user"
+msgstr "ユーザ"
+
+#: contacts/models.py:28 contacts/models.py:39
 msgid "created at"
 msgstr "作成日時"
+
+#: contacts/models.py:36
+msgid "parent thread"
+msgstr "親スレッド"
+
+#: contacts/models.py:38
+msgid "content"
+msgstr "本文"
+
+#: contacts/models.py:40
+msgid "updated at"
+msgstr "更新日時"
