@@ -16,7 +16,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand brand text-white" href="{% if user.username %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}"">mlog</a>
+		<a class="navbar-brand brand text-white" href="{% if user.username %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}">mlog</a>
 		<div class="dropdown ms-auto">
 			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownSearchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownSearchButton">
