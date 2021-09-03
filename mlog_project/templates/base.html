@@ -13,6 +13,9 @@
 	<link rel="stylesheet" href="{% static 'styles/style.css' %}">
 	{% block head %}
 	{% endblock head%}
+
+	{% load i18n %}
+
 </head>
 <body>
 	<nav class="navbar navbar-dark bg-dark fixed-top">
@@ -42,7 +45,7 @@
 		</div>
 		{% endif %}
 		<div class="dropdown">
-			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</button>
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Menu' %}</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
 				{% if user.id %}
 				<a class="dropdown-item" href="{% url 'entry:create' %}">投稿する</a>		

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-03 09:53+0900\n"
+"POT-Creation-Date: 2021-09-03 10:01+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,3 +81,7 @@ msgstr "曲"
 #: favorite_artists/models.py:9
 msgid "artist"
 msgstr "アーティスト"
+
+#: templates/base.html:48
+msgid "Menu"
+msgstr "メニュー"
