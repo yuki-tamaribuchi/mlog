@@ -40,7 +40,7 @@
 				<li><a class="dropdown-item" href="{% url 'notifications:redirect' pk=notification.id username=notification.user_from.username %}">{{notification.content}}</a></li>
 				{% endfor %}
 				<li><hr class="dropdown-divider"></li>
-				<li><a class="dropdown-item " href="">{% trans 'Check all notifications' %}</a></li>
+				<li><a class="dropdown-item " href="{% url 'notifications:list' %}">{% trans 'Check all notifications' %}</a></li>
 			</div>
 		</div>
 		{% endif %}
