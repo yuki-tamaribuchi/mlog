@@ -87,6 +87,14 @@ msgstr "アーティスト"
 msgid "follower"
 msgstr "フォロワー"
 
+#: mlog_project/settings.py:195
+msgid "English"
+msgstr "英語"
+
+#: mlog_project/settings.py:196
+msgid "Japanese"
+msgstr "日本語"
+
 #: templates/base.html:24 templates/base.html:27
 msgid "Search"
 msgstr "検索"
