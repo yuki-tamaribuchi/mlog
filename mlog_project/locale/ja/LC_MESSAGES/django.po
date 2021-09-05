@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-06 08:32+0900\n"
+"POT-Creation-Date: 2021-09-06 08:44+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr "プロフィール画像"
 msgid "comment"
 msgstr "コメント"
 
-#: comments/models.py:9
+#: comments/models.py:9 likes/models.py:10
 msgid "entry"
 msgstr "エントリ"
 
@@ -47,7 +47,7 @@ msgid "category"
 msgstr "カテゴリ"
 
 #: contacts/models.py:27 contacts/models.py:37 favorite_artists/models.py:8
-#: follow/models.py:8
+#: follow/models.py:8 likes/models.py:9
 msgid "user"
 msgstr "ユーザ"
 
