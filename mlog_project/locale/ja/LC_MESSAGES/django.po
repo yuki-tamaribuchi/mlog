@@ -147,6 +147,6 @@ msgstr "新規登録"
 msgid "Login"
 msgstr "ログイン"
 
-#: templates/base.html:59
+#: templates/base.html:72
 msgid "Contact"
 msgstr "お問い合わせ"
