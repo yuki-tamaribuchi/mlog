@@ -56,7 +56,6 @@
 				<a class="dropdown-item" href="{% url 'account_signup' %}">{% trans 'Signup' %}</a>
 				<a class="dropdown-item" href="{% url 'account_login' %}">{% trans 'Login' %}</a>
 				{% endif %}
-				<a class="dropdown-item" href="{% url 'contacts:create' %}">{% trans 'Contact' %}</a>
 			</div>
 		</div>
 	</nav>
@@ -66,6 +65,14 @@
 	{% block content %}
 	{% endblock content %}
 	</div>
+
+	<footer class="bg-dark text-light fixed-bottom">
+		<div class="row ms-1 mt-1 justify-content-start">
+			<div class="col-lg-1">
+				<a href="{% url 'contacts:create' %}" class="text-light text-decoration-none">{% trans 'Contact' %}</a>
+			</div>
+		</div>
+	</footer>
 	
 
 </body>
