@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-06 08:44+0900\n"
+"POT-Creation-Date: 2021-09-06 08:53+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,6 +94,22 @@ msgstr "英語"
 #: mlog_project/settings.py:196
 msgid "Japanese"
 msgstr "日本語"
+
+#: templates/accounts/active_status.html:2
+msgid "Do you delete your account?"
+msgstr "アカウントを削除しますか？"
+
+#: templates/accounts/active_status.html:7
+msgid "Uncheck if you delete your account."
+msgstr "アカウントを削除するにはチェックマークを外してください。"
+
+#: templates/accounts/active_status.html:11
+msgid "Delete"
+msgstr "削除"
+
+#: templates/accounts/active_status.html:13
+msgid "Cancel"
+msgstr "キャンセル"
 
 #: templates/base.html:24 templates/base.html:27
 msgid "Search"
