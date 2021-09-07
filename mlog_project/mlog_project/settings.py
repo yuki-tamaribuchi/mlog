@@ -65,12 +65,12 @@ INSTALLED_APPS = [
     'django_nose',
 
 
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    #'allauth',
+    #'allauth.account',
+    #'allauth.socialaccount',
 
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.facebook',
+    #'allauth.socialaccount.providers.google',
+    #'allauth.socialaccount.providers.facebook',
 
     'sslserver',
     'debug_toolbar',
