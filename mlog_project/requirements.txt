@@ -17,3 +17,4 @@ spotipy==2.18.0
 django-debug-toolbar==3.2.2
 django-storages==1.11.1
 boto3==1.18.36
+django-ses==2.2.1
