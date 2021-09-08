@@ -24,8 +24,11 @@ services:
         depends_on: 
             - app
 
+    celery:
+        image: ${IMAGE_URI}:${IMAGE_TAG}
 
     app:
+        image: ${IMAGE_URI}:${IMAGE_TAG}
         env_file: 
             - ./python/app_envfile.env
         command: bash -c "cd ./mlog_project && python manage.py migrate && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"
