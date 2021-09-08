@@ -265,36 +265,6 @@ CACHES['select2']=CACHES[os.environ.get('SELECT2_DEFAULT','select2_local')]
 SELECT2_CACHE_BACKEND='select2'
 
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': os.environ.get('MLOG_OAUTH_GOOGLE_CLIENT_ID'),
-            'secret': os.environ.get('MLOG_OAUTH_GOOGLE_SECRET'),
-            'key': os.environ.get('MLOG_OAUTH_GOOGLE_KEY')
-        },
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
-
-SOCIALACCOUNT_ADAPTER = 'accounts.adapter.MySocialAccountAdapter'
-
-
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_EMAIL_REQUIRED = True
-
-ACCOUNT_FORMS = {
-    'signup' : 'accounts.forms.SignupForm',
-}
-
-
 LOGIN_REDIRECT_URL = 'mlog:timeline'
 
 CELERY_BROKER_URLS={
