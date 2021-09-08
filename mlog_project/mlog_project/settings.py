@@ -74,6 +74,7 @@ INSTALLED_APPS = [
 
     'sslserver',
     'debug_toolbar',
+    'storages',
 ]
 
 SITE_ID = 1
