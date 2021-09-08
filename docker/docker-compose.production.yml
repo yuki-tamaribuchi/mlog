@@ -29,6 +29,8 @@ services:
         image: ${IMAGE_URI}:${IMAGE_TAG}
         env_file: 
             - ./python/app_envfile.env
+        environment: 
+            - MLOG_USE_S3=True
         command: bash -c "cd ./mlog_project && python manage.py migrate && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"
         expose:
             - 8001
