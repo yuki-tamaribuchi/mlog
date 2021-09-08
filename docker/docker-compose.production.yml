@@ -19,8 +19,6 @@ services:
         volumes: 
             - ../nginx/conf:/etc/nginx/conf.d
             - ../nginx/uwsgi_params:/etc/nginx/uwsgi_params
-            - ../mlog_project/static:/static
-            - ../mlog_project/media:/media
         depends_on: 
             - app
 
