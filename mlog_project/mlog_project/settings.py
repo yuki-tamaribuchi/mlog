@@ -230,14 +230,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
 
-'''
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get('MLOG_EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('MLOG_EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'default from email'
+
+EMAIL_BACKEND = 'django_ses.SESBackend'
+
+AWS_SES_ACCESS_KEY_ID = os.environ.get('MLOG_AWS_SES_ACCESS_KEY_ID')
+AWS_SES_SECRET_ACCESS_KEY = os.environ.get('MLOG_AWS_SES_SECRET_ACCESS_KEY')
+
+AWS_SES_REGION_NAME = 'ap-northeast-1'
+AWS_SES_REGION_ENDPOINT = 'email.ap-northeast-1.amazonaws.com'
+DEFAULT_FROM_EMAIL = os.environ.get('MLOG_DEFAULT_FROM_EMAIL')
 
 
 CACHES={
