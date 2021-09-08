@@ -61,17 +61,10 @@ INSTALLED_APPS = [
     'entry',
     'notifications',
     'contacts',
+
+    
     'django_select2',
     'django_nose',
-
-
-    #'allauth',
-    #'allauth.account',
-    #'allauth.socialaccount',
-
-    #'allauth.socialaccount.providers.google',
-    #'allauth.socialaccount.providers.facebook',
-
     'sslserver',
     'debug_toolbar',
     'storages',
