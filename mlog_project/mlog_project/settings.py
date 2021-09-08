@@ -117,7 +117,7 @@ WSGI_APPLICATION = 'mlog_project.wsgi.application'
 DATABASES_LIST = {
     'main': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mlog_project_db',
+        'NAME': 'mlog_db',
         'USER': os.environ.get('MLOG_DB_USER'),
         'PASSWORD': os.environ.get('MLOG_DB_PASSWORD'),
         'HOST': 'localhost',
