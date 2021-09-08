@@ -353,6 +353,7 @@ CSP_SCRIPT_SRC = [
     "https://cdnjs.cloudflare.com",
     "https://cdn.jsdelivr.net",
     "https://kit.fontawesome.com",
+    "https://mlog-s3.s3.amazonaws.com",
 ]
 CSP_STYLE_SRC = [
     "'self'",
@@ -360,11 +361,13 @@ CSP_STYLE_SRC = [
     "https://stackpath.bootstrapcdn.com",
     "https://cdn.jsdelivr.net",
     "https://cdnjs.cloudflare.com",
+    "https://mlog-s3.s3.amazonaws.com",
     ]
 CSP_IMG_SRC = [
     "'self'",
     "https://storage.googleapis.com",
     "https://i.scdn.co",
+    "https://mlog-s3.s3.amazonaws.com",
 ]
 CSP_FONT_SRC = [
     "'self'",
