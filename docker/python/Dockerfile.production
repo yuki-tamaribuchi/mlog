@@ -24,5 +24,3 @@ COPY ./mlog_project/search /usr/src/app/search
 COPY ./mlog_project/static /usr/src/app/static
 COPY ./mlog_project/templates /usr/src/app/templates
 COPY ./mlog_project/mlog_project /usr/src/app/mlog_project
-
-RUN python manage.py collectstatic --noinput
