@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('MLOG_SECRET_KEY', 'peebiyrn+1_yed4%ukd_leqzg35fk1jl
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if (os.environ.get('MLOG_DEBUG_STATE'))=='True' else False
+DEBUG = True if os.environ.get('MLOG_DEBUG_STATE')=='True' else False
 
 ALLOWED_HOSTS = [
     'localhost',
