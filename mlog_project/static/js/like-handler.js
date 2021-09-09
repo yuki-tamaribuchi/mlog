@@ -33,7 +33,6 @@ function like_process(){
 			'dataType':'json'
 		})
 		.done(function(response){
-			console.log(response['login_url']);
 			window.location.replace(response['login_url']);
 		});
 	}
