@@ -198,9 +198,9 @@ LANGUAGES = [
 USE_S3 = True if (os.environ.get('MLOG_USE_S3')=='True') else False
 
 if USE_S3:
-    AWS_ACCESS_KEY_ID = os.environ.get('MLOG_AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('MLOG_AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.environ.get('MLOG_AWS_STORAGE_BUCKET_NAME')
+    AWS_ACCESS_KEY_ID = os.environ.get('MLOG_AWS_S3_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('MLOG_AWS_S3_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('MLOG_AWS_S3_STORAGE_BUCKET_NAME')
 
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
