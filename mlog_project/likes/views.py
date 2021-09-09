@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.views.generic import ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse
 
 from accounts.models import User
 from entry.models import Entry
@@ -12,7 +13,17 @@ from .models import Like
 
 
 def like_process(request):
-	if request.method == 'POST':
+	if request.method == 'GET':
+		if not request.user.is_authenticated:
+			login_url = '%s?next=%s'%(reverse('accounts:login'), reverse('entry:detail', kwargs={'pk':request.GET.get('entry_id')}))
+
+			d = {
+				'login_url':login_url
+			}
+
+			return JsonResponse(d)
+
+	elif request.method == 'POST':
 		try:
 			like_instance = Like.objects.filter(user__username=request.user.username, entry=request.POST.get('liked_entry'))
 		except ObjectDoesNotExist:
