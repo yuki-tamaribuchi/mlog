@@ -17,7 +17,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 	template_name = 'comments/comment_form.html'
 
 	def form_valid(self, form):
-		form.instance.user_id = User.objects.get(username=self.request.user.username).id
+		form.instance.author_id = User.objects.get(username=self.request.user.username).id
 		form.instance.entry_id = self.kwargs['pk']
 		return super().form_valid(form)
 
@@ -32,7 +32,7 @@ class CommentListView(ListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 		try:
-			qs = qs.select_related('entry', 'user').filter(entry_id=self.kwargs['pk'])
+			qs = qs.select_related('entry', 'author').filter(entry_id=self.kwargs['pk'])
 		except ObjectDoesNotExist:
 			qs = qs.objects.none()
 		return qs
@@ -46,7 +46,7 @@ class CommentListView(ListView):
 
 
 def get_comment_object(pk, username):
-	obj = get_object_or_404(Comment, pk=pk, user__username=username)
+	obj = get_object_or_404(Comment, pk=pk, author__username=username)
 	entry_pk = obj.entry.id
 	return (obj, entry_pk)
 
