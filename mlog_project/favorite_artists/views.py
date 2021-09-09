@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 
 
 from accounts.models import User
@@ -12,7 +13,17 @@ from .models import FavoriteArtist
 
 
 def favorite_process(request):
-	if request.method == 'POST':
+	if request.method == 'GET':
+		if not request.user.is_authenticated:
+			login_url = '%s?next=%s'%(reverse('accounts:login'), reverse('musics:artist_detail', kwargs={'slug':request.GET.get('artist_slug')}))
+
+			d = {
+				'login_url':login_url
+			}
+
+			return JsonResponse(d)
+
+	elif request.method == 'POST':
 		user = User.objects.get(username=request.user.username)
 		artist = Artist.objects.get(slug=request.POST.get('favorited_artist'))
 
