@@ -1,12 +1,12 @@
 var favorite_url = document.currentScript.getAttribute('favorite_url');
 var artist_slug = document.currentScript.getAttribute('artist_slug');
 var favorite_btn = document.getElementById('favorite-btn');
-var logged_in = document.currentScript.getAttribute('logged_in');
+var is_loggedin = document.currentScript.getAttribute('is_loggedin');
 
 favorite_btn.addEventListener('click', favorite_process, false);
 
 function favorite_process(){
-	if (logged_in==='True'){
+	if (is_loggedin==='True'){
 		$.ajax({
 			'url':favorite_url,
 			'type':'POST',
