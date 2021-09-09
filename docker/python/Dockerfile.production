@@ -1,0 +1,28 @@
+FROM python:3.8
+
+WORKDIR /usr/src/app
+
+ENV MLOG_USE_S3=True
+
+COPY mlog_project/requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY ./mlog_project/manage.py /usr/src/app/
+COPY ./mlog_project/accounts /usr/src/app/accounts
+COPY ./mlog_project/activity /usr/src/app/activity
+COPY ./mlog_project/comments /usr/src/app/comments
+COPY ./mlog_project/contacts /usr/src/app/contacts
+COPY ./mlog_project/entry /usr/src/app/entry
+COPY ./mlog_project/favorite_artists /usr/src/app/favorite_artists
+COPY ./mlog_project/follow /usr/src/app/follow
+COPY ./mlog_project/likes /usr/src/app/likes
+COPY ./mlog_project/locale /usr/src/app/locale
+COPY ./mlog_project/mlog /usr/src/app/mlog
+COPY ./mlog_project/musics /usr/src/app/musics
+COPY ./mlog_project/notifications /usr/src/app/notifications
+COPY ./mlog_project/search /usr/src/app/search
+COPY ./mlog_project/static /usr/src/app/static
+COPY ./mlog_project/templates /usr/src/app/templates
+COPY ./mlog_project/mlog_project /usr/src/app/mlog_project
+
+RUN python manage.py collectstatic --noinput
