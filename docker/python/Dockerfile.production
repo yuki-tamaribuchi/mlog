@@ -1,5 +1,7 @@
 FROM python:3.8
 
+RUN apt update -y
+
 WORKDIR /usr/src/app
 
 ENV MLOG_USE_S3=True
