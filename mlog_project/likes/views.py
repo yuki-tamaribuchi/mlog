@@ -25,7 +25,7 @@ def like_process(request):
 
 	elif request.method == 'POST':
 		try:
-			like_instance = Like.objects.filter(user__username=request.user.username, entry=request.POST.get('liked_entry'))
+			like_instance = Like.objects.filter(user__username=request.user.username, entry=request.POST.get('entry_id'))
 		except ObjectDoesNotExist:
 			like_instance = Like.objects.none()
 
