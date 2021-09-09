@@ -31,10 +31,9 @@ services:
         env_file: 
             - ./python/app_envfile.env
         environment: 
-            - DJANGO_DATABASE=production
             - CELERY_BROKER_DEFAULT=docker
             - CELERY_RESULT_BACKENDS_DEFAULT=docker
-        command: bash -c "apt update -y && apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker >/dev/null"
+        command: bash -c "apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker >/dev/null"
         depends_on: 
             - redis
 
