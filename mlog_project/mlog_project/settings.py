@@ -136,11 +136,22 @@ DATABASES_LIST = {
         'OPTIONS': {
             'charset': 'utf8mb4',
         }
+    },
+    'production':{
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('MLOG_AWS_RDS_DATABASE_NAME'),
+        'USER': os.environ.get('MLOG_AWS_RDS_USER'),
+        'PASSWORD': os.environ.get('MLOG_AWS_RDS_PASSWORD'),
+        'HOST': os.environ.get('MLOG_AWS_RDS_HOST'),
+        'PORT':os.environ.get('MLOG_AWS_RDS_PORT'),
+        'OPTIONS':{
+            'charset':'utf8mb4',
+        }
     }
 }
 
 DATABASES={}
-default_database = os.environ.get('DJANGO_DATABASE', 'main')
+default_database = os.environ.get('MLOG_DATABASE', 'main')
 DATABASES['default'] = DATABASES_LIST[default_database]
 
 
