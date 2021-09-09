@@ -166,5 +166,5 @@ mysql/
 sql/
 *.env
 mlog_project/result/*
-mlog_project/media/images/users/*
+mlog_project/mediafiles/images/users/*
 coverage.svg
