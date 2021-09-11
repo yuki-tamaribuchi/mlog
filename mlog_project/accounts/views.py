@@ -87,11 +87,11 @@ class UserEntryListView(ListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__username=self.kwargs['username']).order_by('-id')
+		return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__username=self.kwargs['username'], writer__is_active=True).order_by('-id')
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['detail_user'] = User.objects.get(username=self.kwargs['username'])
+		context['detail_user'] = get_object_or_404(User, username=self.kwargs.get('username'), is_active=True)
 		return context
 
 
