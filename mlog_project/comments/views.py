@@ -46,7 +46,7 @@ class CommentListView(ListView):
 
 
 def get_comment_object(pk, username):
-	obj = get_object_or_404(Comment, pk=pk, author__username=username)
+	obj = get_object_or_404(Comment, pk=pk, author__username=username, author__is_active=True)
 	entry_pk = obj.entry.id
 	return (obj, entry_pk)
 
