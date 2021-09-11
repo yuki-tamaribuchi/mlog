@@ -50,7 +50,8 @@ class ContactThreadDetailView(LoginRequiredMixin, UserPassesTestMixin, FormMixin
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['contact_content_list'] = ContactContent.objects.filter(
-			parent_thread__id=self.object.id
+			parent_thread__id=self.object.id,
+			user__is_active=True
 		).order_by(
 			'created_at'
 		)
