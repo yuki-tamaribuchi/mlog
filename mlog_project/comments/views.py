@@ -32,14 +32,14 @@ class CommentListView(ListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 		try:
-			qs = qs.select_related('entry', 'author').filter(entry_id=self.kwargs['pk'])
+			qs = qs.select_related('entry', 'author').filter(entry_id=self.kwargs['pk'], author__is_active=True)
 		except ObjectDoesNotExist:
 			qs = qs.objects.none()
 		return qs
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entry'] = Entry.objects.get(id=self.kwargs['pk'])
+		context['entry'] = Entry.objects.get(id=self.kwargs['pk'], writer__is_active=True)
 		return context
 
 
