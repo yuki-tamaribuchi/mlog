@@ -51,14 +51,14 @@ class UserDetailView(DetailView):
 		return super().get(request, *args, **kwargs)
 
 	def get_object(self):
-		return get_object_or_404(User, username=self.kwargs['username'])
+		return get_object_or_404(User, username=self.kwargs['username'], is_active=True)
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['entries'] = Entry.objects.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
-		context['follow_count'] = Follow.objects.filter(user__username=self.kwargs['username']).count()
-		context['follower_count'] = Follow.objects.filter(follower__username=self.kwargs['username']).count()
-		context['liked_entry_count'] = Like.objects.filter(user__username=self.kwargs['username']).count()
+		context['follow_count'] = Follow.objects.filter(user__username=self.kwargs['username'], follower__is_active=True).count()
+		context['follower_count'] = Follow.objects.filter(follower__username=self.kwargs['username'], user__is_active=True).count()
+		context['liked_entry_count'] = Like.objects.filter(user__username=self.kwargs['username'], entry__writer__is_active=True).count()
 
 		if self.request.user.username:
 			user = get_object_or_404(User, username=self.request.user.username)	
