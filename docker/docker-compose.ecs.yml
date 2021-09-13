@@ -49,6 +49,5 @@ services:
         #command: bash -c "cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"
         command: bash -c "cd /usr/src/app && python manage.py migrate && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"
         depends_on: 
-            - db
             - redis
             - celery
