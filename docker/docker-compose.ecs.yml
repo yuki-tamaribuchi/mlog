@@ -43,3 +43,7 @@ services:
         depends_on: 
             - redis
             - celery
+        environment:
+            - MLOG_DEBUG_STATE=True
+            - CELERY_BROKER_DEFAULT=docker
+            - CELERY_RESULT_BACKENDS_DEFAULT=docker
