@@ -44,9 +44,10 @@ services:
             dockerfile: ./docker/python/Dockerfile.production
         env_file: 
             - ./python/app_envfile.env
-        command: bash -c "cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"
         expose:
             - 8001
+        #command: bash -c "cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"
+        command: bash -c "cd /usr/src/app && python manage.py migrate && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"
         depends_on: 
             - db
             - redis
