@@ -45,5 +45,6 @@ services:
             - celery
         environment:
             - MLOG_DEBUG_STATE=False
+            - SELECT2_DEFAULT=select2_docker
             - CELERY_BROKER_DEFAULT=docker
             - CELERY_RESULT_BACKENDS_DEFAULT=docker
