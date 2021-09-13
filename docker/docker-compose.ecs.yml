@@ -44,6 +44,6 @@ services:
             - redis
             - celery
         environment:
-            - MLOG_DEBUG_STATE=True
+            - MLOG_DEBUG_STATE=False
             - CELERY_BROKER_DEFAULT=docker
             - CELERY_RESULT_BACKENDS_DEFAULT=docker
