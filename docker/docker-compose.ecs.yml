@@ -1,14 +1,6 @@
 version: '3'
 
 services:
-    db:
-        image: mysql:5.7
-        ports:
-            - 33060:3306
-        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-        env_file: 
-            - ./mysql/db_envfile.env
-
     redis:
         image: redis:6.2
 
