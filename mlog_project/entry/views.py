@@ -37,10 +37,17 @@ class EntryDetailView(DetailView):
 		entry_read_activity.delay(self.kwargs.get('pk'), request.user.username)
 		return super().get(request, *args, **kwargs)
 
+	def get_object(self):
+		obj = super().get_object()
+		if obj.writer.is_active:
+			return obj
+		else:
+			raise Http404
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['like_count'] = Like.objects.filter(entry=self.kwargs.get('pk')).count()
-		context['comment_count'] = Comment.objects.filter(entry=self.kwargs.get('pk')).count()
+		context['like_count'] = Like.objects.filter(entry=self.kwargs.get('pk'), user__is_active=True).count()
+		context['comment_count'] = Comment.objects.filter(entry=self.kwargs.get('pk'), author__is_active=True).count()
 		
 		try:
 			context['like_status'] = Like.objects.get(user__username=self.request.user.username, entry=self.kwargs.get('pk'))
@@ -86,7 +93,7 @@ class EntryListBySongView(ListView):
 		qs = super().get_queryset()
 
 		try:
-			return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(song__id=self.kwargs.get('pk'))
+			return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(song__id=self.kwargs.get('pk'), writer__is_active=True)
 		except ObjectDoesNotExist:
 			return qs.none()
 
@@ -110,7 +117,8 @@ class EntryListByArtistView(ListView):
 			).prefetch_related(
 				'song__artist'
 			).filter(
-				song__artist__slug=self.kwargs.get('slug')
+				song__artist__slug=self.kwargs.get('slug'),
+				writer__is_active=True,
 			).order_by('id')
 		except ObjectDoesNotExist:
 			return qs.none()
