@@ -48,3 +48,16 @@ services:
             - SELECT2_DEFAULT=select2_docker
             - CELERY_BROKER_DEFAULT=docker
             - CELERY_RESULT_BACKENDS_DEFAULT=docker
+
+
+x-aws-cloudformation:
+    Resources:
+        DBNetworkInbound:
+            Type: AWS::EC2::SecurityGroupIngress
+            Properties: 
+                GroupId: sg-0e1223973d84589bd
+                IpProtocol: tcp
+                SourceSecurityGroupId: 
+                    Ref: DefaultNetwork
+                FromPort: 3306
+                ToPort: 3306
