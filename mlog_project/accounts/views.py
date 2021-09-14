@@ -39,6 +39,8 @@ class LoginView(auth_login_view):
 	redirect_authenticated_user = True
 
 	def get_success_url(self):
+		if self.request.GET.get('next'):
+			return self.request.GET.get('next')
 		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
 
 
