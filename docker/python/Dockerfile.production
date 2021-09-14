@@ -5,6 +5,7 @@ RUN apt update -y
 WORKDIR /usr/src/app
 
 ENV MLOG_USE_S3=True
+ENV MLOG_IS_DEVELOP=False
 
 COPY mlog_project/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
