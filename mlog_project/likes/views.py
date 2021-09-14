@@ -60,13 +60,13 @@ class EntrysLikeListView(ListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 		try:
-			return qs.filter(entry=self.kwargs['pk'])
+			return qs.filter(entry=self.kwargs['pk'], user__is_active=True)
 		except ObjectDoesNotExist:
 			return qs.none()
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['entry'] = Entry.objects.get(id=self.kwargs['pk'])
+		context['entry'] = Entry.objects.get(id=self.kwargs['pk'], writer__is_active=True)
 		return context
 
 
@@ -76,7 +76,7 @@ class UsersLikeListView(ListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		liked_entry = Like.objects.filter(user__username=self.kwargs['username']).values('entry__id')
+		liked_entry = Like.objects.filter(user__username=self.kwargs['username'], entry__writer__is_active=True).values('entry__id')
 		return qs.select_related('writer', 'song').filter(id__in=liked_entry)
 
 	def get_context_data(self,**kwargs):
