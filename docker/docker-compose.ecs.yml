@@ -62,8 +62,20 @@ x-aws-cloudformation:
                 FromPort: 3306
                 ToPort: 3306
 
-        EIPforLB:
-            Type: AWS::EC2::EIP
+        LBRecordSet:
+            Type: AWS::Route53::RecordSet
+            Properties:
+                HostedZoneId: Z05792841BVWVXP07OSZ8
+                Name: mlog.tamaribuchi-yuki.com
+                AliasTarget:
+                    HostedZoneId:
+                        Fn::GetAtt: LoadBalancer.CanonicalHostedZoneID
+                    DNSName:
+                        Fn::GetAtt: LoadBalancer.DNSName
+                Type: A
+
+#        EIPforLB:
+#            Type: AWS::EC2::EIP
 
 #        EIPAssociationToLB:
 #            Type: AWS::EC2::EIPAssociation
