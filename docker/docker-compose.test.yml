@@ -7,3 +7,7 @@ services:
             MYSQL_DATABASE: test_mlog_db
             MYSQL_USER: mlog_db_user
             MYSQL_PASSWORD: password
+
+    app:
+        environment:
+            - MLOG_IS_DEVELOP=True
