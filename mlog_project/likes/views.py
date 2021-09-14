@@ -1,5 +1,5 @@
 from django.http.response import JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
@@ -81,5 +81,5 @@ class UsersLikeListView(ListView):
 
 	def get_context_data(self,**kwargs):
 		context = super().get_context_data(**kwargs)
-		context['detail_user'] = User.objects.get(username=self.kwargs['username'])
+		context['detail_user'] = get_object_or_404(User, username=self.kwargs['username'], is_active=True)
 		return context
