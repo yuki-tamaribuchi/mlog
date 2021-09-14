@@ -25,7 +25,7 @@ class TopView(ListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 		try:
-			return qs.select_related('writer', 'song').prefetch_related('song__artist').all().order_by('-id')
+			return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__is_active=True).order_by('-id')
 		except ObjectDoesNotExist:
 			return qs.none()
 
@@ -37,7 +37,7 @@ class TimelineView(LoginRequiredMixin, ListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		follows = Follow.objects.filter(user__username=self.request.user.username).values('follower__username')
+		follows = Follow.objects.filter(user__username=self.request.user.username, follower__is_active=True).values('follower__username')
 		favorite_artists = FavoriteArtist.objects.filter(user__username=self.request.user.username).values('artist__slug')
 		try:
 			return qs.select_related(
