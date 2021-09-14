@@ -34,7 +34,7 @@ def like_process(request):
 			like_status = False
 		else:
 			user = User.objects.get(username=request.user.username)
-			entry = Entry.objects.get(id=request.POST.get('liked_entry'))
+			entry = Entry.objects.get(id=request.POST.get('entry_id'))
 			Like.objects.create(user=user, entry=entry)
 			like_status = True
 
