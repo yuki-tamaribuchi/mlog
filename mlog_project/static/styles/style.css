@@ -185,3 +185,7 @@ body {
 	width: 70%;
 	height: auto;
 }
+
+.select2_form select, .select2_form input {
+	width: 50%;
+}
