@@ -1,5 +1,5 @@
 from django.http.response import JsonResponse
-from django.shortcuts import redirect, resolve_url
+from django.shortcuts import get_object_or_404, redirect, resolve_url
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, ListView
 from django.core.exceptions import ObjectDoesNotExist
@@ -47,7 +47,7 @@ class BaseListView(ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		this_page_user = User.objects.get(username=self.kwargs['username'])
+		this_page_user = get_object_or_404(User, username=self.kwargs.get('username'), is_active=True)
 		context['this_page_username'] = this_page_user.username
 		context['this_page_handle'] = this_page_user.handle
 		return context
