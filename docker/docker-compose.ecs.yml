@@ -64,3 +64,11 @@ x-aws-cloudformation:
 
         EIPforLB:
             Type: AWS::EC2::EIP
+
+#        EIPAssociationToLB:
+#            Type: AWS::EC2::EIPAssociation
+#            Properties:
+#                EIP:
+#                    Ref: EIPforLB
+#                InstanceId:
+#                    Fn::GetAtt: LoadBalancer.CanonicalHostedZoneID
