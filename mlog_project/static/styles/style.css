@@ -189,3 +189,7 @@ body {
 .select2_form select, .select2_form input {
 	width: 50%;
 }
+
+.fav_btn {
+	width: 25%;
+}

@@ -30,7 +30,7 @@
 	</div>
 
 	<div class="row mt-5">
-		<input type="button" id="favorite-btn" value="{% if fav_status %}お気に入り解除{% else %}お気に入りに登録{% endif %}">
+		<input type="button" id="favorite-btn" value="{% if fav_status %}お気に入り解除{% else %}お気に入りに登録{% endif %}" class="fav_btn">
 		<p><a href="{% url 'favorite_artists:user_list_by_favorited_artist' artist.slug %}">お気に入りに登録しているユーザ一覧</a></p>
 	</div>
 
