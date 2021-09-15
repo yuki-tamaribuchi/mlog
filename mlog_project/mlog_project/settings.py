@@ -34,8 +34,7 @@ IS_DEVELOP = True if os.environ.get('MLOG_IS_DEVELOP', 'False')=='True' else Fal
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '0.0.0.0',
-    '*'
+    'mlog.tamaribuchi-yuki.com',
 ]
 
 
