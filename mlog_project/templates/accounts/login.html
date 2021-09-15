@@ -10,9 +10,6 @@
 				<input type="submit" value="ログイン">
 
 				<p><a href="{% url 'accounts:passwordreset' %}">パスワードを忘れた</a></p>
-
-				{% load socialaccount %}
-				<a href="{% provider_login_url "google" google="https://www.google.com/accounts/o8/id"%}">Google</a>
 			</form>
 		</div>
 	</div>
