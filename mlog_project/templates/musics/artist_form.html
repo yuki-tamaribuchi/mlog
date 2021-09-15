@@ -2,13 +2,10 @@
 {% block title%}アーティスト{% if object %}更新{% else %}登録{% endif %} | {{block.super}}{% endblock title %}
 {% block head %}
 	{{ form.media.css }}
-	<style>
-		input,select{width:50%}
-	</style>
 {% endblock head %}
 {% block content %}
 <div class="container">
-	<div class="row mt-5">
+	<div class="row mt-5 select2_form">
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
