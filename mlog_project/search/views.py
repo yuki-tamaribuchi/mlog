@@ -51,5 +51,5 @@ class UserSearchListView(BaseSeachListView):
 		qs = super().get_queryset()
 
 		return qs.filter(
-			Q(username__icontains = self.keyword) | Q(handle__icontains = self.keyword)
+			Q(username__icontains = self.keyword, is_active=True) | Q(handle__icontains = self.keyword, is_active=True)
 		)
