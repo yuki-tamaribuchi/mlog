@@ -43,6 +43,8 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% load static %}
+{% if not is_myself %}
 <script src="{% static 'js/ajax_csrf.js' %}"></script>
 <script src="{% static 'js/follow_handler.js' %}" follow_url="{% url 'follow:follow' %}" follower_user="{{detail_user.username}}"></script>
+{% endif %}
 {% endblock content %}
