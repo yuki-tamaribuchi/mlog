@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 16:35+0900\n"
+"POT-Creation-Date: 2021-09-16 16:48+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,11 +103,13 @@ msgstr "アカウントを削除しますか？"
 msgid "Uncheck if you delete your account."
 msgstr "アカウントを削除するにはチェックマークを外してください。"
 
-#: templates/accounts/active_status.html:11 templates/entry/detail.html:66
+#: templates/accounts/active_status.html:11
+#: templates/entry/delete_confirm.html:14 templates/entry/detail.html:67
 msgid "Delete"
 msgstr "削除"
 
 #: templates/accounts/active_status.html:13
+#: templates/entry/delete_confirm.html:15
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -167,38 +169,42 @@ msgstr "ログイン"
 msgid "Contact"
 msgstr "お問い合わせ"
 
-#: templates/entry/detail.html:26
+#: templates/entry/delete_confirm.html:3 templates/entry/delete_confirm.html:11
+msgid "Delete this entry?"
+msgstr "この記事を削除しますか?"
+
+#: templates/entry/detail.html:27
 msgid "Created at"
 msgstr "作成日時"
 
-#: templates/entry/detail.html:27
+#: templates/entry/detail.html:28
 msgid "Updated at"
 msgstr "更新日時"
 
-#: templates/entry/detail.html:31
+#: templates/entry/detail.html:32
 msgid "Featured Song"
 msgstr "この記事の曲"
 
-#: templates/entry/detail.html:50
+#: templates/entry/detail.html:51
 msgid "Artists"
 msgstr "アーティスト"
 
-#: templates/entry/detail.html:55
+#: templates/entry/detail.html:56
 msgid "Likes"
 msgstr "ライク"
 
-#: templates/entry/detail.html:56
+#: templates/entry/detail.html:57
 msgid "Comments"
 msgstr "コメント"
 
-#: templates/entry/detail.html:57
+#: templates/entry/detail.html:58
 msgid "Views"
 msgstr "閲覧数"
 
-#: templates/entry/detail.html:61
+#: templates/entry/detail.html:62
 msgid "Write a comment"
 msgstr "コメントする"
 
-#: templates/entry/detail.html:66
+#: templates/entry/detail.html:67
 msgid "Update"
 msgstr "更新"
