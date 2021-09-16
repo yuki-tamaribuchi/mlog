@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 17:48+0900\n"
+"POT-Creation-Date: 2021-09-16 17:51+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,6 +114,7 @@ msgid "Cancel"
 msgstr "キャンセル"
 
 #: templates/base.html:24 templates/base.html:27
+#: templates/musics/spotify_track_select.html:12
 msgid "Search"
 msgstr "検索"
 
@@ -327,5 +328,14 @@ msgid "Add artist"
 msgstr "アーティストを追加"
 
 #: templates/musics/song_form.html:17
+#: templates/musics/spotify_track_select.html:3
 msgid "Select song on Spotify."
 msgstr "Spotifyで曲を選択"
+
+#: templates/musics/spotify_track_select.html:14
+msgid "Select song"
+msgstr "曲を選択してください"
+
+#: templates/musics/spotify_track_select.html:17
+msgid "Send"
+msgstr "送信"
