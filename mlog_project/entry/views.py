@@ -119,7 +119,9 @@ class EntryListByArtistView(ListView):
 			).filter(
 				song__artist__slug=self.kwargs.get('slug'),
 				writer__is_active=True,
-			).order_by('id')
+			).order_by(
+				'created_at'
+			).reverse()
 		except ObjectDoesNotExist:
 			return qs.none()
 	
