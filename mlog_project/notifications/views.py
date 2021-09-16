@@ -19,4 +19,6 @@ class NotificationListView(ListView):
 		return qs.filter(
 			user_to=self.request.user,
 			user_from__is_active=True,
-		)
+		).order_by(
+			'recieved_datetime'
+		).reverse()
