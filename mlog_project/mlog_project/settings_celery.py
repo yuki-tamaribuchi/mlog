@@ -1,3 +1,5 @@
+import os
+
 CELERY_BROKER_URLS={
     'local':"redis://127.0.0.1:6379/1",
     'docker':"redis://redis:6379"

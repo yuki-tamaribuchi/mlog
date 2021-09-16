@@ -1,3 +1,5 @@
+import os
+
 #Setting for django-nose
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 

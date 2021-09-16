@@ -1,3 +1,5 @@
+import os
+
 EMAIL_BACKEND = 'django_ses.SESBackend'
 
 AWS_SES_ACCESS_KEY_ID = os.environ.get('MLOG_AWS_SES_ACCESS_KEY_ID')
