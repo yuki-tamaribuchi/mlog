@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 19:14+0900\n"
+"POT-Creation-Date: 2021-09-16 19:18+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,6 +130,32 @@ msgstr "パスワードをリセット"
 msgid "Sign Up"
 msgstr "新規登録"
 
+#: templates/accounts/userdetail.html:16
+msgid "No biograph"
+msgstr "自己紹介がありません"
+
+#: templates/accounts/userdetail.html:29
+msgid "Liked Entry"
+msgstr "ライクした記事"
+
+#: templates/accounts/userdetail.html:30
+msgid "Favorite Artists"
+msgstr "お気に入りのアーティスト"
+
+#: templates/accounts/userdetail.html:35 templates/entry/entry_form.html:3
+msgid "Entry"
+msgstr "記事"
+
+#: templates/accounts/userdetail.html:38 templates/musics/artist_detail.html:42
+#: templates/musics/artist_detail.html:52 templates/musics/song_detail.html:49
+msgid "See more"
+msgstr "もっと見る"
+
+#: templates/accounts/userdetail.html:40 templates/entry/entry_list.html:13
+#: templates/musics/artist_detail.html:44
+msgid "There is no entry."
+msgstr "記事はありません。"
+
 #: templates/base.html:24 templates/base.html:27
 #: templates/musics/spotify_track_select.html:12
 msgid "Search"
@@ -226,10 +252,6 @@ msgstr "コメントする"
 msgid "Update"
 msgstr "更新"
 
-#: templates/entry/entry_form.html:3
-msgid "Entry"
-msgstr "記事"
-
 #: templates/entry/entry_form.html:3 templates/musics/song_form.html:3
 msgid "update"
 msgstr "更新"
@@ -244,10 +266,6 @@ msgstr "投稿"
 #: templates/entry/entry_form.html:17
 msgid "Add song"
 msgstr "曲を追加"
-
-#: templates/entry/entry_list.html:13 templates/musics/artist_detail.html:44
-msgid "There is no entry."
-msgstr "記事はありません。"
 
 #: templates/musics/artist_detail.html:8
 msgid "Biograph"
@@ -277,11 +295,6 @@ msgstr "このアーティストをお気に入り登録しているユーザ"
 #: templates/musics/artist_detail.html:39
 msgid "Entries"
 msgstr "記事一覧"
-
-#: templates/musics/artist_detail.html:42
-#: templates/musics/artist_detail.html:52 templates/musics/song_detail.html:49
-msgid "See more"
-msgstr "もっと見る"
 
 #: templates/musics/artist_detail.html:49
 msgid "Songs"
