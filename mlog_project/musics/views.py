@@ -39,7 +39,7 @@ class ArtistDetailView(DetailView):
 			).reverse()
 
 
-		context['members'] = Artist.objects.filter(belong_to__slug=self.kwargs['slug'])
+		context['members'] = Artist.objects.filter(belong_to__slug=self.kwargs['slug']).order_by('slug')
 
 		context['song_list'] = Song.objects.filter(
 			artist__slug=self.kwargs['slug']
