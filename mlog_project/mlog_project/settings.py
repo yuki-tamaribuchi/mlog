@@ -14,11 +14,11 @@ from django.utils.translation import gettext_lazy as _
 from pathlib import Path
 import os
 
-from settings_csp import *
-from settings_nose import *
-from settings_celery import *
-from settings_caches import *
-from settings_email import *
+from .settings_csp import *
+from .settings_nose import *
+from .settings_celery import *
+from .settings_caches import *
+from .settings_email import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
