@@ -56,4 +56,6 @@ class UserSearchListView(BaseSeachListView):
 
 		return qs.filter(
 			Q(username__icontains = self.keyword, is_active=True) | Q(handle__icontains = self.keyword, is_active=True)
+		).order_by(
+			'username',
 		)
