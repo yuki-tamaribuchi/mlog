@@ -17,7 +17,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 	template_name = 'comments/comment_form.html'
 
 	def form_valid(self, form):
-		form.instance.author_id = User.objects.get(username=self.request.user.username).id
+		form.instance.author = User.objects.get(username=self.request.user.username)
 		form.instance.entry_id = self.kwargs['pk']
 		return super().form_valid(form)
 

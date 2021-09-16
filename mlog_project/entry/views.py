@@ -22,7 +22,7 @@ class EntryCreateView(LoginRequiredMixin,CreateView):
 	template_name = 'entry/entry_form.html'
 
 	def form_valid(self, form):
-		form.instance.writer_id = User.objects.get(username=self.request.user.username).id
+		form.instance.writer = User.objects.get(username=self.request.user.username)
 		return super().form_valid(form)
 
 	def get_success_url(self):

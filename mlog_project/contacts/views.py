@@ -17,7 +17,7 @@ class CreateContactThreadAndContentView(LoginRequiredMixin, CreateView):
 		return super().get_queryset()
 
 	def form_valid(self, form):
-		form.instance.user_id = self.request.user.id
+		form.instance.user = self.request.user
 
 		try:
 			with atomic():
