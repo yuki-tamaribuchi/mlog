@@ -5,12 +5,12 @@
 	<div class="row">
 		<div class="col mt-5">
 			<h2><a href="{% url 'accounts:detail' detail_user.username %}">{{detail_user.handle}}</a>の投稿</h2>
-			{% if entry_list %}
-			<div class="col">
-				{% for entry in entry_list %}
-				{% include 'common_templates/entry_card_without_writer.html' %}
-			{% endfor %}
-			{% else %}
+			<div class="row">
+				{% if entry_list %}
+					{% include 'common_templates/entry_card_without_writer.html' %}
+				{% else %}
+			</div>
+			
 			表示する記事がありません。
 			{% endif %}
 
