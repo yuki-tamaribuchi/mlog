@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block title%}曲{% if object %}更新{% else %}登録{% endif %} | {{block.super}}{% endblock title %}
+{% load i18n %}
+{% block title%}{% trans 'Song' %} {% if object %}{% trans 'update' %}{% else %}{% trans 'post' %}{% endif %} | {{block.super}}{% endblock title %}
 {% block head %}
 	{{ form.media.css }}
 {% endblock head %}
@@ -9,11 +10,11 @@
 		<form id="song_form" method="POST">
 			{% csrf_token %}
 			{{form.as_p}}
-			<input type="submit" value="登録">
+			<input type="submit" value="{% if object %}{% trans 'Update' %}{% else %}{% trans 'Post' %}{% endif %}">
 		</form>
-		<a href="#" id="add_artist_link">アーティストを追加</a>
-		<a href="#" id="add_genre_link">ジャンルを追加</a>
-		<a href="#" id="add_spotify_preview_url_link">Spotifyで曲を選択</a>
+		<a href="#" id="add_artist_link">{% trans 'Add artist' %}</a>
+		<a href="#" id="add_genre_link">{% trans 'Add genre' %}</a>
+		<a href="#" id="add_spotify_preview_url_link">{% trans 'Select song on Spotify.' %}</a>
 	</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

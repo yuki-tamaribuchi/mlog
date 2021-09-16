@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 17:45+0900\n"
+"POT-Creation-Date: 2021-09-16 17:48+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -208,6 +208,7 @@ msgstr "コメントする"
 #: templates/entry/detail.html:67 templates/entry/entry_form.html:15
 #: templates/musics/artist_form.html:3 templates/musics/artist_form.html:13
 #: templates/musics/genre_form.html:3 templates/musics/genre_form.html:13
+#: templates/musics/song_form.html:13
 msgid "Update"
 msgstr "更新"
 
@@ -215,13 +216,14 @@ msgstr "更新"
 msgid "Entry"
 msgstr "記事"
 
-#: templates/entry/entry_form.html:3
+#: templates/entry/entry_form.html:3 templates/musics/song_form.html:3
 msgid "update"
 msgstr "更新"
 
 #: templates/entry/entry_form.html:3 templates/entry/entry_form.html:15
 #: templates/musics/artist_form.html:3 templates/musics/artist_form.html:13
 #: templates/musics/genre_form.html:3 templates/musics/genre_form.html:13
+#: templates/musics/song_form.html:13
 msgid "Post"
 msgstr "投稿"
 
@@ -284,7 +286,7 @@ msgstr "アーティスト情報を編集する"
 msgid "Aritst"
 msgstr "アーティスト"
 
-#: templates/musics/artist_form.html:15
+#: templates/musics/artist_form.html:15 templates/musics/song_form.html:16
 msgid "Add genre"
 msgstr "ジャンルを追加"
 
@@ -308,10 +310,22 @@ msgstr "プレビュー"
 msgid "Entries of this song."
 msgstr "記事はありません。"
 
-#: templates/musics/song_detail.html:42
+#: templates/musics/song_detail.html:42 templates/musics/song_form.html:3
 msgid "Song"
 msgstr "曲"
 
 #: templates/musics/song_detail.html:53
 msgid "Edit song information."
 msgstr "曲情報を編集する"
+
+#: templates/musics/song_form.html:3
+msgid "post"
+msgstr "投稿"
+
+#: templates/musics/song_form.html:15
+msgid "Add artist"
+msgstr "アーティストを追加"
+
+#: templates/musics/song_form.html:17
+msgid "Select song on Spotify."
+msgstr "Spotifyで曲を選択"
