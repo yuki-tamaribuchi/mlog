@@ -66,7 +66,7 @@ class EntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 	def test_func(self):
 		object = self.get_object()
-		return object.writer.id == self.request.user.id
+		return object.writer == self.request.user
 
 	def get_success_url(self):
 		return reverse('entry:detail', kwargs={'pk':self.object.id})
@@ -78,7 +78,7 @@ class EntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 	def test_func(self):
 		object = self.get_object()
-		return object.writer.id == self.request.user.id
+		return object.writer == self.request.user
 
 	def get_success_url(self):
 		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
