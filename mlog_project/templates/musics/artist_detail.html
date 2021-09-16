@@ -1,29 +1,30 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block title%}{{artist.artist_name}} | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
 	<div class="row mt-5">
         <h1>{{artist.artist_name}}</h1>
-		<h2>Biograph</h2>
+		<h2>{% trans 'Biograph' %}</h2>
 		{% if artist.artist_biograph %}
 		{{artist.artist_biograph}}
 		{% else %}
-		<p>紹介はありません。</p>
+		<p>{% trans 'There is no biograph.' %}</p>
 		{% endif %}
 
 		{% if artist.belong_to %}
-			<h2>所属グループ</h2>
+			<h2>{% trans 'Belong to' %}</h2>
 			{% include 'common_templates/artist_card.html' with artist_object=artist.belong_to %}
 		{% endif %}
 
 		{% if members %}
-			<h2>所属メンバー</h2>
+			<h2>{% trans 'Members' %}</h2>
 			<div class='row'>
 				{% include 'common_templates/artist_card_for_list.html' with artist_list=members %}
 			</div>
 		{% endif %}
 
-		<h2>ジャンル</h2>
+		<h2>{% trans 'Genre' %}</h2>
 		<div class="row">
 			{% include 'common_templates/genre_card.html' with genre_list=artist.genre.all %}
 		</div>
@@ -31,31 +32,31 @@
 
 	<div class="row mt-5">
 		<input type="button" id="favorite-btn" value="{% if fav_status %}お気に入り解除{% else %}お気に入り登録{% endif %}" class="fav_btn">
-		<p><a href="{% url 'favorite_artists:user_list_by_favorited_artist' artist.slug %}">お気に入りに登録しているユーザ一覧</a></p>
+		<p><a href="{% url 'favorite_artists:user_list_by_favorited_artist' artist.slug %}">{% trans 'Users favorited this artist.' %}</a></p>
 	</div>
 
 	<div class="row mt-5">
-		<h2>記事一覧</h2>
+		<h2>{% trans 'Entries' %}</h2>
 		{% if entries %}
 			{% include 'common_templates/entry_card_with_writer.html' with entry_list=entries %}
-			<a href="{% url 'entry:entry_list_by_artist' artist.slug %}">もっと見る</a>
+			<a href="{% url 'entry:entry_list_by_artist' artist.slug %}">{% trans 'See more' %}</a>
 		{% else %}
-		<p>記事はありません。</p>
+		<p>{% trans 'There is no entry.' %}</p>
 		{% endif %}
 	</div>
 
 	<div class="row mt-5">
-		<h2>曲一覧</h2>
+		<h2>{% trans 'Songs' %}</h2>
 		{% if song_list %}
 			{% include 'common_templates/song_card_with_artist.html' %}
-			<a href="{% url 'musics:song_by_artist' artist.slug %}">もっと見る</a>
+			<a href="{% url 'musics:song_by_artist' artist.slug %}">{% trans 'See more' %}</a>
 		{% else %}
-		<p>曲はありません。</p>
+		<p>{% trans 'There is no song.' %}</p>
 		{% endif %}
 	</div>
 
 	<div class="row mt-5">
-		<p><a href="{% url 'musics:artist_update' artist.slug %}">アーティスト情報を編集</a></p>
+		<p><a href="{% url 'musics:artist_update' artist.slug %}">{% trans 'Edit artist information.' %}</a></p>
 	</div>
 	
 </div>

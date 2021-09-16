@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 17:04+0900\n"
+"POT-Creation-Date: 2021-09-16 17:16+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -225,6 +225,51 @@ msgstr "投稿"
 msgid "Add song"
 msgstr "曲を追加"
 
-#: templates/entry/entry_list.html:12
+#: templates/entry/entry_list.html:13 templates/musics/artist_detail.html:44
 msgid "There is no entry."
 msgstr "記事はありません。"
+
+#: templates/musics/artist_detail.html:8
+msgid "Biograph"
+msgstr "アーティスト紹介"
+
+#: templates/musics/artist_detail.html:12
+msgid "There is no biograph."
+msgstr "紹介はありません。"
+
+#: templates/musics/artist_detail.html:16
+msgid "Belong to"
+msgstr "所属グループ"
+
+#: templates/musics/artist_detail.html:21
+msgid "Members"
+msgstr "メンバー"
+
+#: templates/musics/artist_detail.html:27
+msgid "Genre"
+msgstr "ジャンル"
+
+#: templates/musics/artist_detail.html:35
+msgid "Users favorited this artist."
+msgstr "このアーティストをお気に入り登録しているユーザ"
+
+#: templates/musics/artist_detail.html:39
+msgid "Entries"
+msgstr "記事一覧"
+
+#: templates/musics/artist_detail.html:42
+#: templates/musics/artist_detail.html:52
+msgid "See more"
+msgstr "もっと見る"
+
+#: templates/musics/artist_detail.html:49
+msgid "Songs"
+msgstr "曲一覧"
+
+#: templates/musics/artist_detail.html:54
+msgid "There is no song."
+msgstr "曲はありません。"
+
+#: templates/musics/artist_detail.html:59
+msgid "Edit artist information."
+msgstr "アーティスト情報を編集する"
