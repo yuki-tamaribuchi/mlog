@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-06 08:53+0900\n"
+"POT-Creation-Date: 2021-09-16 16:35+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,11 +87,11 @@ msgstr "アーティスト"
 msgid "follower"
 msgstr "フォロワー"
 
-#: mlog_project/settings.py:195
+#: mlog_project/settings.py:198
 msgid "English"
 msgstr "英語"
 
-#: mlog_project/settings.py:196
+#: mlog_project/settings.py:199
 msgid "Japanese"
 msgstr "日本語"
 
@@ -103,7 +103,7 @@ msgstr "アカウントを削除しますか？"
 msgid "Uncheck if you delete your account."
 msgstr "アカウントを削除するにはチェックマークを外してください。"
 
-#: templates/accounts/active_status.html:11
+#: templates/accounts/active_status.html:11 templates/entry/detail.html:66
 msgid "Delete"
 msgstr "削除"
 
@@ -166,3 +166,39 @@ msgstr "ログイン"
 #: templates/base.html:72
 msgid "Contact"
 msgstr "お問い合わせ"
+
+#: templates/entry/detail.html:26
+msgid "Created at"
+msgstr "作成日時"
+
+#: templates/entry/detail.html:27
+msgid "Updated at"
+msgstr "更新日時"
+
+#: templates/entry/detail.html:31
+msgid "Featured Song"
+msgstr "この記事の曲"
+
+#: templates/entry/detail.html:50
+msgid "Artists"
+msgstr "アーティスト"
+
+#: templates/entry/detail.html:55
+msgid "Likes"
+msgstr "ライク"
+
+#: templates/entry/detail.html:56
+msgid "Comments"
+msgstr "コメント"
+
+#: templates/entry/detail.html:57
+msgid "Views"
+msgstr "閲覧数"
+
+#: templates/entry/detail.html:61
+msgid "Write a comment"
+msgstr "コメントする"
+
+#: templates/entry/detail.html:66
+msgid "Update"
+msgstr "更新"
