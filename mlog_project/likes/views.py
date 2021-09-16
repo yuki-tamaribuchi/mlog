@@ -57,9 +57,9 @@ def like_process(request):
 		return JsonResponse(d)
 
 
-class EntrysLikeListView(ListView):
 	model = Like
 	template_name = 'likes/entry_list.html'
+class EntryLikedUserListView(ListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
