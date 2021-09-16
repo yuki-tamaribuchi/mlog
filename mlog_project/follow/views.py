@@ -60,7 +60,7 @@ class FollowingListView(BaseListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 		try:
-			return qs.select_related('follower', 'user').filter(user__username=self.kwargs['username'], user__is_active=True, follower__is_active=True)
+			return qs.select_related('follower', 'user').filter(user__username=self.kwargs['username'], user__is_active=True, follower__is_active=True).order_by('id').reverse()
 		except ObjectDoesNotExist:
 			return qs.none()
 
