@@ -34,7 +34,9 @@ class ArtistDetailView(DetailView):
 				'song'
 			).prefetch_related(
 				'song__artist'
-			)
+			).order_by(
+				'created_at',
+			).reverse()
 
 
 		context['members'] = Artist.objects.filter(belong_to__slug=self.kwargs['slug'])
