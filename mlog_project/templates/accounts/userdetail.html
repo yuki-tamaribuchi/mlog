@@ -18,7 +18,7 @@
 			<p><a href="{% url 'follow:following' detail_user.username %}">{{follow_count}}フォロー</a> | <a href="{% url 'follow:follower' detail_user.username %}" id="follower_link"> {{follower_count}}フォロワー</a></p>
 
 			{% if not is_myself %}
-				{% if user.username %}
+				{% if user.is_authenticated %}
 				<input type="button" id="follow_btn" value="{% if is_following %}フォローをやめる{% else %}フォローする{% endif %}">
 				{% else %}
 				<a href="{% url 'accounts:login' %}"><input type="button" value="フォローする"></a>

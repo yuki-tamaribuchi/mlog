@@ -19,7 +19,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand brand text-white" href="{% if user.username %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}">mlog</a>
+		<a class="navbar-brand brand text-white" href="{% if user.is_authenticated %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}">mlog</a>
 		<div class="dropdown ms-auto">
 			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownSearchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Search' %}</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownSearchButton">
@@ -32,7 +32,7 @@
 				
 			</div>
 		</div>
-		{% if user.id %}
+		{% if user.is_authenticated %}
 		<div class="dropdown">
 			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Notifications' %}{% if unread_notifications_count != 0 %}({{unread_notifications_count}}){% endif %}</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownNotificationButton">
@@ -47,7 +47,7 @@
 		<div class="dropdown">
 			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Menu' %}</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-				{% if user.id %}
+				{% if user.is_authenticated %}
 				<a class="dropdown-item" href="{% url 'entry:create' %}">{% trans 'Post Entry' %}</a>		
 				<a class="dropdown-item" href="{% url 'accounts:detail' user.username %}">{% trans 'Logged in as' %}:{{user.handle}} ({{user.username}})</a>
 				<a class="dropdown-item" href="{% url 'accounts:update' %}">{% trans 'Account Manage' %}</a>
