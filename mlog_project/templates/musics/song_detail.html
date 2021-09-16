@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block title%}{{song.song_name}} | {{block.super}}{% endblock title %}
 {% block head %}
 <script src="https://kit.fontawesome.com/e7f7c15297.js" crossorigin="anonymous"></script>
@@ -8,17 +9,17 @@
 	<div class="row mt-5">
 		<h1>{{song.song_name}}</h1>
 
-		<h2>アーティスト</h2>
+		<h2>{% trans 'Artist' %}</h2>
 		{% include 'common_templates/artist_card_for_list.html' with artist_list=song.artist.all %}
 	</div>
 
 	<div class="row mt-5">
-		<h2>ジャンル</h2>
+		<h2>{% trans 'Genre' %}</h2>
 		{% include 'common_templates/genre_card.html' with genre_list=song.genre.all %}
 	</div>
 
 	<div class="row mt-5">
-		<h3>プレビュー</h3>
+		<h3>{% trans 'Preview' %}</h3>
 		{% if song.spotify_preview_url %}
 		{% include 'common_templates/spotify_preview.html' with artwork_url=song.artwork_url %}
 		{% endif %}
@@ -27,7 +28,7 @@
 
 
 	<div class="row mt-5">
-		<h2>この曲の記事一覧</h2>
+		<h2>{% trans 'Entries of this song.' %}</h2>
 		{% for entry in entries %}
 		<div class="card m-3 entry-list-card text-center">
 			<div class="card-body">
@@ -38,18 +39,18 @@
 					</div>
 
 					<div class="col">
-						<p>Song:<a href="{% url 'musics:song_detail' entry.song.id %}" class="card-link">{{entry.song.song_name}}</a></p>
-						<p>Artist:{% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.slug %}" class="card-link">{{artist.artist_name}} </a>{% endfor %}</p>
+						<p>{% trans 'Song' %}:<a href="{% url 'musics:song_detail' entry.song.id %}" class="card-link">{{entry.song.song_name}}</a></p>
+						<p>{% trans 'Aritst' %}:{% for artist in entry.song.artist.all %}<a href="{% url 'musics:artist_detail' artist.slug %}" class="card-link">{{artist.artist_name}} </a>{% endfor %}</p>
 					</div>
 				</div>
 			</div>
 		</div>
 		{% endfor %}
-		<p><a href="{% url 'entry:entry_list_by_song' song.pk %}">もっと見る</a></p>
+		<p><a href="{% url 'entry:entry_list_by_song' song.pk %}">{% trans 'See more' %}</a></p>
 	</div>
 
 	<div class="row mt-5">
-		<a href="{% url 'musics:song_update' song.pk %}">曲情報を編集</a>
+		<a href="{% url 'musics:song_update' song.pk %}">{% trans 'Edit song information.' %}</a>
 	</div>
 </div>
 {% if song.spotify_preview_url %}
