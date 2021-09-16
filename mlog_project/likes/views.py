@@ -65,7 +65,7 @@ class EntryLikedUserListView(ListView):
 		qs = super().get_queryset()
 		entry_liked_user_id_list = Like.objects.filter(entry=self.kwargs.get('pk'), user__is_active=True).values('user_id')
 		try:
-			return qs.filter(id__in=entry_liked_user_id_list)
+			return qs.filter(id__in=entry_liked_user_id_list).order_by('username')
 		except ObjectDoesNotExist:
 			return qs.none()
 
