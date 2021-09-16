@@ -25,7 +25,7 @@
 				{% endif %}
 			{% endif %}
 			<div class="mt-5">
-				<p><a href="{% url 'likes:user_list' detail_user.username %}">ライクした記事({{liked_entry_count}})</a></p>
+				<p><a href="{% url 'likes:user_liked_entry_list' detail_user.username %}">ライクした記事({{liked_entry_count}})</a></p>
 				<p><a href="{% url 'favorite_artists:user_favorites_artist_list' detail_user.username %}">お気に入りアーティスト一覧</a></p>
 			</div>
 		</div>
