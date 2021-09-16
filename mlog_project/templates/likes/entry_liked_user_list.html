@@ -1,13 +1,11 @@
 {% extends 'base.html' %}
-{% block title%} Likeリスト | {{block.super}}{% endblock title %}
+{% block title%} {{entry.title}}へのLike | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
 	<div class="row mt-5">
         <h2><a href="{% url 'entry:detail' entry.id %}">{{entry.title}}</a>へのLike</h2>
-	    {% if like_list%}
-            {% for like in like_list %}
-            {% include 'common_templates/entry_card_with_writer.html' %}
-            {% endfor %}
+	{% if user_list %}
+                {% include 'common_templates/user_card.html' %}
         {% else %}
         Likeはありません。
         {% endif %}
