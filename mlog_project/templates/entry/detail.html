@@ -52,7 +52,7 @@
 		</div>
 
 		<div class="row mb-3">
-			<div class="col"><a href="{% url 'likes:entry_list' entry.id %}">Like:{{like_count}}</a></div>
+			<div class="col"><a href="{% url 'likes:entry_list' entry.id %}" id='liked_user_list_link'>Like:{{like_count}}</a></div>
 			<div class="col"><a href="{% url 'comments:list' entry.id %}">Comment:{{comment_count}}</a></div>
 			<div class="col"><p>Views:{{view_count}}</p></div>	
 		</div>
