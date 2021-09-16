@@ -17,6 +17,7 @@ import os
 from settings_csp import *
 from settings_nose import *
 from settings_celery import *
+from settings_caches import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -253,31 +254,6 @@ AWS_SES_SECRET_ACCESS_KEY = os.environ.get('MLOG_AWS_SES_SECRET_ACCESS_KEY')
 AWS_SES_REGION_NAME = 'ap-northeast-1'
 AWS_SES_REGION_ENDPOINT = 'email.ap-northeast-1.amazonaws.com'
 DEFAULT_FROM_EMAIL = os.environ.get('MLOG_DEFAULT_FROM_EMAIL')
-
-
-CACHES={
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    },
-    'select2_local':{
-        'BACKEND':'django_redis.cache.RedisCache',
-        'LOCATION':'redis://127.0.0.1:6379/2',
-        'OPTIONS':{
-            'CLIENT_CLASS':'django_redis.client.DefaultClient',
-        }
-    },
-    'select2_docker':{
-        'BACKEND':'django_redis.cache.RedisCache',
-        'LOCATION':'redis://redis:6379/2',
-        'OPTIONS':{
-            'CLIENT_CLASS':'django_redis.client.DefaultClient',
-        }
-    }
-}
-
-CACHES['select2']=CACHES[os.environ.get('SELECT2_DEFAULT','select2_local')]
-
-SELECT2_CACHE_BACKEND='select2'
 
 
 LOGIN_REDIRECT_URL = 'mlog:timeline'
