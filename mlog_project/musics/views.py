@@ -1,13 +1,11 @@
 from django.http.response import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.views.generic import DetailView, CreateView, ListView, UpdateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
-from django.db.models import Prefetch, Q
 
 from entry.models import Entry
 from favorite_artists.models import FavoriteArtist
-from activity.models import SongCheckedActivity
 
 from activity.tasks import artist_checked_activity, song_checked_activity, genre_checked_activity
 
