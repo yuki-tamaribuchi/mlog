@@ -57,14 +57,15 @@ def like_process(request):
 		return JsonResponse(d)
 
 
-	model = Like
-	template_name = 'likes/entry_list.html'
 class EntryLikedUserListView(ListView):
+	model = User
+	template_name = 'likes/entry_liked_user_list.html'
 
 	def get_queryset(self):
 		qs = super().get_queryset()
+		entry_liked_user_id_list = Like.objects.filter(entry=self.kwargs.get('pk'), user__is_active=True).values('user_id')
 		try:
-			return qs.filter(entry=self.kwargs['pk'], user__is_active=True)
+			return qs.filter(id__in=entry_liked_user_id_list)
 		except ObjectDoesNotExist:
 			return qs.none()
 
