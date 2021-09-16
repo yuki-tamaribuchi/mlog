@@ -43,6 +43,8 @@ class SongSearchListView(BaseSeachListView):
 
 		return qs.prefetch_related('artist').filter(
 			Q(song_name__icontains = self.keyword)
+		).order_by(
+			'song_name',
 		)
 
 
