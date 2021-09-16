@@ -18,6 +18,7 @@ from settings_csp import *
 from settings_nose import *
 from settings_celery import *
 from settings_caches import *
+from settings_email import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -244,16 +245,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'accounts.User'
-
-
-EMAIL_BACKEND = 'django_ses.SESBackend'
-
-AWS_SES_ACCESS_KEY_ID = os.environ.get('MLOG_AWS_SES_ACCESS_KEY_ID')
-AWS_SES_SECRET_ACCESS_KEY = os.environ.get('MLOG_AWS_SES_SECRET_ACCESS_KEY')
-
-AWS_SES_REGION_NAME = 'ap-northeast-1'
-AWS_SES_REGION_ENDPOINT = 'email.ap-northeast-1.amazonaws.com'
-DEFAULT_FROM_EMAIL = os.environ.get('MLOG_DEFAULT_FROM_EMAIL')
 
 
 LOGIN_REDIRECT_URL = 'mlog:timeline'
