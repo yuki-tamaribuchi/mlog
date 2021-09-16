@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 17:56+0900\n"
+"POT-Creation-Date: 2021-09-16 19:14+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,14 +117,18 @@ msgstr "キャンセル"
 msgid "Logged out"
 msgstr "ログアウトしました"
 
-#: templates/accounts/login.html:2 templates/accounts/login.html:10
+#: templates/accounts/login.html:3 templates/accounts/login.html:11
 #: templates/base.html:57
 msgid "Login"
 msgstr "ログイン"
 
-#: templates/accounts/login.html:12
+#: templates/accounts/login.html:13
 msgid "Reset Password"
 msgstr "パスワードをリセット"
+
+#: templates/accounts/signup.html:3 templates/accounts/signup.html:36
+msgid "Sign Up"
+msgstr "新規登録"
 
 #: templates/base.html:24 templates/base.html:27
 #: templates/musics/spotify_track_select.html:12
