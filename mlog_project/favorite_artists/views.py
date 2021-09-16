@@ -54,7 +54,7 @@ class UserListByFavoritedArtistView(ListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 		fav_user = FavoriteArtist.objects.filter(artist__slug=self.kwargs['slug'], user__is_active=True).values('user__id')
-		return qs.filter(id__in=fav_user)
+		return qs.filter(id__in=fav_user).order_by('slug')
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
