@@ -1,5 +1,3 @@
-from django.db.models import Count
-
 from notifications.models import Notifications
 
 def unread_notifications(request):
