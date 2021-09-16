@@ -82,7 +82,7 @@ class UserLikedEntryListView(ListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 		liked_entry = Like.objects.filter(user__username=self.kwargs['username'], entry__writer__is_active=True).values('entry__id')
-		return qs.select_related('writer', 'song').filter(id__in=liked_entry)
+		return qs.select_related('writer', 'song').filter(id__in=liked_entry).order_by('created_at').reverse()
 
 	def get_context_data(self,**kwargs):
 		context = super().get_context_data(**kwargs)
