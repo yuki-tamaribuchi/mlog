@@ -22,7 +22,7 @@ class SignUpView(CreateView):
 	template_name = 'accounts/signup.html'
 
 	def get(self, request, *args, **kwargs):
-		if request.user.username:
+		if request.user.is_authenticated:
 			return redirect('accounts:detail', username=self.request.user.username)
 		return super().get(request, *args, **kwargs)
 
@@ -62,7 +62,7 @@ class UserDetailView(DetailView):
 		context['follower_count'] = Follow.objects.filter(follower__username=self.kwargs['username'], user__is_active=True).count()
 		context['liked_entry_count'] = Like.objects.filter(user__username=self.kwargs['username'], entry__writer__is_active=True).count()
 
-		if self.request.user.username:
+		if self.request.user.is_authenticated:
 			user = get_object_or_404(User, username=self.request.user.username)	
 			follow_user = get_object_or_404(User, username=self.kwargs['username'])
 			context['is_myself'] = (user==follow_user)

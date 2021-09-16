@@ -47,7 +47,7 @@ class ArtistDetailView(DetailView):
 					'artist'
 				)[:4]
 
-		if self.request.user.username:
+		if self.request.user.is_authenticated:
 			try:
 				context['fav_status'] = FavoriteArtist.objects.get(user__username=self.request.user.username, artist__slug=self.kwargs['slug'])
 			except ObjectDoesNotExist:

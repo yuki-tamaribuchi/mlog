@@ -11,7 +11,7 @@ from favorite_artists.models import FavoriteArtist
 
 class RootRedirectView(View):
 	def get(self,request):
-		if request.user.username:
+		if request.user.is_authenticated:
 			return redirect('mlog:timeline')
 		else:
 			return redirect('mlog:top')
