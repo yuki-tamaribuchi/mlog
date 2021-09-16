@@ -192,7 +192,7 @@ class SongByArtistListView(ListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		return qs.filter(artist__slug=self.kwargs['slug'])
+		return qs.filter(artist__slug=self.kwargs['slug']).order_by('song_name')
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
