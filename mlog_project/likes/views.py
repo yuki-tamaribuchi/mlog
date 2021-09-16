@@ -37,15 +37,19 @@ def like_process(request):
 			entry = Entry.objects.get(id=request.POST.get('entry_id'))
 			Like.objects.create(user=user, entry=entry)
 			like_status = True
+			
 
 			add_notification.delay(
 				user_from=request.user.username,
 				user_to=entry.writer.username,
 				notification_type='like',
 			)
-		
+
+		like_count = Like.objects.filter(entry__id=request.POST.get('entry_id')).count()
+
 		d = {
-			'like_status':like_status
+			'like_status':like_status,
+			'like_count':like_count
 		}
 		
 		
