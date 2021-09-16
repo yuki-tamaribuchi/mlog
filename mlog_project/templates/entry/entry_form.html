@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block title%}記事{% if object %}更新{% else %}投稿{% endif %} | {{block.super}}{% endblock title %}
+{% load i18n %}
+{% block title%}{% trans 'Entry' %} {% if object %}{% trans 'update' %}{% else %}{% trans 'Post' %}{% endif %} | {{block.super}}{% endblock title %}
 {% block head %}
 	{{ form.media.css }}
 {% endblock head %}
@@ -11,9 +12,9 @@
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
-		<input type="submit" value="{% if object %}更新{% else %}投稿{% endif %}">
+		<input type="submit" value="{% if object %}{% trans 'Update' %}{% else %}{% trans 'Post' %}{% endif %}">
 		</form>
-		<a href="#" id="add_song_link">曲を追加</a>
+		<a href="#" id="add_song_link">{% trans 'Add song' %}</a>
 	</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

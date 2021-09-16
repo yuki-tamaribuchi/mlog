@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 16:48+0900\n"
+"POT-Creation-Date: 2021-09-16 16:54+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,12 +104,12 @@ msgid "Uncheck if you delete your account."
 msgstr "アカウントを削除するにはチェックマークを外してください。"
 
 #: templates/accounts/active_status.html:11
-#: templates/entry/delete_confirm.html:14 templates/entry/detail.html:67
+#: templates/entry/delete_confirm.html:15 templates/entry/detail.html:67
 msgid "Delete"
 msgstr "削除"
 
 #: templates/accounts/active_status.html:13
-#: templates/entry/delete_confirm.html:15
+#: templates/entry/delete_confirm.html:16
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -169,7 +169,7 @@ msgstr "ログイン"
 msgid "Contact"
 msgstr "お問い合わせ"
 
-#: templates/entry/delete_confirm.html:3 templates/entry/delete_confirm.html:11
+#: templates/entry/delete_confirm.html:4 templates/entry/delete_confirm.html:12
 msgid "Delete this entry?"
 msgstr "この記事を削除しますか?"
 
@@ -205,6 +205,22 @@ msgstr "閲覧数"
 msgid "Write a comment"
 msgstr "コメントする"
 
-#: templates/entry/detail.html:67
+#: templates/entry/detail.html:67 templates/entry/entry_form.html:15
 msgid "Update"
 msgstr "更新"
+
+#: templates/entry/entry_form.html:3
+msgid "Entry"
+msgstr "記事"
+
+#: templates/entry/entry_form.html:3
+msgid "update"
+msgstr "更新"
+
+#: templates/entry/entry_form.html:3 templates/entry/entry_form.html:15
+msgid "Post"
+msgstr "投稿"
+
+#: templates/entry/entry_form.html:17
+msgid "Add song"
+msgstr "曲を追加"
