@@ -105,7 +105,7 @@ class ContactThreadDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteVie
 			).select_related(
 				'user',
 			).order_by(
-				'datetime'
+				'created_at'
 			)[0]
 		
 		return context
