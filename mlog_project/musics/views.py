@@ -92,7 +92,9 @@ class SongDetailView(DetailView):
 				'writer'
 			).prefetch_related(
 				'song__artist',
-			)[:3]
+			).order_by(
+				'created_at',
+			).reverse()[:3]
 		return context
 
 
