@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 19:18+0900\n"
+"POT-Creation-Date: 2021-09-16 19:22+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,7 +151,8 @@ msgstr "記事"
 msgid "See more"
 msgstr "もっと見る"
 
-#: templates/accounts/userdetail.html:40 templates/entry/entry_list.html:13
+#: templates/accounts/userdetail.html:40
+#: templates/accounts/userentrylist.html:13 templates/entry/entry_list.html:13
 #: templates/musics/artist_detail.html:44
 msgid "There is no entry."
 msgstr "記事はありません。"
