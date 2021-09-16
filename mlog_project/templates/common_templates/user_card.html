@@ -1,0 +1,14 @@
+{% for a_user in user_list %}
+<div class="col-lg-2 col-md-4 col-sm-12">
+	<div class="card text-center">
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+					<img src="{{MEDIA_URL}}{{a_user.profile_image}}" class="profile-image profile-image-size-xs">
+					<a href="{% url 'accounts:detail' a_user.username %}" class="stretched-link text-decoration-none">{{a_user.handle}}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
+{% endfor %}
