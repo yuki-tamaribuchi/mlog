@@ -75,7 +75,7 @@ class EntryLikedUserListView(ListView):
 		return context
 
 
-class UsersLikeListView(ListView):
+class UserLikedEntryListView(ListView):
 	model = Entry
 	template_name = 'likes/user_list.html'
 
