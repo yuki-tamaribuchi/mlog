@@ -1,7 +1,6 @@
 from django.http.response import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import ListView, View
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
+from django.views.generic import ListView
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 
