@@ -3,7 +3,6 @@ from django.views.generic.edit import FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse
 from django.db.transaction import atomic
-from django.utils import timezone
 
 from contacts.models import ContactThreads, ContactContent
 from contacts.forms import ContactThreadAndContentForm, ContactContentForm
