@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 17:29+0900\n"
+"POT-Creation-Date: 2021-09-16 17:34+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -207,6 +207,7 @@ msgstr "コメントする"
 
 #: templates/entry/detail.html:67 templates/entry/entry_form.html:15
 #: templates/musics/artist_form.html:3 templates/musics/artist_form.html:13
+#: templates/musics/genre_form.html:2 templates/musics/genre_form.html:12
 msgid "Update"
 msgstr "更新"
 
@@ -220,6 +221,7 @@ msgstr "更新"
 
 #: templates/entry/entry_form.html:3 templates/entry/entry_form.html:15
 #: templates/musics/artist_form.html:3 templates/musics/artist_form.html:13
+#: templates/musics/genre_form.html:2 templates/musics/genre_form.html:12
 msgid "Post"
 msgstr "投稿"
 
@@ -247,7 +249,7 @@ msgstr "所属グループ"
 msgid "Members"
 msgstr "メンバー"
 
-#: templates/musics/artist_detail.html:27
+#: templates/musics/artist_detail.html:27 templates/musics/genre_form.html:2
 msgid "Genre"
 msgstr "ジャンル"
 
