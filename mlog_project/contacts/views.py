@@ -122,6 +122,6 @@ class ContactListView(LoginRequiredMixin, ListView):
 		qs = super().get_queryset()
 		
 		if self.request.user.is_staff:
-			return qs.filter(user__is_active=True)
+			return qs.filter(user__is_active=True).order_by('created_at').reverse()
 		else:
 			return qs.filter(user=self.request.user)
