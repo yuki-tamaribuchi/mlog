@@ -49,8 +49,8 @@ class TimelineView(LoginRequiredMixin, ListView):
 			).exclude(
 				writer__username=self.request.user.username
 			).order_by(
-				'-id'
-			)
+				'created_at'
+			).reverse()
 
 		except ObjectDoesNotExist:
 			return qs.none()
