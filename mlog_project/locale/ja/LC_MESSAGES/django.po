@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 19:22+0900\n"
+"POT-Creation-Date: 2021-09-16 19:25+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -157,6 +157,27 @@ msgstr "もっと見る"
 msgid "There is no entry."
 msgstr "記事はありません。"
 
+#: templates/accounts/userupdate.html:2
+#, fuzzy
+#| msgid "Update"
+msgid "Update profile"
+msgstr "プロフィール更新"
+
+#: templates/accounts/userupdate.html:10 templates/entry/detail.html:67
+#: templates/entry/entry_form.html:15 templates/musics/artist_form.html:3
+#: templates/musics/artist_form.html:13 templates/musics/genre_form.html:3
+#: templates/musics/genre_form.html:13 templates/musics/song_form.html:13
+msgid "Update"
+msgstr "更新"
+
+#: templates/accounts/userupdate.html:15
+msgid "Change Password"
+msgstr "パスワードを変更"
+
+#: templates/accounts/userupdate.html:18
+msgid "Delete account"
+msgstr "アカウントを削除"
+
 #: templates/base.html:24 templates/base.html:27
 #: templates/musics/spotify_track_select.html:12
 msgid "Search"
@@ -245,13 +266,6 @@ msgstr "閲覧数"
 #: templates/entry/detail.html:62
 msgid "Write a comment"
 msgstr "コメントする"
-
-#: templates/entry/detail.html:67 templates/entry/entry_form.html:15
-#: templates/musics/artist_form.html:3 templates/musics/artist_form.html:13
-#: templates/musics/genre_form.html:3 templates/musics/genre_form.html:13
-#: templates/musics/song_form.html:13
-msgid "Update"
-msgstr "更新"
 
 #: templates/entry/entry_form.html:3 templates/musics/song_form.html:3
 msgid "update"
