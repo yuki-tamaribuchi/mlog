@@ -29,6 +29,8 @@ class ArtistSearchListView(BaseSeachListView):
 
 		return qs.filter(
 			Q(artist_name__icontains=self.keyword) | Q(slug__icontains=self.keyword)
+		).order_by(
+			'slug',
 		)
 		
 
