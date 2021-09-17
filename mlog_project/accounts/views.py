@@ -81,7 +81,7 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
 
 class UserEntryListView(ListView):
 	model = Entry
-	template_name = 'accounts/userentrylist.html'
+	template_name = 'accounts/user_entry_list.html'
 	paginate_by = 20
 
 	def get_queryset(self):
