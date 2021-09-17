@@ -44,7 +44,6 @@ class LoginView(auth_login_view):
 
 
 class UserDetailView(DetailView):
-	template_name = 'accounts/userdetail.html'
 	context_object_name = 'detail_user'
 
 	def get(self, request, *args, **kwargs):
