@@ -22,7 +22,7 @@ import debug_toolbar
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('mlog_admin/', admin.site.urls),
     path('accounts/', include('accounts.urls'), name='accounts'),
     #path('accounts/', include('allauth.urls')),
     path('', include('mlog.urls'), name='mlog'),
