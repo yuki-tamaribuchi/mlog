@@ -70,7 +70,6 @@ class UserDetailView(DetailView):
 
 
 class UserUpdateView(LoginRequiredMixin,UpdateView):
-	template_name = 'accounts/userupdate.html'
 	form_class = UserUpdateForm
 	
 	def get_object(self):
