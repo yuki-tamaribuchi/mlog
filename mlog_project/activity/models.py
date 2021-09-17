@@ -10,7 +10,7 @@ class EntryReadActivity(models.Model):
 	entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 
 	def __str__(self):
-		if self.user:
+		if self.user.is_authenticated:
 			return '%s read %s'%(self.user.username, self.entry.title)
 		else:
 			return 'Unknown user read %s'%(self.entry.title)
