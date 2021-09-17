@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block title%}ログイン | {{block.super}}{% endblock title %}
+{% load i18n %}
+{% block title%}{% trans 'Login' %} | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
 	<div class="row">
@@ -7,12 +8,9 @@
 			<form method="POST">
 				{% csrf_token %}
 				{{form.as_p}}
-				<input type="submit" value="ログイン">
+				<input type="submit" value="{% trans 'Login' %}">
 
-				<p><a href="{% url 'accounts:passwordreset' %}">パスワードを忘れた</a></p>
-
-				{% load socialaccount %}
-				<a href="{% provider_login_url "google" google="https://www.google.com/accounts/o8/id"%}">Google</a>
+				<p><a href="{% url 'accounts:passwordreset' %}">{% trans 'Reset Password' %}</a></p>
 			</form>
 		</div>
 	</div>

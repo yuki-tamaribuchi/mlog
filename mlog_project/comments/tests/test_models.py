@@ -33,7 +33,7 @@ class CommentTests(TestCase):
 		Comment.objects.create(
 			comment = 'test comment',
 			entry = test_entry,
-			user = test_user_for_comment,
+			author = test_user_for_comment,
 		)
 
 

@@ -1,8 +1,8 @@
 from django.http.response import JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import ListView, View
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
+from django.urls import reverse
 
 
 from accounts.models import User
@@ -12,7 +12,17 @@ from .models import FavoriteArtist
 
 
 def favorite_process(request):
-	if request.method == 'POST':
+	if request.method == 'GET':
+		if not request.user.is_authenticated:
+			login_url = '%s?next=%s'%(reverse('accounts:login'), reverse('musics:artist_detail', kwargs={'slug':request.GET.get('artist_slug')}))
+
+			d = {
+				'login_url':login_url
+			}
+
+			return JsonResponse(d)
+
+	elif request.method == 'POST':
 		user = User.objects.get(username=request.user.username)
 		artist = Artist.objects.get(slug=request.POST.get('favorited_artist'))
 
@@ -42,8 +52,8 @@ class UserListByFavoritedArtistView(ListView):
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		fav_user = FavoriteArtist.objects.filter(artist__slug=self.kwargs['slug']).values('user__id')
-		return qs.filter(id__in=fav_user)
+		fav_user = FavoriteArtist.objects.filter(artist__slug=self.kwargs['slug'], user__is_active=True).values('user__id')
+		return qs.filter(id__in=fav_user).order_by('username')
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
@@ -58,9 +68,9 @@ class UserFavoritesArtistListView(ListView):
 	def get_queryset(self):
 		qs = super().get_queryset()
 		fav_artist = FavoriteArtist.objects.filter(user__username=self.kwargs['username']).values('artist__id')
-		return qs.filter(id__in=fav_artist)
+		return qs.filter(id__in=fav_artist).order_by('slug')
 	
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['detail_user'] = User.objects.get(username=self.kwargs['username'])
+		context['detail_user'] = get_object_or_404(User, username=self.kwargs['username'], is_active=True)
 		return context

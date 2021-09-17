@@ -11,7 +11,7 @@ from entry.models import Entry
 from likes.models import Like
 from follow.models import Follow
 
-from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm
+from .forms import SignUpForm, UserUpdateForm, UserPasswordChangeForm, UserActiveStatusUpdateForm
 from .models import User
 from activity.tasks import user_checked_activity
 
@@ -21,7 +21,7 @@ class SignUpView(CreateView):
 	template_name = 'accounts/signup.html'
 
 	def get(self, request, *args, **kwargs):
-		if request.user.username:
+		if request.user.is_authenticated:
 			return redirect('accounts:detail', username=self.request.user.username)
 		return super().get(request, *args, **kwargs)
 
@@ -38,11 +38,12 @@ class LoginView(auth_login_view):
 	redirect_authenticated_user = True
 
 	def get_success_url(self):
+		if self.request.GET.get('next'):
+			return self.request.GET.get('next')
 		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
 
 
 class UserDetailView(DetailView):
-	template_name = 'accounts/userdetail.html'
 	context_object_name = 'detail_user'
 
 	def get(self, request, *args, **kwargs):
@@ -50,16 +51,16 @@ class UserDetailView(DetailView):
 		return super().get(request, *args, **kwargs)
 
 	def get_object(self):
-		return get_object_or_404(User, username=self.kwargs['username'])
+		return get_object_or_404(User, username=self.kwargs['username'], is_active=True)
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['entries'] = Entry.objects.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__username=self.kwargs['username']).order_by('id').reverse()[:5]
-		context['follow_count'] = Follow.objects.filter(user__username=self.kwargs['username']).count()
-		context['follower_count'] = Follow.objects.filter(follower__username=self.kwargs['username']).count()
-		context['liked_entry_count'] = Like.objects.filter(user__username=self.kwargs['username']).count()
+		context['follow_count'] = Follow.objects.filter(user__username=self.kwargs['username'], follower__is_active=True).count()
+		context['follower_count'] = Follow.objects.filter(follower__username=self.kwargs['username'], user__is_active=True).count()
+		context['liked_entry_count'] = Like.objects.filter(user__username=self.kwargs['username'], entry__writer__is_active=True).count()
 
-		if self.request.user.username:
+		if self.request.user.is_authenticated:
 			user = get_object_or_404(User, username=self.request.user.username)	
 			follow_user = get_object_or_404(User, username=self.kwargs['username'])
 			context['is_myself'] = (user==follow_user)
@@ -69,7 +70,6 @@ class UserDetailView(DetailView):
 
 
 class UserUpdateView(LoginRequiredMixin,UpdateView):
-	template_name = 'accounts/userupdate.html'
 	form_class = UserUpdateForm
 	
 	def get_object(self):
@@ -81,16 +81,16 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
 
 class UserEntryListView(ListView):
 	model = Entry
-	template_name = 'accounts/userentrylist.html'
+	template_name = 'accounts/user_entry_list.html'
 	paginate_by = 20
 
 	def get_queryset(self):
 		qs = super().get_queryset()
-		return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__username=self.kwargs['username']).order_by('-id')
+		return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(writer__username=self.kwargs['username'], writer__is_active=True).order_by('id').reverse()
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['detail_user'] = User.objects.get(username=self.kwargs['username'])
+		context['detail_user'] = get_object_or_404(User, username=self.kwargs.get('username'), is_active=True)
 		return context
 
 
@@ -122,3 +122,15 @@ class UserPasswordResetConfirmView(PasswordResetConfirmView):
 
 class UserPasswordResetCompleteView(PasswordResetCompleteView):
 	template_name = 'accounts/password_reset_complete.html'
+
+
+class UserActiveStatusUpdateView(LoginRequiredMixin, UpdateView):
+	form_class = UserActiveStatusUpdateForm
+	template_name = 'accounts/active_status.html'
+
+	def get_object(self):
+		obj = User.objects.get(username=self.request.user.username)
+		return obj
+	
+	def get_success_url(self):
+		return reverse('mlog:top')

@@ -34,7 +34,7 @@ services:
         volumes:
             - ../mlog_project:/mlog_project
         environment: 
-            - DJANGO_DATABASE=docker
+            - MLOG_DATABASE=docker
             - SELECT2_DEFAULT=select2_docker
             - CELERY_BROKER_DEFAULT=docker
             - CELERY_RESULT_BACKENDS_DEFAULT=docker

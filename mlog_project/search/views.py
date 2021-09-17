@@ -29,6 +29,8 @@ class ArtistSearchListView(BaseSeachListView):
 
 		return qs.filter(
 			Q(artist_name__icontains=self.keyword) | Q(slug__icontains=self.keyword)
+		).order_by(
+			'slug',
 		)
 		
 
@@ -41,6 +43,8 @@ class SongSearchListView(BaseSeachListView):
 
 		return qs.prefetch_related('artist').filter(
 			Q(song_name__icontains = self.keyword)
+		).order_by(
+			'song_name',
 		)
 
 
@@ -51,5 +55,7 @@ class UserSearchListView(BaseSeachListView):
 		qs = super().get_queryset()
 
 		return qs.filter(
-			Q(username__icontains = self.keyword) | Q(handle__icontains = self.keyword)
+			Q(username__icontains = self.keyword, is_active=True) | Q(handle__icontains = self.keyword, is_active=True)
+		).order_by(
+			'username',
 		)

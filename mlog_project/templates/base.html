@@ -7,39 +7,54 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>-->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'styles/style.css' %}">
 	{% block head %}
 	{% endblock head%}
+
+	{% load i18n %}
+
 </head>
 <body>
 	<nav class="navbar navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand brand text-white" href="{% if user.username %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}"">mlog</a>
+		<a class="navbar-brand brand text-white" href="{% if user.is_authenticated %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}">mlog</a>
 		<div class="dropdown ms-auto">
-			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownSearchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search</button>
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownSearchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Search' %}</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownSearchButton">
 				<form method="GET">
-					<input type="search" placeholder="検索" name="keyword">
-					<input type="submit" value="アーティストを検索" formaction="{% url 'search:artist'%}">
-					<input type="submit" value="曲を検索" formaction="{% url 'search:song'%}">
-					<input type="submit" value="ユーザを検索" formaction="{% url 'search:user'%}">
+					<input type="search" placeholder="{% trans 'Search' %}" name="keyword">
+					<input type="submit" value="{% trans 'Search Aritst' %}" formaction="{% url 'search:artist'%}">
+					<input type="submit" value="{% trans 'Search Song' %}" formaction="{% url 'search:song'%}">
+					<input type="submit" value="{% trans 'Search User' %}" formaction="{% url 'search:user'%}">
 				</form>
 				
 			</div>
 		</div>
+		{% if user.is_authenticated %}
 		<div class="dropdown">
-			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</button>
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Notifications' %}{% if unread_notifications_count != 0 %}({{unread_notifications_count}}){% endif %}</button>
+			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownNotificationButton">
+				{% for notification in unread_notifications_list %}
+				<li><a class="dropdown-item" href="{% url 'notifications:redirect' pk=notification.id username=notification.user_from.username %}">{{notification.content}}</a></li>
+				{% endfor %}
+				<li><hr class="dropdown-divider"></li>
+				<li><a class="dropdown-item " href="{% url 'notifications:list' %}">{% trans 'Check all notifications' %}</a></li>
+			</div>
+		</div>
+		{% endif %}
+		<div class="dropdown">
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Menu' %}</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-				{% if user.id %}
-				<a class="dropdown-item" href="{% url 'entry:create' %}">投稿する</a>		
-				<a class="dropdown-item" href="{% url 'accounts:detail' user.username %}">ログイン中:{{user.handle}} ({{user.username}})</a>
-				<a class="dropdown-item" href="{% url 'accounts:update' %}">アカウント管理</a>
-				<a class="dropdown-item" href="{% url 'account_logout' %}">ログアウト</a>
+				{% if user.is_authenticated %}
+				<a class="dropdown-item" href="{% url 'entry:create' %}">{% trans 'Post Entry' %}</a>		
+				<a class="dropdown-item" href="{% url 'accounts:detail' user.username %}">{% trans 'Logged in as' %}:{{user.handle}} ({{user.username}})</a>
+				<a class="dropdown-item" href="{% url 'accounts:update' %}">{% trans 'Account Manage' %}</a>
+				<a class="dropdown-item" href="{% url 'accounts:logout' %}">{% trans 'Logout' %}</a>
 				{% else %}
-				<a class="dropdown-item" href="{% url 'account_signup' %}">新規登録</a>
-				<a class="dropdown-item" href="{% url 'account_login' %}">ログイン</a>
+				<a class="dropdown-item" href="{% url 'accounts:signup' %}">{% trans 'Signup' %}</a>
+				<a class="dropdown-item" href="{% url 'accounts:login' %}">{% trans 'Login' %}</a>
 				{% endif %}
 			</div>
 		</div>
@@ -50,6 +65,30 @@
 	{% block content %}
 	{% endblock content %}
 	</div>
+
+	<footer class="bg-dark text-light fixed-bottom">
+		<div class="row ms-1 mt-1 justify-content-start">
+			<div class="col-lg-1 col-md-2 col-sm-2">
+				<a href="{% url 'contacts:create' %}" class="text-light text-decoration-none">{% trans 'Contact' %}</a>
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-2">
+				<form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+				    <input name="next" type="hidden" value="{{ redirect_to }}">
+					    <select name="language">
+				        {% get_current_language as LANGUAGE_CODE %}
+				        {% get_available_languages as LANGUAGES %}
+				        {% get_language_info_list for LANGUAGES as languages %}
+					    {% for language in languages %}
+				            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+				                {{ language.name_local }} ({{ language.code }})
+				            </option>
+					    {% endfor %}
+					    </select>
+				    <input type="submit" value="Go">
+				</form>
+			</div>
+		</div>
+	</footer>
 	
 
 </body>

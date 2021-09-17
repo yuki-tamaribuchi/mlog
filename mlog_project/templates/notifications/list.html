@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title%} 通知一覧 | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class="row mt-5">
+	    {% if notifications_list%}
+            {% for notification in notifications_list %}
+            <p><a href="{% url 'notifications:redirect' pk=notification.id username=notification.user_from.username %}">{{notification.content}}</a></p>
+            {% endfor %}
+        {% else %}
+        通知はありません。
+        {% endif %}
+	</div>
+</div>
+{% endblock content %}

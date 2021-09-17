@@ -2,6 +2,7 @@
 {% block title%}{{entry.title}} | {{block.super}}{% endblock title %}
 {% block head %}
 <script src="https://kit.fontawesome.com/e7f7c15297.js" crossorigin="anonymous"></script>
+{% load i18n %}
 {% endblock head %}
 {% block content %}
 <div class="container">
@@ -23,11 +24,12 @@
 		
 		<div class="row my-5">
 			{{entry.content|linebreaks}}
-			<p>Date:{{entry.date}}</p>
+			<p>{% trans 'Created at' %}:{{entry.created_at}}</p>
+			<p>{% trans 'Updated at' %}:{{entry.updated_at}}</p>
 		</div>
 
 		<div class="row mb-3">
-			<h3>Featured Song</h3>
+			<h3>{% trans 'Featured Song' %}</h3>
 			<div class="col">
 				<div class="card text-center song-card">
 					<div class="card-body">
@@ -38,7 +40,7 @@
 				{% include 'common_templates/spotify_preview.html' with artwork_url=entry.song.artwork_url %}
 				{% endif %}
 				{% if entry.song.spotify_link %}
-				<p class="mt-3"><a href={{ entry.song.spotify_link}}><img src="{{MEDIA_URL}}/images/defaults/musics/spotify/listen_on_spotify.png" class="spotify_logo"></a></p>
+				{% include 'common_templates/spotify_link.html'  with spotify_link=entry.song.spotify_link %}	
 				{% endif %}
 			</div>
 		</div>
@@ -46,23 +48,23 @@
 		
 
 		<div class="row mb-3">
-			<h3>Featured Artist</h3>
+			<h3>{% trans 'Artists' %}</h3>
 			{% include 'common_templates/artist_card_for_list.html' with artist_list=entry.song.artist.all %}
 		</div>
 
 		<div class="row mb-3">
-			<div class="col"><a href="{% url 'likes:entry_list' entry.id %}">Like:{{like_count}}</a></div>
-			<div class="col"><a href="{% url 'comments:list' entry.id %}">Comment:{{comment_count}}</a></div>
-			<div class="col"><p>Views:{{view_count}}</p></div>	
+			<div class="col"><a href="{% url 'likes:entry_liked_user_list' entry.id %}" id='liked_user_list_link'>{% trans 'Likes' %}:{{like_count}}</a></div>
+			<div class="col"><a href="{% url 'comments:list' entry.id %}">{% trans 'Comments' %}:{{comment_count}}</a></div>
+			<div class="col"><p>{% trans 'Views' %}:{{view_count}}</p></div>	
 		</div>
 
 		<div class="row mb-3">
-			<div class="col"><a href="{% url 'comments:create' entry.id %}"><input type="button" value="コメントする"></a></div>
+			<div class="col"><a href="{% url 'comments:create' entry.id %}"><input type="button" value="{% trans 'Write a comment' %}"></a></div>
 		</div>
 
 		<div col="row">
 			{% if entry.writer.username == user.username %}
-			<a href="{% url 'entry:update' entry.id %}"><input type="button" value="更新する"></a><a href="{% url 'entry:delete' entry.id %}"><input type="button" value="削除する"></a>
+			<a href="{% url 'entry:update' entry.id %}"><input type="button" value="{% trans 'Update' %}"></a><a href="{% url 'entry:delete' entry.id %}"><input type="button" value="{% trans 'Delete' %}"></a>
 			{% endif %}
 		</div>
 	</div>
@@ -75,5 +77,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% load static %}
 <script src="{% static 'js/ajax_csrf.js' %}"></script>
-<script src="{% static 'js/like-handler.js' %}" like_url="{% url 'likes:like' %}" liked_entry="{{entry.id}}"></script>
+<script src="{% static 'js/like-handler.js' %}" like_url="{% url 'likes:like' %}" entry_id="{{entry.id}}" is_loggedin="{{user.is_authenticated}}"></script>
 {% endblock content %}

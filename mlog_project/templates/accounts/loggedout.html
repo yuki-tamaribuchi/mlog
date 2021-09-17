@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
-{% block title%} ログアウト完了 | {{block.super}}{% endblock title %}
+{% load i18n %}
+{% block title%} {% trans 'Logged out' %} | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
 	<div class="row">
 		<div class="col mt-5">
-            ログアウトしました。
+            {% trans 'Logged out' %}
 		</div>
 	</div>
 </div>

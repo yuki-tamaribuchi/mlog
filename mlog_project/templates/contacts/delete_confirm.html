@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}お問い合わせを削除しますか？ | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                <p>このお問い合わせを削除しますか？</p>
+                <p>{{contactthreads.get_category_display}}</p>
+                <p>{{first_content.user.handle}}({{first_content.user.username}})</p>
+				<p>{{first_content.content}}</p>
+                <input type="submit" value="削除">
+                <a href="{% url 'contacts:detail' contactthreads.id %}"><input type="button" value="キャンセル"></a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

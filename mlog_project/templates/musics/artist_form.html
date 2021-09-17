@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
-{% block title%}アーティスト{% if object %}更新{% else %}登録{% endif %} | {{block.super}}{% endblock title %}
+{% load i18n %}
+{% block title%}{% trans 'Aritst' %}{% if object %}{% trans 'Update' %}{% else %}{% trans 'Post' %}{% endif %} | {{block.super}}{% endblock title %}
 {% block head %}
 	{{ form.media.css }}
-	<style>
-		input,select{width:50%}
-	</style>
 {% endblock head %}
 {% block content %}
 <div class="container">
-	<div class="row mt-5">
+	<div class="row mt-5 select2_form">
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
-		<input type="submit" value="登録">
+		<input type="submit" value="{% if object %}{% trans 'Update' %}{% else %}{% trans 'Post' %}{% endif %}">
 		</form>
-		<a href="#" id="add_genre_link">ジャンルを追加</a>
+		<a href="#" id="add_genre_link">{% trans 'Add genre' %}</a>
 	</div>
 </div>
 </form>

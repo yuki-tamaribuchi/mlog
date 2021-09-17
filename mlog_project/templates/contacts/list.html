@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title%} お問い合わせ一覧 | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class="row mt-5">
+		{% if contactthreads_list %}
+			{% for thread in contactthreads_list %}
+			<a href="{% url 'contacts:detail' thread.id %}">{{thread.category}} / {{thread.user.handle}}({{thread.user.handle}})</a>
+			{% endfor %}
+		{% else %}
+			<p>お問い合わせはありません。</p>
+		{% endif %}
+	</div>
+	<div class="row mt-5">
+		<a href="{% url 'contacts:create' %}">お問い合わせする</a>
+	</div>
+</div>
+{% endblock content %}

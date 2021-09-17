@@ -24,7 +24,7 @@ import debug_toolbar
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls'), name='accounts'),
-    path('accounts/', include('allauth.urls')),
+    #path('accounts/', include('allauth.urls')),
     path('', include('mlog.urls'), name='mlog'),
     path('search/', include('search.urls'), name='search'),
     path('comments/', include('comments.urls'), name='comments'),
@@ -33,6 +33,9 @@ urlpatterns = [
     path('follow/', include('follow.urls'), name='follow'),
     path('musics/', include('musics.urls'), name='musics'),
     path('entry/', include('entry.urls'), name='entry'),
+    path('notifications/', include('notifications.urls'), name='notifications'),
+    path('contacts/', include('contacts.urls'), name='contacts'),
     path('select2/', include('django_select2.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
     path('__debug__/', include(debug_toolbar.urls)),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

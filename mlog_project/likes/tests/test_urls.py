@@ -50,11 +50,11 @@ class TestLikeUrls(TestCase):
 		self.assertEqual(view.func, views.like_process)
 
 	def test_user_like_list(self):
-		view = resolve('/likes/userlist/testuserforlike/')
-		self.assertEqual(view.func.view_class, views.UsersLikeListView)
+		view = resolve('/likes/user_liked_entry_list/testuserforlike/')
+		self.assertEqual(view.func.view_class, views.UserLikedEntryListView)
 
 	def test_entry_like_list(self):
 		entry_instance = entry.models.Entry.objects.first()
 		pk = entry_instance.pk
-		view = resolve('/likes/entrylist/%s/'%(pk))
-		self.assertEqual(view.func.view_class, views.EntrysLikeListView)
+		view = resolve('/likes/entry_liked_user_list/%s/'%(pk))
+		self.assertEqual(view.func.view_class, views.EntryLikedUserListView)

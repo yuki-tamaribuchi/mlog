@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title%}{% trans 'Update profile' %} | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col mt-5">
+			<form method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{form.as_p}}
+				<input type="submit" value="{% trans 'Update' %}">
+			</form>
+		</div>
+	</div>
+	<div class="row mt-5">
+		<a href="{% url 'accounts:password' %}"><input type="button" value="{% trans 'Change Password' %}"></a>
+	</div>
+	<div class="row mt-5">
+		<a href="{% url 'accounts:active_status' %}">{% trans 'Delete account' %}</a>
+	</div>
+</div>
+{% endblock content %}

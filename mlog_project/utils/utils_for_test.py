@@ -50,7 +50,7 @@ def create_test_comment(comment, username_for_comment, handle_for_comment, biogr
 	from comments.models import Comment
 	comment_instance = Comment.objects.create(
 		comment=comment,
-		user=create_test_user(
+		author=create_test_user(
 			username=username_for_comment,
 			handle=handle_for_comment,
 			biograph=biograph_for_comment

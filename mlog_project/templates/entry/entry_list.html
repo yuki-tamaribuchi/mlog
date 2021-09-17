@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block title%} {% if song %}{{song.song_name}}{% elif artist %}{{artist.artist_name}}{% endif %}の記事一覧 | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
@@ -9,23 +10,10 @@
 				{% include 'common_templates/entry_card_with_writer.html' %}
 			</div>
 		{% else %}
-			<p>エントリーはありません。</p>
+			<p>{% trans 'There is no entry.' %}</p>
 		{% endif %}
 	</div>
-	<div class="pagination">
-		<span class="step-links">
-			{% if page_obj.has_previous %}
-				<a href="?page=1">&laquo; first</a>
-				<a href="?page={{page_obj.previous_page_number}}">previous</a>
-			{% endif %}
-			<span class="current">
-				Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}.
-			</span>
-			{% if page_obj.has_next %}
-			<a href="?page={{page_obj.next_page_number}}">next</a>
-			<a href="?page={{page_obj.paginator.num_pages}}">last &raquo;</a>
-			{% endif %}
-		</span>
-	</div>
+	
+	{% include 'common_templates/pagination.html' %}
 </div>
 {% endblock content %}

@@ -12,6 +12,7 @@ from .views import (SignUpView,
 					UserPasswordResetDoneView,
 					UserPasswordResetConfirmView,
 					UserPasswordResetCompleteView,
+					UserActiveStatusUpdateView,
 )
 
 app_name = 'accounts'
@@ -30,4 +31,5 @@ urlpatterns = [
 	path('detail/<str:username>/', UserDetailView.as_view(), name='detail'),
 	path('detail/<str:username>/entry/', UserEntryListView.as_view(), name='userentrylist'),
 	path('update/', UserUpdateView.as_view(), name='update'),
+	path('update/active_status/', UserActiveStatusUpdateView.as_view(), name='active_status'),
 ]

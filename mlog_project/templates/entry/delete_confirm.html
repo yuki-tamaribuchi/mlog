@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}
-削除しますか？ | {{block.super}}
+{% trans 'Delete this entry?' %} | {{block.super}}
 {% endblock title %}
 {% block content %}
 <div class="container">
@@ -8,11 +9,11 @@
         <div class="col">
             <form method="post">
                 {% csrf_token %}
-                <p>この記事を削除しますか？</p>
+                <p>{% trans 'Delete this entry?' %}</p>
 				<p>{{entry.content}}</p>
 				<p>{{entry.song}}</p>
-                <input type="submit" value="削除">
-                <a href="{% url 'entry:detail' entry.id %}"><input type="button" value="キャンセル"></a>
+                <input type="submit" value="{% trans 'Delete' %}">
+                <a href="{% url 'entry:detail' entry.id %}"><input type="button" value="{% trans 'Cancel' %}"></a>
             </form>
         </div>
     </div>

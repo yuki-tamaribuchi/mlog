@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block title%}Spotifyでトラックを選択 | {{block.super}}{% endblock title %}
+{% load i18n %}
+{% block title%}{% trans 'Select song on Spotify.' %} | {{block.super}}{% endblock title %}
 {% block content %}
 <div class="container">
 	<div class="row mt-5">
@@ -8,12 +9,12 @@
 			<p>
 				<label>Spotify track search:</label>
 				<input type="search" id="search_keywords">
-				<input type="button" value="検索" id="search_btn">
+				<input type="button" value="{% trans 'Search' %}" id="search_btn">
 				<select id="spotify_track_select"  name="selected_track">
-					<option selected disabled>曲を選んでください</option>
+					<option selected disabled>{% trans 'Select song' %}</option>
 				</select>
 			</p>
-			<input type="submit" value="送信">
+			<input type="submit" value="{% trans 'Send' %}">
 		</form>
 	</div>
 </div>

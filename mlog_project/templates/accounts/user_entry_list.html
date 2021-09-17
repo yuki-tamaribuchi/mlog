@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title%} {{detail_user.handle}} ({{detail_user.username}})の投稿一覧 | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col mt-5">
+			<h2><a href="{% url 'accounts:detail' detail_user.username %}">{{detail_user.handle}}</a>の投稿</h2>
+			<div class="row">
+				{% if entry_list %}
+					{% include 'common_templates/entry_card_without_writer.html' %}
+				{% else %}
+					<p>{% trans 'There is no entry.' %}</p>
+			{% endif %}
+			</div>
+		</div>
+	</div>
+	{% include 'common_templates/pagination.html' %}
+</div>
+{% endblock content %}

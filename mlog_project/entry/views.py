@@ -1,4 +1,3 @@
-from django.http.response import Http404, HttpResponseNotAllowed
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import ObjectDoesNotExist
@@ -22,7 +21,7 @@ class EntryCreateView(LoginRequiredMixin,CreateView):
 	template_name = 'entry/entry_form.html'
 
 	def form_valid(self, form):
-		form.instance.writer_id = User.objects.get(username=self.request.user.username).id
+		form.instance.writer = User.objects.get(username=self.request.user.username)
 		return super().form_valid(form)
 
 	def get_success_url(self):
@@ -37,10 +36,17 @@ class EntryDetailView(DetailView):
 		entry_read_activity.delay(self.kwargs.get('pk'), request.user.username)
 		return super().get(request, *args, **kwargs)
 
+	def get_object(self):
+		obj = super().get_object()
+		if obj.writer.is_active:
+			return obj
+		else:
+			raise Http404
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['like_count'] = Like.objects.filter(entry=self.kwargs.get('pk')).count()
-		context['comment_count'] = Comment.objects.filter(entry=self.kwargs.get('pk')).count()
+		context['like_count'] = Like.objects.filter(entry=self.kwargs.get('pk'), user__is_active=True).count()
+		context['comment_count'] = Comment.objects.filter(entry=self.kwargs.get('pk'), author__is_active=True).count()
 		
 		try:
 			context['like_status'] = Like.objects.get(user__username=self.request.user.username, entry=self.kwargs.get('pk'))
@@ -59,7 +65,7 @@ class EntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 	def test_func(self):
 		object = self.get_object()
-		return object.writer.id == self.request.user.id
+		return object.writer == self.request.user
 
 	def get_success_url(self):
 		return reverse('entry:detail', kwargs={'pk':self.object.id})
@@ -71,7 +77,7 @@ class EntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 	def test_func(self):
 		object = self.get_object()
-		return object.writer.id == self.request.user.id
+		return object.writer == self.request.user
 
 	def get_success_url(self):
 		return reverse('accounts:detail', kwargs={'username':self.request.user.username})
@@ -86,7 +92,7 @@ class EntryListBySongView(ListView):
 		qs = super().get_queryset()
 
 		try:
-			return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(song__id=self.kwargs.get('pk'))
+			return qs.select_related('writer', 'song').prefetch_related('song__artist').filter(song__id=self.kwargs.get('pk'), writer__is_active=True).order_by('created_at').reverse()
 		except ObjectDoesNotExist:
 			return qs.none()
 
@@ -110,8 +116,11 @@ class EntryListByArtistView(ListView):
 			).prefetch_related(
 				'song__artist'
 			).filter(
-				song__artist__slug=self.kwargs.get('slug')
-			).order_by('id')
+				song__artist__slug=self.kwargs.get('slug'),
+				writer__is_active=True,
+			).order_by(
+				'created_at'
+			).reverse()
 		except ObjectDoesNotExist:
 			return qs.none()
 	

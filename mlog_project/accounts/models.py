@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
+
 
 class User(AbstractUser):
 
@@ -13,9 +15,10 @@ class User(AbstractUser):
 		
 		return prefix + name + ext
 
-	handle = models.CharField(max_length=20)
-	biograph = models.TextField(max_length=200, blank=True)
+	handle = models.CharField(verbose_name=_('handle name'), max_length=20)
+	biograph = models.TextField(verbose_name=_('biograph'), max_length=200, blank=True)
 	profile_image = models.ImageField(
+		verbose_name = _('profile image'),
 		upload_to=get_image_path,
 		default='images/defaults/accounts/profile/default.jpg'
 		)

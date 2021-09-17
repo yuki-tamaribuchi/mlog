@@ -1,7 +1,7 @@
 var follow_url = document.currentScript.getAttribute('follow_url');
 var follower_user = document.currentScript.getAttribute('follower_user');
 var follow_btn = document.getElementById('follow_btn');
-var follower_link = document.getElementById('follower_link');
+var follower_count_span = document.getElementById('follower_count');
 
 follow_btn.addEventListener('click', follow_process, false);
 
@@ -22,6 +22,6 @@ function follow_process(){
 		}else{
 			follow_btn.value='フォローする';
 		}
-		follower_link.innerHTML = follower_count+"フォロワー";
+		follower_count_span.innerHTML = follower_count;
 	});
 }

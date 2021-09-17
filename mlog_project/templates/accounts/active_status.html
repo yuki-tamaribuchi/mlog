@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{% trans 'Do you delete your account?' %} | {{block.super}}{% endblock title %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col mt-5">
+			{% trans 'Uncheck if you delete your account.' %}
+			<form method="POST">
+				{% csrf_token %}
+				{{form.as_p}}
+				<input type="submit" value="{% trans 'Delete' %}">
+			</form>
+			<a href="{% url 'accounts:update' %}"><input type="button" value="{% trans 'Cancel' %}"></a>
+		</div>
+	</div>
+</div>
+{% endblock content %}

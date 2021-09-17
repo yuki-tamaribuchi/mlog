@@ -1,6 +1,7 @@
 body {
 	background-color:gainsboro;
 	padding-top: 70px;
+	padding-bottom:70px;
 }
 
 .brand {
@@ -183,4 +184,12 @@ body {
 .artwork-in-song-card {
 	width: 70%;
 	height: auto;
+}
+
+.select2_form select, .select2_form input {
+	width: 50%;
+}
+
+.fav_btn {
+	width: 25%;
 }
