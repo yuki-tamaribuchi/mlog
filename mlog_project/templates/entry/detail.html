@@ -40,7 +40,7 @@
 				{% include 'common_templates/spotify_preview.html' with artwork_url=entry.song.artwork_url %}
 				{% endif %}
 				{% if entry.song.spotify_link %}
-				{% include 'common_templates/spotify_link.html' %}	
+				{% include 'common_templates/spotify_link.html'  with spotify_link=entry.song.spotify_link %}	
 				{% endif %}
 			</div>
 		</div>
