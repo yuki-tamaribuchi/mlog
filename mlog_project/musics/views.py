@@ -14,6 +14,89 @@ from .forms import ArtsitForm, SongForm, GenreForm
 from .spotify_utils import GetSpotifyData
 
 
+class GenreCreateView(CreateView):
+	form_class = GenreForm
+	template_name = 'musics/genre_form.html'
+
+	def get_success_url(self):
+		return reverse_lazy('entry:create')
+
+
+class PopupGenreCreateView(GenreCreateView):
+
+	def form_valid(self, form):
+		genre = form.save()
+		context = {
+			'object_name':str(genre),
+			'object_pk':genre.pk,
+			'function_name':'add_genre'
+		}
+		return render(self.request, 'musics/close.html', context)
+
+
+class ArtistCreateView(CreateView):
+	form_class = ArtsitForm
+	template_name = 'musics/artist_form.html'
+
+	def get_success_url(self):
+		return reverse_lazy('musics:artist_detail', kwargs={'slug':self.object.slug})
+
+
+class PopupArtistCreateView(ArtistCreateView):
+
+	def form_valid(self, form):
+		artist=form.save()
+		context={
+			'object_name':str(artist),
+			'object_pk':artist.pk,
+			'function_name':'add_artist'
+		}
+		return render(self.request, 'musics/close.html', context)
+
+
+class SongCreateView(CreateView):
+	form_class = SongForm
+	template_name = 'musics/song_form.html'
+
+	def get_success_url(self):
+		return reverse_lazy('musics:song_detail', kwargs={'pk':self.object.id})
+
+
+class PopupSongCreateView(SongCreateView):
+
+	def form_valid(self, form):
+		song = form.save()
+		context = {
+			'object_name':str(song),
+			'object_pk':song.pk,
+			'function_name':'add_song'
+		}
+		return render(self.request, 'musics/close.html', context)
+
+
+class SongDetailView(DetailView):
+	model = Song
+	template_name = 'musics/song_detail.html'
+
+	def get(self, request, *args, **kwargs):
+		song_checked_activity.delay(self.kwargs['pk'], request.user.username)
+		return super().get(request, *args, **kwargs)
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['entries'] = Entry.objects.filter(
+			song=self.kwargs['pk']
+			).select_related(
+				'song',
+				'writer'
+			).prefetch_related(
+				'song__artist',
+			).order_by(
+				'created_at',
+			).reverse()[:3]
+		return context
+
+
 class ArtistDetailView(DetailView):
 	model = Artist
 	template_name = 'musics/artist_detail.html'
@@ -56,88 +139,23 @@ class ArtistDetailView(DetailView):
 		return context
 
 
-
-class SongCreateView(CreateView):
-	form_class = SongForm
-	template_name = 'musics/song_form.html'
-
-	def get_success_url(self):
-		return reverse_lazy('musics:song_detail', kwargs={'pk':self.object.id})
-
-
-class ArtistCreateView(CreateView):
+class ArtistUpdateView(UpdateView):
 	form_class = ArtsitForm
 	template_name = 'musics/artist_form.html'
 
-	def get_success_url(self):
-		return reverse_lazy('musics:artist_detail', kwargs={'slug':self.object.slug})
+	def get_object(self):
+		return Artist.objects.get(slug=self.kwargs['slug'])
 
 
-class SongDetailView(DetailView):
-	model = Song
-	template_name = 'musics/song_detail.html'
+class SongUpdateView(UpdateView):
+	form_class = SongForm
+	template_name = 'musics/song_form.html'
 
-	def get(self, request, *args, **kwargs):
-		song_checked_activity.delay(self.kwargs['pk'], request.user.username)
-		return super().get(request, *args, **kwargs)
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['entries'] = Entry.objects.filter(
-			song=self.kwargs['pk']
-			).select_related(
-				'song',
-				'writer'
-			).prefetch_related(
-				'song__artist',
-			).order_by(
-				'created_at',
-			).reverse()[:3]
-		return context
-
-
-class PopupSongCreateView(SongCreateView):
-
-	def form_valid(self, form):
-		song = form.save()
-		context = {
-			'object_name':str(song),
-			'object_pk':song.pk,
-			'function_name':'add_song'
-		}
-		return render(self.request, 'musics/close.html', context)
-
-
-class PopupArtistCreateView(ArtistCreateView):
-
-	def form_valid(self, form):
-		artist=form.save()
-		context={
-			'object_name':str(artist),
-			'object_pk':artist.pk,
-			'function_name':'add_artist'
-		}
-		return render(self.request, 'musics/close.html', context)
-
-
-class GenreCreateView(CreateView):
-	form_class = GenreForm
-	template_name = 'musics/genre_form.html'
+	def get_object(self):
+		return Song.objects.get(pk=self.kwargs['pk'])
 
 	def get_success_url(self):
-		return reverse_lazy('entry:create')
-
-
-class PopupGenreCreateView(GenreCreateView):
-
-	def form_valid(self, form):
-		genre = form.save()
-		context = {
-			'object_name':str(genre),
-			'object_pk':genre.pk,
-			'function_name':'add_genre'
-		}
-		return render(self.request, 'musics/close.html', context)
+		return reverse_lazy('musics:song_detail', kwargs={'pk':self.object.id})
 
 
 class GenreListView(ListView):
@@ -162,25 +180,6 @@ class ArtistByGenreListView(ListView):
 		context = super().get_context_data(**kwargs)
 		context['genre'] = Genre.objects.get(genre_name=self.kwargs['genre_name'])
 		return context
-
-
-class ArtistUpdateView(UpdateView):
-	form_class = ArtsitForm
-	template_name = 'musics/artist_form.html'
-
-	def get_object(self):
-		return Artist.objects.get(slug=self.kwargs['slug'])
-
-
-class SongUpdateView(UpdateView):
-	form_class = SongForm
-	template_name = 'musics/song_form.html'
-
-	def get_object(self):
-		return Song.objects.get(pk=self.kwargs['pk'])
-
-	def get_success_url(self):
-		return reverse_lazy('musics:song_detail', kwargs={'pk':self.object.id})
 
 
 class SongByArtistListView(ListView):
