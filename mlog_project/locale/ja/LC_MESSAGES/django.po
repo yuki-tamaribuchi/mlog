@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-16 19:25+0900\n"
+"POT-Creation-Date: 2021-09-17 11:18+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,28 +42,28 @@ msgstr "エントリ"
 msgid "author"
 msgstr "作成者"
 
-#: contacts/models.py:26
+#: contacts/models.py:25
 msgid "category"
 msgstr "カテゴリ"
 
-#: contacts/models.py:27 contacts/models.py:37 favorite_artists/models.py:8
+#: contacts/models.py:26 contacts/models.py:36 favorite_artists/models.py:8
 #: follow/models.py:8 likes/models.py:9
 msgid "user"
 msgstr "ユーザ"
 
-#: contacts/models.py:28 contacts/models.py:39 entry/models.py:13
+#: contacts/models.py:27 contacts/models.py:38 entry/models.py:13
 msgid "created at"
 msgstr "作成日時"
 
-#: contacts/models.py:36
+#: contacts/models.py:35
 msgid "parent thread"
 msgstr "親スレッド"
 
-#: contacts/models.py:38 entry/models.py:11
+#: contacts/models.py:37 entry/models.py:11
 msgid "content"
 msgstr "本文"
 
-#: contacts/models.py:40 entry/models.py:14
+#: contacts/models.py:39 entry/models.py:14
 msgid "updated at"
 msgstr "更新日時"
 
@@ -83,7 +83,7 @@ msgstr "曲"
 msgid "artist"
 msgstr "アーティスト"
 
-#: follow/models.py:9
+#: follow/models.py:9 templates/accounts/user_detail.html:19
 msgid "follower"
 msgstr "フォロワー"
 
@@ -130,51 +130,56 @@ msgstr "パスワードをリセット"
 msgid "Sign Up"
 msgstr "新規登録"
 
-#: templates/accounts/userdetail.html:16
+#: templates/accounts/user_detail.html:16
 msgid "No biograph"
 msgstr "自己紹介がありません"
 
-#: templates/accounts/userdetail.html:29
+#: templates/accounts/user_detail.html:19
+msgid "follow"
+msgstr "フォロー"
+
+#: templates/accounts/user_detail.html:29
 msgid "Liked Entry"
 msgstr "ライクした記事"
 
-#: templates/accounts/userdetail.html:30
+#: templates/accounts/user_detail.html:30
 msgid "Favorite Artists"
 msgstr "お気に入りのアーティスト"
 
-#: templates/accounts/userdetail.html:35 templates/entry/entry_form.html:3
+#: templates/accounts/user_detail.html:35 templates/entry/entry_form.html:3
 msgid "Entry"
 msgstr "記事"
 
-#: templates/accounts/userdetail.html:38 templates/musics/artist_detail.html:42
-#: templates/musics/artist_detail.html:52 templates/musics/song_detail.html:49
+#: templates/accounts/user_detail.html:38
+#: templates/musics/artist_detail.html:42
+#: templates/musics/artist_detail.html:52 templates/musics/song_detail.html:52
 msgid "See more"
 msgstr "もっと見る"
 
-#: templates/accounts/userdetail.html:40
-#: templates/accounts/userentrylist.html:13 templates/entry/entry_list.html:13
-#: templates/musics/artist_detail.html:44
+#: templates/accounts/user_detail.html:40
+#: templates/accounts/user_entry_list.html:13
+#: templates/entry/entry_list.html:13 templates/musics/artist_detail.html:44
 msgid "There is no entry."
 msgstr "記事はありません。"
 
-#: templates/accounts/userupdate.html:2
+#: templates/accounts/user_form.html:3
 #, fuzzy
 #| msgid "Update"
 msgid "Update profile"
 msgstr "プロフィール更新"
 
-#: templates/accounts/userupdate.html:10 templates/entry/detail.html:67
+#: templates/accounts/user_form.html:11 templates/entry/detail.html:67
 #: templates/entry/entry_form.html:15 templates/musics/artist_form.html:3
 #: templates/musics/artist_form.html:13 templates/musics/genre_form.html:3
 #: templates/musics/genre_form.html:13 templates/musics/song_form.html:13
 msgid "Update"
 msgstr "更新"
 
-#: templates/accounts/userupdate.html:15
+#: templates/accounts/user_form.html:16
 msgid "Change Password"
 msgstr "パスワードを変更"
 
-#: templates/accounts/userupdate.html:18
+#: templates/accounts/user_form.html:19
 msgid "Delete account"
 msgstr "アカウントを削除"
 
@@ -324,7 +329,7 @@ msgstr "曲はありません。"
 msgid "Edit artist information."
 msgstr "アーティスト情報を編集する"
 
-#: templates/musics/artist_form.html:3 templates/musics/song_detail.html:43
+#: templates/musics/artist_form.html:3 templates/musics/song_detail.html:46
 msgid "Aritst"
 msgstr "アーティスト"
 
@@ -348,15 +353,15 @@ msgstr "アーティスト"
 msgid "Preview"
 msgstr "プレビュー"
 
-#: templates/musics/song_detail.html:31
+#: templates/musics/song_detail.html:34
 msgid "Entries of this song."
 msgstr "記事はありません。"
 
-#: templates/musics/song_detail.html:42 templates/musics/song_form.html:3
+#: templates/musics/song_detail.html:45 templates/musics/song_form.html:3
 msgid "Song"
 msgstr "曲"
 
-#: templates/musics/song_detail.html:53
+#: templates/musics/song_detail.html:56
 msgid "Edit song information."
 msgstr "曲情報を編集する"
 
@@ -380,3 +385,6 @@ msgstr "曲を選択してください"
 #: templates/musics/spotify_track_select.html:17
 msgid "Send"
 msgstr "送信"
+
+#~ msgid "Follow"
+#~ msgstr "フォロー"

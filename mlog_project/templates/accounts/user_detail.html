@@ -16,7 +16,7 @@
 			<p>{% trans 'No biograph' %}</p>
 			{% endif %}
 
-			<p><a href="{% url 'follow:following' detail_user.username %}">{{follow_count}}フォロー</a> | <a href="{% url 'follow:follower' detail_user.username %}" id="follower_link"> <span id="follower_count">{{follower_count}}</span>フォロワー</a></p>
+			<p><a href="{% url 'follow:following' detail_user.username %}">{{follow_count}} {% trans 'follow' %}</a> | <a href="{% url 'follow:follower' detail_user.username %}" id="follower_link"> <span id="follower_count">{{follower_count}}</span> {% trans 'follower' %}</a></p>
 
 			{% if not is_myself %}
 				{% if user.is_authenticated %}
