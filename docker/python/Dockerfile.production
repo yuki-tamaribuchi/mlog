@@ -1,6 +1,7 @@
 FROM python:3.8
 
 RUN apt update -y
+RUN apt install -y gettext
 
 WORKDIR /usr/src/app
 
