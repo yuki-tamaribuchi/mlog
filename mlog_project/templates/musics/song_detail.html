@@ -23,6 +23,9 @@
 		{% if song.spotify_preview_url %}
 		{% include 'common_templates/spotify_preview.html' with artwork_url=song.artwork_url %}
 		{% endif %}
+		{% if song.spotify_link %}
+		{% include 'common_templates/spotify_link.html' with spotify_link=song.spotify_link %}	
+		{% endif %}
 	</div>
 
 
