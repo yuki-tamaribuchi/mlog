@@ -3,10 +3,19 @@ from django.views.generic import ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.db.models import Q
+from django.contrib.auth import login
 
+from accounts.models import User
 from entry.models import Entry
 from follow.models import Follow
 from favorite_artists.models import FavoriteArtist
+
+
+def login_with_sample_user(request):
+	if request.method=='GET':
+		sample_user = User.objects.get(username='sampleuser')
+		login(request, sample_user)
+		return redirect('mlog:top')
 
 
 class RootRedirectView(View):
