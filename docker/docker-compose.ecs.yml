@@ -73,3 +73,46 @@ x-aws-cloudformation:
                     DNSName:
                         Fn::GetAtt: LoadBalancer.DNSName
                 Type: A
+
+
+        #--------------------------------------------------------------
+        #Config for https
+        #Commented out because of it can't be connected via https from browser.
+
+        #AppTCP8001Listener:
+        #    Properties:
+        #        Protocol: HTTP
+        #AppTCP8001TargetGroup:
+        #    Properties:
+        #        Protocol: HTTP
+        #NginxTCP80Listener:
+        #    Properties:
+        #        Protocol: HTTP
+        #NginxTCP80TargetGroup:
+        #    Properties:
+        #        Protocol: HTTP
+        #LoadBalancer:
+        #    Properties:
+        #        Type: application
+        #        LoadBalancerAttributes:
+
+
+        #LBHttpsListner:
+        #    Type: AWS::ElasticLoadBalancingV2::Listener
+        #    Properties:
+        #        Certificates:
+        #            - CertificateArn: ${AWS_TLS_CERTIFICATE_ARN}
+        #        DefaultActions:
+        #            - Type: forward
+        #              ForwardConfig:
+        #                  TargetGroups:
+        #                      - TargetGroupArn: 
+        #                          Ref:
+        #                              NginxTCP80TargetGroup
+        #        LoadBalancerArn:
+        #            Ref:
+        #                LoadBalancer
+        #        Port: 443
+        #        Protocol: HTTPS
+
+        #--------------------------------------------------------------
