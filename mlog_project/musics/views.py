@@ -145,6 +145,9 @@ class ArtistUpdateView(UpdateView):
 
 	def get_object(self):
 		return Artist.objects.get(slug=self.kwargs['slug'])
+	
+	def get_success_url(self):
+		return reverse_lazy('musics:artist_detail', kwargs={'slug':self.object.slug})
 
 
 class SongUpdateView(UpdateView):
