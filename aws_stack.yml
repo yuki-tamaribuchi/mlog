@@ -1,10 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Cloudformation stack for mlog project
 
-Parameters:
-  SubnetId:
-    Type: List<AWS::EC2::Subnet::Id>
-
 
 Resources:
   VPC:
@@ -75,27 +71,40 @@ Resources:
 
 #https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/quickref-ecs.html
 
+  PrivateDnsNamespace:
+    Type: AWS::ServiceDiscovery::PrivateDnsNamespace
+    Properties:
+      Name: mlog.tamaribuchi-yuki.com
+      Vpc: !Ref VPC
+
   ECSCluster:
     Type: AWS::ECS::Cluster
   
   ECSSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
+      GroupDescription: SecurityGroup for mlog
       VpcId: !Ref VPC
 
   ECSSecurityGroupHTTPinbound:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
-      GroupId: !Ref ECSSecuritGroup
-      InProtocol: tcp
+      GroupId: !Ref ECSSecurityGroup
+      IpProtocol: tcp
       FromPort: 80
       ToPort: 80
       CidrIp: 0.0.0.0/0
 
+  CloudwatchLogsGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join ['-', [ECSLogGroup, !Ref AWS::StackName]]
+      RetentionInDays: 14
+
   AppTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Join ['', [!Ref 'AWS::StackName', -app]]
+      Family: !Join ['', [!Ref AWS::StackName, -app]]
       ContainerDefinitions:
       - Name: mlog-app
         Cpu: 10
@@ -105,28 +114,28 @@ Resources:
         LogConfiguration:
           LogDriver: awslogs
           Options:
-            awslogs-group: !Ref 'CloudwatchLogsGroup'
-            awslogs-region: !Ref 'AWS::Region'
+            awslogs-group: !Ref CloudwatchLogsGroup
+            awslogs-region: !Ref AWS::Region
             awslogs-stream-prefix: ecs-mlog-app
-        PortMappings:
-          - ContainerPort: 8001
-      - Name: busybox
-        Cpu: 10
-        #Command: ['bash -c "cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"']
-        Command: ['bash -c "cd /usr/src/app && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"']
-        Image: busybox
-        Memory: 200
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group: !Ref 'CloudwatchLogsGroup'
-            awslogs-region: !Ref 'AWS::Region'
-            awslogs-stream-prefix: ecs-mlog-app
+        Command: [bash -c "cd /usr/src/app && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
+        #Command: [bash -c "cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
+
+  AppServiceDiscovery:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: app
+      NamespaceId: !Ref PrivateDnsNamespace
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        NamespaceId: !Ref PrivateDnsNamespace
+        RoutingPolicy: MULTIVALUE
 
   CeleryTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Join ['', [!Ref 'AWS::StackName', -celery]]
+      Family: !Join ['', [!Ref AWS::StackName, -celery]]
       ContainerDefinitions:
       - Name: mlog-celery
         Cpu: 10
@@ -136,27 +145,27 @@ Resources:
         LogConfiguration:
           LogDriver: awslogs
           Options:
-            awslogs-group: !Ref 'CloudwatchLogsGroup'
-            awslogs-region: !Ref 'AWS::Region'
+            awslogs-group: !Ref CloudwatchLogsGroup
+            awslogs-region: !Ref AWS::Region
             awslogs-stream-prefix: ecs-mlog-app
-        PortMappings:
-          - ContainerPort: 3776
-      - Name: busybox
-        Cpu: 10
-        Command: ['bash -c "apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker >/dev/null"']
-        Image: busybox
-        Memory: 200
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group: !Ref 'CloudwatchLogsGroup'
-            awslogs-region: !Ref 'AWS::Region'
-            awslogs-stream-prefix: ecs-mlog-app
+        Command: [bash -c "apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker >/dev/null"]
+
+  CeleryServiceDiscovery:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: celery
+      NamespaceId: !Ref PrivateDnsNamespace
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        NamespaceId: !Ref PrivateDnsNamespace
+        RoutingPolicy: MULTIVALUE
 
   NginxTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Join ['', [!Ref 'AWS::StackName', -nginx]]
+      Family: !Join ['', [!Ref AWS::StackName, -nginx]]
       ContainerDefinitions:
       - Name: mlog-nginx
         Cpu: 10
@@ -166,18 +175,30 @@ Resources:
         LogConfiguration:
           LogDriver: awslogs
           Options:
-            awslogs-group: !Ref 'CloudwatchLogsGroup'
-            awslogs-region: !Ref 'AWS::Region'
+            awslogs-group: !Ref CloudwatchLogsGroup
+            awslogs-region: !Ref AWS::Region
             awslogs-stream-prefix: ecs-mlog-app
         PortMappings:
           - ContainerPort: 80
             HostPort: 80
             Protocol: tcp
 
+  NginxServiceDiscovery:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: nginx
+      NamespaceId: !Ref PrivateDnsNamespace
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        NamespaceId: !Ref PrivateDnsNamespace
+        RoutingPolicy: MULTIVALUE
+
   RedisTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Join ['', [!Ref 'AWS::StackName', -redis]]
+      Family: !Join ['', [!Ref AWS::StackName, -redis]]
       ContainerDefinitions:
       - Name: mlog-redis
         Cpu: 10
@@ -187,31 +208,56 @@ Resources:
         LogConfiguration:
           LogDriver: awslogs
           Options:
-            awslogs-group: !Ref 'CloudwatchLogsGroup'
-            awslogs-region: !Ref 'AWS::Region'
+            awslogs-group: !Ref CloudwatchLogsGroup
+            awslogs-region: !Ref AWS::Region
             awslogs-stream-prefix: ecs-mlog-app
-        PortMappings:
-          - ContainerPort: 6379
+
+  RedisServiceDiscovery:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: redis
+      NamespaceId: !Ref PrivateDnsNamespace
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        NamespaceId: !Ref PrivateDnsNamespace
+        RoutingPolicy: MULTIVALUE
   
   ECSALB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: ECSALB
       Scheme: internet-facing
-      Subnets: !Ref SubnetId
-      SecurityGroups: [!Ref 'ECSSecurityGroup']
+      Subnets: 
+        - !Ref SubnetA
+        - !Ref SubnetB
+        - !Ref SubnetC
+      SecurityGroups: [!Ref ECSSecurityGroup]
 
-  ALBLister:
+  ALBListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
-    DependsOn: ECSServiceRole
+    #DependsOn: ECSServiceRole
     Properties:
       DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref ECSTG
+      LoadBalancerArn: !Ref ECSALB
+      Port: 80
+      Protocol: HTTP
+  
+
+  ECSALBListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    DependsOn: ALBListener
+    Properties:
+      Actions:
       - Type: forward
         TargetGroupArn: !Ref ECSTG
       Conditions:
       - Field: path-pattern
         Values: [/]
-      ListerArn: !Ref 'ALBListener'
+      ListenerArn: !Ref ALBListener
       Priority: 1
   
   ECSTG:
@@ -222,7 +268,7 @@ Resources:
       HealthCheckPath: /
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 5
-      HealthyThresholdCound: 2
+      HealthyThresholdCount: 2
       Name: ECSTG
       Port: 80
       Protocol: HTTP
