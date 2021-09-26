@@ -95,11 +95,43 @@ Resources:
       ToPort: 80
       CidrIp: 0.0.0.0/0
 
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
   CloudwatchLogsGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Join ['-', [ECSLogGroup, !Ref AWS::StackName]]
       RetentionInDays: 14
+
+  AppService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !GetAtt ECSCluster.Arn
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          SecurityGroups:
+            - !Ref ECSSecurityGroup
+          Subnets:
+            - !Ref SubnetA
+            - !Ref SubnetB
+            - !Ref SubnetC
+      TaskDefinition: 
+        !Ref AppTaskDefinition
 
   AppTaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -119,6 +151,12 @@ Resources:
             awslogs-stream-prefix: ecs-mlog-app
         Command: [bash -c "cd /usr/src/app && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
         #Command: [bash -c "cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
+      RequiresCompatibilities:
+      - FARGATE
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      Cpu: 256
+      Memory: 512
 
   AppServiceDiscovery:
     Type: AWS::ServiceDiscovery::Service
@@ -131,6 +169,22 @@ Resources:
           Type: A
         NamespaceId: !Ref PrivateDnsNamespace
         RoutingPolicy: MULTIVALUE
+
+  CeleryService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !GetAtt ECSCluster.Arn
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          SecurityGroups:
+            - !Ref ECSSecurityGroup
+          Subnets:
+            - !Ref SubnetA
+            - !Ref SubnetB
+            - !Ref SubnetC
+      TaskDefinition: 
+        !Ref CeleryTaskDefinition
 
   CeleryTaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -149,6 +203,12 @@ Resources:
             awslogs-region: !Ref AWS::Region
             awslogs-stream-prefix: ecs-mlog-app
         Command: [bash -c "apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker >/dev/null"]
+      RequiresCompatibilities:
+      - FARGATE
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      Cpu: 256
+      Memory: 512
 
   CeleryServiceDiscovery:
     Type: AWS::ServiceDiscovery::Service
@@ -161,6 +221,26 @@ Resources:
           Type: A
         NamespaceId: !Ref PrivateDnsNamespace
         RoutingPolicy: MULTIVALUE
+
+  NginxService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !GetAtt ECSCluster.Arn
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: mlog-nginx
+          ContainerPort: 80
+          TargetGroupArn: !Ref ECSTG
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          SecurityGroups:
+            - !Ref ECSSecurityGroup
+          Subnets:
+            - !Ref SubnetA
+            - !Ref SubnetB
+            - !Ref SubnetC
+      TaskDefinition: 
+        !Ref NginxTaskDefinition
 
   NginxTaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -182,6 +262,12 @@ Resources:
           - ContainerPort: 80
             HostPort: 80
             Protocol: tcp
+      RequiresCompatibilities:
+      - FARGATE
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      Cpu: 256
+      Memory: 512
 
   NginxServiceDiscovery:
     Type: AWS::ServiceDiscovery::Service
@@ -194,6 +280,22 @@ Resources:
           Type: A
         NamespaceId: !Ref PrivateDnsNamespace
         RoutingPolicy: MULTIVALUE
+
+  RedisService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !GetAtt ECSCluster.Arn
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          SecurityGroups:
+            - !Ref ECSSecurityGroup
+          Subnets:
+            - !Ref SubnetA
+            - !Ref SubnetB
+            - !Ref SubnetC
+      TaskDefinition: 
+        !Ref RedisTaskDefinition
 
   RedisTaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -211,6 +313,12 @@ Resources:
             awslogs-group: !Ref CloudwatchLogsGroup
             awslogs-region: !Ref AWS::Region
             awslogs-stream-prefix: ecs-mlog-app
+      RequiresCompatibilities:
+      - FARGATE
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      Cpu: 256
+      Memory: 512
 
   RedisServiceDiscovery:
     Type: AWS::ServiceDiscovery::Service
@@ -264,13 +372,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     DependsOn: ECSALB
     Properties:
-      HealthCheckIntervalSeconds: 10
-      HealthCheckPath: /
-      HealthCheckProtocol: HTTP
-      HealthCheckTimeoutSeconds: 5
-      HealthyThresholdCount: 2
-      Name: ECSTG
       Port: 80
       Protocol: HTTP
-      UnhealthyThresholdCount: 2
+      TargetType: ip
       VpcId: !Ref VPC
