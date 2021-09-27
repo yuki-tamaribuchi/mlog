@@ -68,6 +68,29 @@ Resources:
       RouteTableId: !Ref RouteTable
       SubnetId: !Ref SubnetC
 
+  SecretManagerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Inbound for ecs
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        SourceSecurityGroupId: !Ref ECSSecurityGroup
+      VpcId: !Ref VPC
+
+  SecretManagerVPCEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName: com.amazonaws.ap-northeast-1.secretsmanager
+      VpcId: !Ref VPC
+      SubnetIds:
+        - !Ref SubnetA
+        - !Ref SubnetB
+        - !Ref SubnetC
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - !Ref SecretManagerSecurityGroup
+
+
 
 #https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/quickref-ecs.html
 
@@ -138,7 +161,7 @@ Resources:
     Properties:
       Family: !Join ['', [!Ref AWS::StackName, -app]]
       ContainerDefinitions:
-      - Name: mlog-app
+      - Name: app
         Cpu: 10
         Essential: true
         Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
@@ -191,7 +214,7 @@ Resources:
     Properties:
       Family: !Join ['', [!Ref AWS::StackName, -celery]]
       ContainerDefinitions:
-      - Name: mlog-celery
+      - Name: celery
         Cpu: 10
         Essential: true
         Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
@@ -247,7 +270,7 @@ Resources:
     Properties:
       Family: !Join ['', [!Ref AWS::StackName, -nginx]]
       ContainerDefinitions:
-      - Name: mlog-nginx
+      - Name: nginx
         Cpu: 10
         Essential: true
         Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_nginx:latest
@@ -302,7 +325,7 @@ Resources:
     Properties:
       Family: !Join ['', [!Ref AWS::StackName, -redis]]
       ContainerDefinitions:
-      - Name: mlog-redis
+      - Name: redis
         Cpu: 10
         Essential: true
         Image: redis:6.2
