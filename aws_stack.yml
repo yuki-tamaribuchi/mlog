@@ -68,27 +68,29 @@ Resources:
       RouteTableId: !Ref RouteTable
       SubnetId: !Ref SubnetC
 
-  SecretManagerSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Inbound for ecs
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        SourceSecurityGroupId: !Ref ECSSecurityGroup
-      VpcId: !Ref VPC
+  #SecretManagerSecurityGroup:
+  #  Type: AWS::EC2::SecurityGroup
+  #  Properties:
+  #    GroupDescription: Inbound for ecs
+  #    SecurityGroupIngress:
+  #    - IpProtocol: tcp
+  #      FromPort: 443
+  #      ToPort: 443
+  #      SourceSecurityGroupId: !Ref ECSSecurityGroup
+  #    VpcId: !Ref VPC
 
-  SecretManagerVPCEndpoint:
-    Type: AWS::EC2::VPCEndpoint
-    Properties:
-      ServiceName: com.amazonaws.ap-northeast-1.secretsmanager
-      VpcId: !Ref VPC
-      SubnetIds:
-        - !Ref SubnetA
-        - !Ref SubnetB
-        - !Ref SubnetC
-      PrivateDnsEnabled: true
-      SecurityGroupIds:
-        - !Ref SecretManagerSecurityGroup
+  #SecretManagerVPCEndpoint:
+  #  Type: AWS::EC2::VPCEndpoint
+  #  Properties:
+  #    ServiceName: com.amazonaws.ap-northeast-1.secretsmanager
+  #    VpcId: !Ref VPC
+  #    SubnetIds:
+  #      - !Ref SubnetA
+  #      - !Ref SubnetB
+  #      - !Ref SubnetC
+  #    PrivateDnsEnabled: true
+  #    SecurityGroupIds:
+  #      - !Ref SecretManagerSecurityGroup
 
 
 
@@ -140,110 +142,110 @@ Resources:
       LogGroupName: !Join ['-', [ECSLogGroup, !Ref AWS::StackName]]
       RetentionInDays: 14
 
-  AppService:
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster: !GetAtt ECSCluster.Arn
-      LaunchType: FARGATE
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          SecurityGroups:
-            - !Ref ECSSecurityGroup
-          Subnets:
-            - !Ref SubnetA
-            - !Ref SubnetB
-            - !Ref SubnetC
-      TaskDefinition: 
-        !Ref AppTaskDefinition
+  #AppService:
+  #  Type: AWS::ECS::Service
+  #  Properties:
+  #    Cluster: !GetAtt ECSCluster.Arn
+  #    LaunchType: FARGATE
+  #    NetworkConfiguration:
+  #      AwsvpcConfiguration:
+  #        SecurityGroups:
+  #          - !Ref ECSSecurityGroup
+  #        Subnets:
+  #          - !Ref SubnetA
+  #          - !Ref SubnetB
+  #          - !Ref SubnetC
+  #    TaskDefinition: 
+  #      !Ref AppTaskDefinition
 
-  AppTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Family: !Join ['', [!Ref AWS::StackName, -app]]
-      ContainerDefinitions:
-      - Name: app
-        Cpu: 10
-        Essential: true
-        Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
-        Memory: 300
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group: !Ref CloudwatchLogsGroup
-            awslogs-region: !Ref AWS::Region
-            awslogs-stream-prefix: ecs-mlog-app
-        Command: [bash -c "cd /usr/src/app && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
-        #Command: [bash -c "cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
-      RequiresCompatibilities:
-      - FARGATE
-      NetworkMode: awsvpc
-      ExecutionRoleArn: !Ref TaskExecutionRole
-      Cpu: 256
-      Memory: 512
+  #AppTaskDefinition:
+  #  Type: AWS::ECS::TaskDefinition
+  #  Properties:
+  #    Family: !Join ['', [!Ref AWS::StackName, -app]]
+  #    ContainerDefinitions:
+  #    - Name: app
+  #      Cpu: 10
+  #      Essential: true
+  #      Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
+  #      Memory: 300
+  #      LogConfiguration:
+  #        LogDriver: awslogs
+  #        Options:
+  #          awslogs-group: !Ref CloudwatchLogsGroup
+  #          awslogs-region: !Ref AWS::Region
+  #          awslogs-stream-prefix: ecs-mlog-app
+  #      Command: [bash -c "cd /usr/src/app && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
+  #      #Command: [bash -c "cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
+  #    RequiresCompatibilities:
+  #    - FARGATE
+  #    NetworkMode: awsvpc
+  #    ExecutionRoleArn: !Ref TaskExecutionRole
+  #    Cpu: 256
+  #    Memory: 512
 
-  AppServiceDiscovery:
-    Type: AWS::ServiceDiscovery::Service
-    Properties:
-      Name: app
-      NamespaceId: !Ref PrivateDnsNamespace
-      DnsConfig:
-        DnsRecords:
-        - TTL: 60
-          Type: A
-        NamespaceId: !Ref PrivateDnsNamespace
-        RoutingPolicy: MULTIVALUE
+  #AppServiceDiscovery:
+  #  Type: AWS::ServiceDiscovery::Service
+  #  Properties:
+  #    Name: app
+  #    NamespaceId: !Ref PrivateDnsNamespace
+  #    DnsConfig:
+  #      DnsRecords:
+  #      - TTL: 60
+  #        Type: A
+  #      NamespaceId: !Ref PrivateDnsNamespace
+  #      RoutingPolicy: MULTIVALUE
 
-  CeleryService:
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster: !GetAtt ECSCluster.Arn
-      LaunchType: FARGATE
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          SecurityGroups:
-            - !Ref ECSSecurityGroup
-          Subnets:
-            - !Ref SubnetA
-            - !Ref SubnetB
-            - !Ref SubnetC
-      TaskDefinition: 
-        !Ref CeleryTaskDefinition
+  #CeleryService:
+  #  Type: AWS::ECS::Service
+  #  Properties:
+  #    Cluster: !GetAtt ECSCluster.Arn
+  #    LaunchType: FARGATE
+  #    NetworkConfiguration:
+  #      AwsvpcConfiguration:
+  #        SecurityGroups:
+  #          - !Ref ECSSecurityGroup
+  #        Subnets:
+  #          - !Ref SubnetA
+  #          - !Ref SubnetB
+  #          - !Ref SubnetC
+  #    TaskDefinition: 
+  #      !Ref CeleryTaskDefinition
 
-  CeleryTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Family: !Join ['', [!Ref AWS::StackName, -celery]]
-      ContainerDefinitions:
-      - Name: celery
-        Cpu: 10
-        Essential: true
-        Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
-        Memory: 300
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group: !Ref CloudwatchLogsGroup
-            awslogs-region: !Ref AWS::Region
-            awslogs-stream-prefix: ecs-mlog-app
-        Command: [bash -c "apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker >/dev/null"]
-      RequiresCompatibilities:
-      - FARGATE
-      NetworkMode: awsvpc
-      ExecutionRoleArn: !Ref TaskExecutionRole
-      Cpu: 256
-      Memory: 512
+  #CeleryTaskDefinition:
+  #  Type: AWS::ECS::TaskDefinition
+  #  Properties:
+  #    Family: !Join ['', [!Ref AWS::StackName, -celery]]
+  #    ContainerDefinitions:
+  #    - Name: celery
+  #      Cpu: 10
+  #      Essential: true
+  #      Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
+  #      Memory: 300
+  #      LogConfiguration:
+  #        LogDriver: awslogs
+  #        Options:
+  #          awslogs-group: !Ref CloudwatchLogsGroup
+  #          awslogs-region: !Ref AWS::Region
+  #          awslogs-stream-prefix: ecs-mlog-app
+  #      Command: [bash -c "apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker >/dev/null"]
+  #    RequiresCompatibilities:
+  #    - FARGATE
+  #    NetworkMode: awsvpc
+  #    ExecutionRoleArn: !Ref TaskExecutionRole
+  #    Cpu: 256
+  #    Memory: 512
 
-  CeleryServiceDiscovery:
-    Type: AWS::ServiceDiscovery::Service
-    Properties:
-      Name: celery
-      NamespaceId: !Ref PrivateDnsNamespace
-      DnsConfig:
-        DnsRecords:
-        - TTL: 60
-          Type: A
-        NamespaceId: !Ref PrivateDnsNamespace
-        RoutingPolicy: MULTIVALUE
+  #CeleryServiceDiscovery:
+  #  Type: AWS::ServiceDiscovery::Service
+  #  Properties:
+  #    Name: celery
+  #    NamespaceId: !Ref PrivateDnsNamespace
+  #    DnsConfig:
+  #      DnsRecords:
+  #      - TTL: 60
+  #        Type: A
+  #      NamespaceId: !Ref PrivateDnsNamespace
+  #      RoutingPolicy: MULTIVALUE
 
   NginxService:
     Type: AWS::ECS::Service
@@ -251,19 +253,30 @@ Resources:
       Cluster: !GetAtt ECSCluster.Arn
       LaunchType: FARGATE
       LoadBalancers:
-        - ContainerName: mlog-nginx
+        - ContainerName: nginx
           ContainerPort: 80
           TargetGroupArn: !Ref ECSTG
+      DeploymentConfiguration:
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DesiredCount: 1
       NetworkConfiguration:
         AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
           SecurityGroups:
             - !Ref ECSSecurityGroup
           Subnets:
             - !Ref SubnetA
             - !Ref SubnetB
             - !Ref SubnetC
-      TaskDefinition: 
-        !Ref NginxTaskDefinition
+      PlatformVersion: 1.4.0
+      TaskDefinition: !Ref NginxTaskDefinition
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn: !GetAtt NginxServiceDiscovery.Arn
 
   NginxTaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -271,10 +284,8 @@ Resources:
       Family: !Join ['', [!Ref AWS::StackName, -nginx]]
       ContainerDefinitions:
       - Name: nginx
-        Cpu: 10
         Essential: true
         Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_nginx:latest
-        Memory: 300
         LogConfiguration:
           LogDriver: awslogs
           Options:
@@ -282,9 +293,9 @@ Resources:
             awslogs-region: !Ref AWS::Region
             awslogs-stream-prefix: ecs-mlog-app
         PortMappings:
-          - ContainerPort: 80
-            HostPort: 80
-            Protocol: tcp
+        - ContainerPort: 80
+          HostPort: 80
+          Protocol: tcp
       RequiresCompatibilities:
       - FARGATE
       NetworkMode: awsvpc
@@ -304,56 +315,56 @@ Resources:
         NamespaceId: !Ref PrivateDnsNamespace
         RoutingPolicy: MULTIVALUE
 
-  RedisService:
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster: !GetAtt ECSCluster.Arn
-      LaunchType: FARGATE
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          SecurityGroups:
-            - !Ref ECSSecurityGroup
-          Subnets:
-            - !Ref SubnetA
-            - !Ref SubnetB
-            - !Ref SubnetC
-      TaskDefinition: 
-        !Ref RedisTaskDefinition
-
-  RedisTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Family: !Join ['', [!Ref AWS::StackName, -redis]]
-      ContainerDefinitions:
-      - Name: redis
-        Cpu: 10
-        Essential: true
-        Image: redis:6.2
-        Memory: 300
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group: !Ref CloudwatchLogsGroup
-            awslogs-region: !Ref AWS::Region
-            awslogs-stream-prefix: ecs-mlog-app
-      RequiresCompatibilities:
-      - FARGATE
-      NetworkMode: awsvpc
-      ExecutionRoleArn: !Ref TaskExecutionRole
-      Cpu: 256
-      Memory: 512
-
-  RedisServiceDiscovery:
-    Type: AWS::ServiceDiscovery::Service
-    Properties:
-      Name: redis
-      NamespaceId: !Ref PrivateDnsNamespace
-      DnsConfig:
-        DnsRecords:
-        - TTL: 60
-          Type: A
-        NamespaceId: !Ref PrivateDnsNamespace
-        RoutingPolicy: MULTIVALUE
+  #RedisService:
+  #  Type: AWS::ECS::Service
+  #  Properties:
+  #    Cluster: !GetAtt ECSCluster.Arn
+  #    LaunchType: FARGATE
+  #    NetworkConfiguration:
+  #      AwsvpcConfiguration:
+  #        SecurityGroups:
+  #          - !Ref ECSSecurityGroup
+  #        Subnets:
+  #          - !Ref SubnetA
+  #          - !Ref SubnetB
+  #          - !Ref SubnetC
+  #    TaskDefinition: 
+  #      !Ref RedisTaskDefinition
+#
+  #RedisTaskDefinition:
+  #  Type: AWS::ECS::TaskDefinition
+  #  Properties:
+  #    Family: !Join ['', [!Ref AWS::StackName, -redis]]
+  #    ContainerDefinitions:
+  #    - Name: redis
+  #      Cpu: 10
+  #      Essential: true
+  #      Image: redis:6.2
+  #      Memory: 300
+  #      LogConfiguration:
+  #        LogDriver: awslogs
+  #        Options:
+  #          awslogs-group: !Ref CloudwatchLogsGroup
+  #          awslogs-region: !Ref AWS::Region
+  #          awslogs-stream-prefix: ecs-mlog-app
+  #    RequiresCompatibilities:
+  #    - FARGATE
+  #    NetworkMode: awsvpc
+  #    ExecutionRoleArn: !Ref TaskExecutionRole
+  #    Cpu: 256
+  #    Memory: 512
+#
+  #RedisServiceDiscovery:
+  #  Type: AWS::ServiceDiscovery::Service
+  #  Properties:
+  #    Name: redis
+  #    NamespaceId: !Ref PrivateDnsNamespace
+  #    DnsConfig:
+  #      DnsRecords:
+  #      - TTL: 60
+  #        Type: A
+  #      NamespaceId: !Ref PrivateDnsNamespace
+  #      RoutingPolicy: MULTIVALUE
   
   ECSALB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
