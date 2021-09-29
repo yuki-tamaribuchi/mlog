@@ -247,15 +247,62 @@ Resources:
   #      NamespaceId: !Ref PrivateDnsNamespace
   #      RoutingPolicy: MULTIVALUE
 
+  NginxLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: NginxLoadBalancer
+      Type: application
+      Scheme: internet-facing
+      Subnets: 
+        - !Ref SubnetA
+        - !Ref SubnetB
+        - !Ref SubnetC
+      SecurityGroups: 
+        - !Ref ECSSecurityGroup
+
+  NginxTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Port: 80
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VPC
+      
+
+  NginxLoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn: !Ref NginxTargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref NginxLoadBalancer
+
+  NginxLoadBalancerListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    DependsOn: NginxLoadBalancerListener
+    Properties:
+      Actions:
+      - Type: forward
+        TargetGroupArn: !Ref NginxTargetGroup
+      Conditions:
+      - Field: path-pattern
+        Values: [/]
+      ListenerArn: !Ref NginxLoadBalancerListener
+      Priority: 1
+
+
   NginxService:
     Type: AWS::ECS::Service
     Properties:
       Cluster: !GetAtt ECSCluster.Arn
       LaunchType: FARGATE
       LoadBalancers:
-        - ContainerName: nginx
-          ContainerPort: 80
-          TargetGroupArn: !Ref ECSTG
+      - ContainerName: nginx
+        ContainerPort: 80
+        TargetGroupArn: !Ref NginxTargetGroup
+        #LoadBalancerName: NginxLoadBalancer
       DeploymentConfiguration:
         DeploymentCircuitBreaker:
           Enable: true
@@ -315,98 +362,98 @@ Resources:
         NamespaceId: !Ref PrivateDnsNamespace
         RoutingPolicy: MULTIVALUE
 
-  #RedisService:
-  #  Type: AWS::ECS::Service
-  #  Properties:
-  #    Cluster: !GetAtt ECSCluster.Arn
-  #    LaunchType: FARGATE
-  #    NetworkConfiguration:
-  #      AwsvpcConfiguration:
-  #        SecurityGroups:
-  #          - !Ref ECSSecurityGroup
-  #        Subnets:
-  #          - !Ref SubnetA
-  #          - !Ref SubnetB
-  #          - !Ref SubnetC
-  #    TaskDefinition: 
-  #      !Ref RedisTaskDefinition
-#
-  #RedisTaskDefinition:
-  #  Type: AWS::ECS::TaskDefinition
-  #  Properties:
-  #    Family: !Join ['', [!Ref AWS::StackName, -redis]]
-  #    ContainerDefinitions:
-  #    - Name: redis
-  #      Cpu: 10
-  #      Essential: true
-  #      Image: redis:6.2
-  #      Memory: 300
-  #      LogConfiguration:
-  #        LogDriver: awslogs
-  #        Options:
-  #          awslogs-group: !Ref CloudwatchLogsGroup
-  #          awslogs-region: !Ref AWS::Region
-  #          awslogs-stream-prefix: ecs-mlog-app
-  #    RequiresCompatibilities:
-  #    - FARGATE
-  #    NetworkMode: awsvpc
-  #    ExecutionRoleArn: !Ref TaskExecutionRole
-  #    Cpu: 256
-  #    Memory: 512
-#
-  #RedisServiceDiscovery:
-  #  Type: AWS::ServiceDiscovery::Service
-  #  Properties:
-  #    Name: redis
-  #    NamespaceId: !Ref PrivateDnsNamespace
-  #    DnsConfig:
-  #      DnsRecords:
-  #      - TTL: 60
-  #        Type: A
-  #      NamespaceId: !Ref PrivateDnsNamespace
-  #      RoutingPolicy: MULTIVALUE
-  
-  ECSALB:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  RedisService:
+    Type: AWS::ECS::Service
     Properties:
-      Name: ECSALB
-      Scheme: internet-facing
-      Subnets: 
-        - !Ref SubnetA
-        - !Ref SubnetB
-        - !Ref SubnetC
-      SecurityGroups: [!Ref ECSSecurityGroup]
+      Cluster: !GetAtt ECSCluster.Arn
+      LaunchType: FARGATE
+      DeploymentConfiguration:
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DesiredCount: 1
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref ECSSecurityGroup
+          Subnets:
+            - !Ref SubnetA
+            - !Ref SubnetB
+            - !Ref SubnetC
+      PlatformVersion: 1.4.0
+      TaskDefinition: !Ref RedisTaskDefinition
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn: !GetAtt RedisServiceDiscovery.Arn
 
-  ALBListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    #DependsOn: ECSServiceRole
+  RedisTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
     Properties:
-      DefaultActions:
-      - Type: forward
-        TargetGroupArn: !Ref ECSTG
-      LoadBalancerArn: !Ref ECSALB
-      Port: 80
-      Protocol: HTTP
+      Family: !Join ['', [!Ref AWS::StackName, -redis]]
+      ContainerDefinitions:
+      - Name: redis
+        Essential: true
+        Image: docker.io/library/redis:6.2
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref CloudwatchLogsGroup
+            awslogs-region: !Ref AWS::Region
+            awslogs-stream-prefix: ecs-mlog-app
+      RequiresCompatibilities:
+      - FARGATE
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      Cpu: 256
+      Memory: 512
+
+  RedisServiceDiscovery:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: redis
+      NamespaceId: !Ref PrivateDnsNamespace
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        NamespaceId: !Ref PrivateDnsNamespace
+        RoutingPolicy: MULTIVALUE
+  
+  #ECSALB:
+  #  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  #  Properties:
+  #    Name: ECSALB
+  #    Scheme: internet-facing
+  #    Subnets: 
+  #      - !Ref SubnetA
+  #      - !Ref SubnetB
+  #      - !Ref SubnetC
+  #    SecurityGroups: [!Ref ECSSecurityGroup]
+
+  #ALBListener:
+  #  Type: AWS::ElasticLoadBalancingV2::Listener
+  #  #DependsOn: ECSServiceRole
+  #  Properties:
+  #    DefaultActions:
+  #    - Type: forward
+  #      TargetGroupArn: !Ref NginxTargetGroup
+  #    LoadBalancerArn: !Ref ECSALB
+  #    Port: 80
+  #    Protocol: HTTP
   
 
-  ECSALBListenerRule:
-    Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    DependsOn: ALBListener
-    Properties:
-      Actions:
-      - Type: forward
-        TargetGroupArn: !Ref ECSTG
-      Conditions:
-      - Field: path-pattern
-        Values: [/]
-      ListenerArn: !Ref ALBListener
-      Priority: 1
-  
-  ECSTG:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    DependsOn: ECSALB
-    Properties:
-      Port: 80
-      Protocol: HTTP
-      TargetType: ip
-      VpcId: !Ref VPC
+  #ECSALBListenerRule:
+  #  Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  #  DependsOn: ALBListener
+  #  Properties:
+  #    Actions:
+  #    - Type: forward
+  #      TargetGroupArn: !Ref NginxTargetGroup
+  #    Conditions:
+  #    - Field: path-pattern
+  #      Values: [/]
+  #    ListenerArn: !Ref ALBListener
+  #    Priority: 1
