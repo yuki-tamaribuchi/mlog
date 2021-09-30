@@ -135,6 +135,14 @@ Resources:
       ManagedPolicyArns:
       - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
       - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Policies:
+        - PolicyName: AllowGetSecretValue
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: arn:aws:secretsmanager:ap-northeast-1:978584353258:secret:mlog-secrets-qx4ebY
 
   CloudwatchLogsGroup:
     Type: AWS::Logs::LogGroup
@@ -142,58 +150,102 @@ Resources:
       LogGroupName: !Join ['-', [ECSLogGroup, !Ref AWS::StackName]]
       RetentionInDays: 14
 
-  #AppService:
-  #  Type: AWS::ECS::Service
-  #  Properties:
-  #    Cluster: !GetAtt ECSCluster.Arn
-  #    LaunchType: FARGATE
-  #    NetworkConfiguration:
-  #      AwsvpcConfiguration:
-  #        SecurityGroups:
-  #          - !Ref ECSSecurityGroup
-  #        Subnets:
-  #          - !Ref SubnetA
-  #          - !Ref SubnetB
-  #          - !Ref SubnetC
-  #    TaskDefinition: 
-  #      !Ref AppTaskDefinition
+  AppService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !GetAtt ECSCluster.Arn
+      LaunchType: FARGATE
+      DeploymentConfiguration:
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DesiredCount: 1
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref ECSSecurityGroup
+          Subnets:
+            - !Ref SubnetA
+            - !Ref SubnetB
+            - !Ref SubnetC
+      PlatformVersion: 1.4.0
+      TaskDefinition: !Ref AppTaskDefinition
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn: !GetAtt AppTaskDefinition.Arn
 
-  #AppTaskDefinition:
-  #  Type: AWS::ECS::TaskDefinition
-  #  Properties:
-  #    Family: !Join ['', [!Ref AWS::StackName, -app]]
-  #    ContainerDefinitions:
-  #    - Name: app
-  #      Cpu: 10
-  #      Essential: true
-  #      Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
-  #      Memory: 300
-  #      LogConfiguration:
-  #        LogDriver: awslogs
-  #        Options:
-  #          awslogs-group: !Ref CloudwatchLogsGroup
-  #          awslogs-region: !Ref AWS::Region
-  #          awslogs-stream-prefix: ecs-mlog-app
-  #      Command: [bash -c "cd /usr/src/app && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
-  #      #Command: [bash -c "cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
-  #    RequiresCompatibilities:
-  #    - FARGATE
-  #    NetworkMode: awsvpc
-  #    ExecutionRoleArn: !Ref TaskExecutionRole
-  #    Cpu: 256
-  #    Memory: 512
+  AppTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Join ['', [!Ref AWS::StackName, -app]]
+      ContainerDefinitions:
+      - Name: app
+        Essential: true
+        Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref CloudwatchLogsGroup
+            awslogs-region: !Ref AWS::Region
+            awslogs-stream-prefix: ecs-mlog-app
+        Command: [bash -c "cd /usr/src/app && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
+        #Command: [bash -c "cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1"]
+        Environment: 
+        - Name: MLOG_DEBUG_STATE
+          Value: 'False'
+        - Name: CELERY_BROKER_BACKENDS_DEFAULT
+          Value: docker
+        - Name: MLOG_DATABASE
+          Value: production
+        - Name: MLOG_AWS_RDS_DATABASE_NAME
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_AWS_RDS_DATABASE_NAME}}'
+        - Name: MLOG_AWS_RDS_HOST
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_AWS_RDS_HOST}}'
+        - Name: MLOG_AWS_RDS_PASSWORD
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_AWS_RDS_PASSWORD}}'
+        - Name: MLOG_AWS_RDS_PORT
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_AWS_RDS_PORT}}'
+        - Name: MLOG_AWS_RDS_USER
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_AWS_RDS_USER}}'
+        - Name: MLOG_AWS_S3_ACCESS_KEY_ID
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_AWS_S3_ACCESS_KEY_ID}}'
+        - Name: MLOG_AWS_SECRET_ACCESS_KEY
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_AWS_SECRET_ACCESS_KEY}}'
+        - Name: MLOG_AWS_S3_STORAGE_BUCKET_NAME
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_AWS_S3_STORAGE_BUCKET_NAME}}'
+        - Name: MLOG_AWS_SES_ACCESS_KEY_ID
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_AWS_SES_ACCESS_KEY_ID}}'
+        - Name: MLOG_AWS_SES_SECRET_ACCESS_KEY
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_AWS_SES_SECRET_ACCESS_KEY}}'
+        - Name: MLOG_S3_CUSTOM_DOMAIN
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_S3_CUSTOM_DOMAIN}}'
+        - Name: MLOG_SECRET_KEY
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_SECRET_KEY}}'
+        - Name: MLOG_DEFAULT_FROM_EMAIL
+          Value: '{{resolve:secretsmanager:mlog-secrets:SecretString:MLOG_DEFAULT_FROM_EMAIL}}'
+        - Name: SELECT2_DEFAULT
+          Value: select2_docker
+      RequiresCompatibilities:
+      - FARGATE
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      Cpu: 256
+      Memory: 512
 
-  #AppServiceDiscovery:
-  #  Type: AWS::ServiceDiscovery::Service
-  #  Properties:
-  #    Name: app
-  #    NamespaceId: !Ref PrivateDnsNamespace
-  #    DnsConfig:
-  #      DnsRecords:
-  #      - TTL: 60
-  #        Type: A
-  #      NamespaceId: !Ref PrivateDnsNamespace
-  #      RoutingPolicy: MULTIVALUE
+  AppServiceDiscovery:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: app
+      NamespaceId: !Ref PrivateDnsNamespace
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        NamespaceId: !Ref PrivateDnsNamespace
+        RoutingPolicy: MULTIVALUE
 
   #CeleryService:
   #  Type: AWS::ECS::Service
@@ -251,7 +303,6 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: NginxLoadBalancer
-      Type: application
       Scheme: internet-facing
       Subnets: 
         - !Ref SubnetA
@@ -259,6 +310,7 @@ Resources:
         - !Ref SubnetC
       SecurityGroups: 
         - !Ref ECSSecurityGroup
+      Type: application
 
   NginxTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -276,8 +328,10 @@ Resources:
       - ForwardConfig:
           TargetGroups:
           - TargetGroupArn: !Ref NginxTargetGroup
-          Type: forward
+        Type: forward
       LoadBalancerArn: !Ref NginxLoadBalancer
+      Port: 80
+      Protocol: HTTP
 
   NginxLoadBalancerListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -295,6 +349,7 @@ Resources:
 
   NginxService:
     Type: AWS::ECS::Service
+    DependsOn: NginxLoadBalancerListener
     Properties:
       Cluster: !GetAtt ECSCluster.Arn
       LaunchType: FARGATE
