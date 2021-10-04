@@ -99,7 +99,7 @@ Resources:
   PrivateDnsNamespace:
     Type: AWS::ServiceDiscovery::PrivateDnsNamespace
     Properties:
-      Name: mlog.tamaribuchi-yuki.com
+      Name: mlog.local
       Vpc: !Ref VPC
 
   ECSCluster:
@@ -202,6 +202,7 @@ Resources:
     DependsOn:
     - AppLoadBalancerListener
     - RedisService
+    - CeleryService
     #- DBNetworkInbound
     Properties:
       Cluster: !GetAtt ECSCluster.Arn
@@ -335,57 +336,106 @@ Resources:
         NamespaceId: !Ref PrivateDnsNamespace
         RoutingPolicy: MULTIVALUE
 
-  #CeleryService:
-  #  Type: AWS::ECS::Service
-  #  Properties:
-  #    Cluster: !GetAtt ECSCluster.Arn
-  #    LaunchType: FARGATE
-  #    NetworkConfiguration:
-  #      AwsvpcConfiguration:
-  #        SecurityGroups:
-  #          - !Ref ECSSecurityGroup
-  #        Subnets:
-  #          - !Ref SubnetA
-  #          - !Ref SubnetB
-  #          - !Ref SubnetC
-  #    TaskDefinition: 
-  #      !Ref CeleryTaskDefinition
+  CeleryService:
+    Type: AWS::ECS::Service
+    DependsOn:
+    - RedisService
+    Properties:
+      Cluster: !GetAtt ECSCluster.Arn
+      LaunchType: FARGATE
+      DeploymentConfiguration:
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref ECSSecurityGroup
+          Subnets:
+            - !Ref SubnetA
+            - !Ref SubnetB
+            - !Ref SubnetC
+      PlatformVersion: 1.4.0
+      TaskDefinition: !Ref CeleryTaskDefinition
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn: !GetAtt CeleryServiceDiscovery.Arn
 
-  #CeleryTaskDefinition:
-  #  Type: AWS::ECS::TaskDefinition
-  #  Properties:
-  #    Family: !Join ['', [!Ref AWS::StackName, -celery]]
-  #    ContainerDefinitions:
-  #    - Name: celery
-  #      Cpu: 10
-  #      Essential: true
-  #      Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
-  #      Memory: 300
-  #      LogConfiguration:
-  #        LogDriver: awslogs
-  #        Options:
-  #          awslogs-group: !Ref CloudwatchLogsGroup
-  #          awslogs-region: !Ref AWS::Region
-  #          awslogs-stream-prefix: ecs-mlog-app
-  #      Command: [bash -c "apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker >/dev/null"]
-  #    RequiresCompatibilities:
-  #    - FARGATE
-  #    NetworkMode: awsvpc
-  #    ExecutionRoleArn: !Ref TaskExecutionRole
-  #    Cpu: 256
-  #    Memory: 512
+  CeleryTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Join ['', [!Ref AWS::StackName, -celery]]
+      ContainerDefinitions:
+      - Name: celery
+        Essential: true
+        Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref CloudwatchLogsGroup
+            awslogs-region: !Ref AWS::Region
+            awslogs-stream-prefix: ecs-mlog-app
+        Command: 
+          - bash
+          - -c
+          - apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker
+        Environment:
+        - Name: MLOG_DEBUG_STATE
+          Value: 'False'
+        - Name: CELERY_BROKER_DEFAULT
+          Value: docker
+        - Name: CELERY_BROKER_BACKENDS_DEFAULT
+          Value: docker
+        - Name: MLOG_DATABASE
+          Value: production
+        - Name: MLOG_AWS_RDS_DATABASE_NAME
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_DATABASE_NAME}}'
+        - Name: MLOG_AWS_RDS_HOST
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_HOST}}'
+        - Name: MLOG_AWS_RDS_PASSWORD
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_PASSWORD}}'
+        - Name: MLOG_AWS_RDS_PORT
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_PORT}}'
+        - Name: MLOG_AWS_RDS_USER
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_USER}}'
+        - Name: MLOG_AWS_S3_ACCESS_KEY_ID
+          Value: '{{resolve:ssm:MLOG_AWS_S3_ACCESS_KEY_ID}}'
+        - Name: MLOG_AWS_S3_SECRET_ACCESS_KEY
+          Value: '{{resolve:ssm:MLOG_AWS_S3_SECRET_ACCESS_KEY}}'
+        - Name: MLOG_AWS_S3_STORAGE_BUCKET_NAME
+          Value: '{{resolve:ssm:MLOG_AWS_S3_STORAGE_BUCKET_NAME}}'
+        - Name: MLOG_AWS_SES_ACCESS_KEY_ID
+          Value: '{{resolve:ssm:MLOG_AWS_SES_ACCESS_KEY_ID}}'
+        - Name: MLOG_AWS_SES_SECRET_ACCESS_KEY
+          Value: '{{resolve:ssm:MLOG_AWS_SES_SECRET_ACCESS_KEY}}'
+        - Name: MLOG_S3_CUSTOM_DOMAIN
+          Value: '{{resolve:ssm:MLOG_S3_CUSTOM_DOMAIN}}'
+        - Name: MLOG_SECRET_KEY
+          Value: '{{resolve:ssm:MLOG_SECRET_KEY}}'
+      RequiresCompatibilities:
+      - FARGATE
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      Cpu: 256
+      Memory: 512
 
-  #CeleryServiceDiscovery:
-  #  Type: AWS::ServiceDiscovery::Service
-  #  Properties:
-  #    Name: celery
-  #    NamespaceId: !Ref PrivateDnsNamespace
-  #    DnsConfig:
-  #      DnsRecords:
-  #      - TTL: 60
-  #        Type: A
-  #      NamespaceId: !Ref PrivateDnsNamespace
-  #      RoutingPolicy: MULTIVALUE
+  CeleryServiceDiscovery:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: celery
+      NamespaceId: !Ref PrivateDnsNamespace
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        NamespaceId: !Ref PrivateDnsNamespace
+        RoutingPolicy: MULTIVALUE
 
   #NginxLoadBalancer:
   #  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
