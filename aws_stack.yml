@@ -267,11 +267,13 @@ Resources:
         - Name: MLOG_DEBUG_STATE
           Value: 'False'
         - Name: CELERY_BROKER_DEFAULT
-          Value: aws
-        - Name: CELERY_BROKER_BACKENDS_DEFAULT
-          Value: aws
+          Value: aws_lb
+        - Name: CELERY_RESULT_BACKENDS_DEFAULT
+          Value: aws_lb
+        - Name: MLOG_REDIS_LB_DNS
+          Value: !GetAtt RedisLoadBalancer.DNSName
         - Name: MLOG_USE_REDIS_DNS_RESOLVER
-          Value: 'True'
+          Value: 'False'
         - Name: MLOG_DATABASE
           Value: production
         - Name: MLOG_AWS_RDS_DATABASE_NAME
@@ -392,11 +394,13 @@ Resources:
         - Name: MLOG_DEBUG_STATE
           Value: 'False'
         - Name: CELERY_BROKER_DEFAULT
-          Value: aws
-        - Name: CELERY_BROKER_BACKENDS_DEFAULT
-          Value: aws
+          Value: aws_lb
+        - Name: CELERY_RESULT_BACKENDS_DEFAULT
+          Value: aws_lb
+        - Name: MLOG_REDIS_LB_DNS
+          Value: !GetAtt RedisLoadBalancer.DNSName
         - Name: MLOG_USE_REDIS_DNS_RESOLVER
-          Value: 'True'
+          Value: 'False'
         - Name: MLOG_DATABASE
           Value: production
         - Name: MLOG_AWS_RDS_DATABASE_NAME
@@ -561,8 +565,41 @@ Resources:
   #      NamespaceId: !Ref PrivateDnsNamespace
   #      RoutingPolicy: MULTIVALUE
 
+  RedisLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: RedisLoadBalancer
+      Scheme: internal
+      Subnets: 
+        - !Ref SubnetA
+        - !Ref SubnetB
+        - !Ref SubnetC
+      Type: network
+
+  RedisTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Port: 6379
+      Protocol: TCP
+      TargetType: ip
+      VpcId: !Ref VPC
+
+  RedisLoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn: !Ref RedisTargetGroup
+        Type: forward
+      LoadBalancerArn: !Ref RedisLoadBalancer
+      Port: 6379
+      Protocol: TCP
+
   RedisService:
     Type: AWS::ECS::Service
+    DependsOn:
+    - RedisLoadBalancerListener
     Properties:
       Cluster: !GetAtt ECSCluster.Arn
       LaunchType: FARGATE
@@ -582,6 +619,10 @@ Resources:
             - !Ref SubnetA
             - !Ref SubnetB
             - !Ref SubnetC
+      LoadBalancers:
+      - ContainerName: redis
+        ContainerPort: 6379
+        TargetGroupArn: !Ref RedisTargetGroup
       PlatformVersion: 1.4.0
       TaskDefinition: !Ref RedisTaskDefinition
       SchedulingStrategy: REPLICA
