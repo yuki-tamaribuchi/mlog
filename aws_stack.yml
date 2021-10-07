@@ -111,6 +111,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: SecurityGroup for mlog
+      GroupName: ECSSecurityGroup
       VpcId: !Ref VPC
 
   ECSSecurityGroupHTTPinbound:
@@ -130,6 +131,33 @@ Resources:
   #    SourceSecurityGroupId: !Ref ECSSecurityGroup
   #    FromPort: 3306
   #    ToPort: 3306
+
+  ElastiCacheSubnetGroup:
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties:
+      Description: Subnet groups for elasticache
+      SubnetIds:
+        - !Ref SubnetA
+        - !Ref SubnetB
+        - !Ref SubnetC
+
+  ElastiCacheSecurityGroup:
+    Type: AWS::ElastiCache::SecurityGroup
+    Properties:
+      Description: Security group for elasticache
+
+  ElastiCacheCluster:
+    Type: AWS::ElastiCache::CacheCluster
+    Properties:
+      CacheNodeType: cache.t2.micro
+      #CacheSecurityGroupNames:
+      #  - !Ref ElastiCacheSecurityGroup
+      CacheSubnetGroupName: !Ref ElastiCacheSubnetGroup
+      Engine: redis
+      NumCacheNodes: 1
+      VpcSecurityGroupIds:
+        - !GetAtt ECSSecurityGroup.GroupId
+
 
   TaskExecutionRole:
     Type: AWS::IAM::Role
@@ -203,7 +231,7 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn:
     - AppLoadBalancerListener
-    - RedisService
+    #- RedisService
     - CeleryService
     #- DBNetworkInbound
     Properties:
@@ -267,11 +295,13 @@ Resources:
         - Name: MLOG_DEBUG_STATE
           Value: 'False'
         - Name: CELERY_BROKER_DEFAULT
-          Value: aws_lb
+          Value: aws_elasticache
         - Name: CELERY_RESULT_BACKENDS_DEFAULT
-          Value: aws_lb
-        - Name: MLOG_REDIS_LB_DNS
-          Value: !GetAtt RedisLoadBalancer.DNSName
+          Value: aws_elasticache
+        #- Name: MLOG_REDIS_LB_DNS
+        #  Value: !GetAtt RedisLoadBalancer.DNSName
+        - Name: MLOG_AWS_ELASTICACHE_DNS
+          Value: !GetAtt ElastiCacheCluster.RedisEndpoint.Address
         - Name: MLOG_USE_REDIS_DNS_RESOLVER
           Value: 'False'
         - Name: MLOG_DATABASE
@@ -303,7 +333,7 @@ Resources:
         - Name: MLOG_DEFAULT_FROM_EMAIL
           Value: '{{resolve:ssm:MLOG_DEFAULT_FROM_EMAIL}}'
         - Name: SELECT2_DEFAULT
-          Value: select2_docker
+          Value: select2_elasticache
 
       - Name: nginx
         Essential: true
@@ -343,8 +373,8 @@ Resources:
 
   CeleryService:
     Type: AWS::ECS::Service
-    DependsOn:
-    - RedisService
+    #DependsOn:
+    #- RedisService
     Properties:
       Cluster: !GetAtt ECSCluster.Arn
       LaunchType: FARGATE
@@ -394,11 +424,13 @@ Resources:
         - Name: MLOG_DEBUG_STATE
           Value: 'False'
         - Name: CELERY_BROKER_DEFAULT
-          Value: aws_lb
+          Value: aws_elasticache
         - Name: CELERY_RESULT_BACKENDS_DEFAULT
-          Value: aws_lb
-        - Name: MLOG_REDIS_LB_DNS
-          Value: !GetAtt RedisLoadBalancer.DNSName
+          Value: aws_elasticache
+        #- Name: MLOG_REDIS_LB_DNS
+        #  Value: !GetAtt RedisLoadBalancer.DNSName
+        - Name: MLOG_AWS_ELASTICACHE_DNS
+          Value: !GetAtt ElastiCacheCluster.RedisEndpoint.Address
         - Name: MLOG_USE_REDIS_DNS_RESOLVER
           Value: 'False'
         - Name: MLOG_DATABASE
@@ -565,107 +597,108 @@ Resources:
   #      NamespaceId: !Ref PrivateDnsNamespace
   #      RoutingPolicy: MULTIVALUE
 
-  RedisLoadBalancer:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-    Properties:
-      Name: RedisLoadBalancer
-      Scheme: internal
-      Subnets: 
-        - !Ref SubnetA
-        - !Ref SubnetB
-        - !Ref SubnetC
-      Type: network
+  #RedisLoadBalancer:
+  #  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  #  Properties:
+  #    Name: RedisLoadBalancer
+  #    Scheme: internal
+  #    Subnets: 
+  #      - !Ref SubnetA
+  #      - !Ref SubnetB
+  #      - !Ref SubnetC
+  #    Type: network
 
-  RedisTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      Port: 6379
-      Protocol: TCP
-      TargetType: ip
-      VpcId: !Ref VPC
+  #RedisTargetGroup:
+  #  Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  #  Properties:
+  #    HealthCheckPort: 6379
+  #    Port: 6379
+  #    Protocol: TCP
+  #    TargetType: ip
+  #    VpcId: !Ref VPC
 
-  RedisLoadBalancerListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-      - ForwardConfig:
-          TargetGroups:
-          - TargetGroupArn: !Ref RedisTargetGroup
-        Type: forward
-      LoadBalancerArn: !Ref RedisLoadBalancer
-      Port: 6379
-      Protocol: TCP
+  #RedisLoadBalancerListener:
+  #  Type: AWS::ElasticLoadBalancingV2::Listener
+  #  Properties:
+  #    DefaultActions:
+  #    - ForwardConfig:
+  #        TargetGroups:
+  #        - TargetGroupArn: !Ref RedisTargetGroup
+  #      Type: forward
+  #    LoadBalancerArn: !Ref RedisLoadBalancer
+  #    Port: 6379
+  #    Protocol: TCP
 
-  RedisService:
-    Type: AWS::ECS::Service
-    DependsOn:
-    - RedisLoadBalancerListener
-    Properties:
-      Cluster: !GetAtt ECSCluster.Arn
-      LaunchType: FARGATE
-      DeploymentConfiguration:
-        DeploymentCircuitBreaker:
-          Enable: true
-          Rollback: true
-        MaximumPercent: 200
-        MinimumHealthyPercent: 100
-      DesiredCount: 1
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          AssignPublicIp: ENABLED
-          SecurityGroups:
-            - !Ref ECSSecurityGroup
-          Subnets:
-            - !Ref SubnetA
-            - !Ref SubnetB
-            - !Ref SubnetC
-      LoadBalancers:
-      - ContainerName: redis
-        ContainerPort: 6379
-        TargetGroupArn: !Ref RedisTargetGroup
-      PlatformVersion: 1.4.0
-      TaskDefinition: !Ref RedisTaskDefinition
-      SchedulingStrategy: REPLICA
-      ServiceRegistries:
-      - ContainerName: redis
-        ContainerPort: 6379
-        RegistryArn: !GetAtt RedisServiceDiscovery.Arn
+  #RedisService:
+  #  Type: AWS::ECS::Service
+  #  DependsOn:
+  #  - RedisLoadBalancerListener
+  #  Properties:
+  #    Cluster: !GetAtt ECSCluster.Arn
+  #    LaunchType: FARGATE
+  #    DeploymentConfiguration:
+  #      DeploymentCircuitBreaker:
+  #        Enable: true
+  #        Rollback: true
+  #      MaximumPercent: 200
+  #      MinimumHealthyPercent: 100
+  #    DesiredCount: 1
+  #    NetworkConfiguration:
+  #      AwsvpcConfiguration:
+  #        AssignPublicIp: ENABLED
+  #        SecurityGroups:
+  #          - !Ref ECSSecurityGroup
+  #        Subnets:
+  #          - !Ref SubnetA
+  #          - !Ref SubnetB
+  #          - !Ref SubnetC
+  #    LoadBalancers:
+  #    - ContainerName: redis
+  #      ContainerPort: 6379
+  #      TargetGroupArn: !Ref RedisTargetGroup
+  #    PlatformVersion: 1.4.0
+  #    TaskDefinition: !Ref RedisTaskDefinition
+  #    SchedulingStrategy: REPLICA
+  #    ServiceRegistries:
+  #    - ContainerName: redis
+  #      ContainerPort: 6379
+  #      RegistryArn: !GetAtt RedisServiceDiscovery.Arn
 
-  RedisTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Family: !Join ['', [!Ref AWS::StackName, -redis]]
-      ContainerDefinitions:
-      - Name: redis
-        Essential: true
-        Image: docker.io/library/redis:6.2
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group: !Ref CloudwatchLogsGroup
-            awslogs-region: !Ref AWS::Region
-            awslogs-stream-prefix: ecs-mlog-app
-        PortMappings:
-        - ContainerPort: 6379
-          HostPort: 6379
-          Protocol: tcp
-      RequiresCompatibilities:
-      - FARGATE
-      NetworkMode: awsvpc
-      ExecutionRoleArn: !Ref TaskExecutionRole
-      Cpu: 256
-      Memory: 512
+  #RedisTaskDefinition:
+  #  Type: AWS::ECS::TaskDefinition
+  #  Properties:
+  #    Family: !Join ['', [!Ref AWS::StackName, -redis]]
+  #    ContainerDefinitions:
+  #    - Name: redis
+  #      Essential: true
+  #      Image: docker.io/library/redis:6.2
+  #      LogConfiguration:
+  #        LogDriver: awslogs
+  #        Options:
+  #          awslogs-group: !Ref CloudwatchLogsGroup
+  #          awslogs-region: !Ref AWS::Region
+  #          awslogs-stream-prefix: ecs-mlog-app
+  #      PortMappings:
+  #      - ContainerPort: 6379
+  #        HostPort: 6379
+  #        Protocol: tcp
+  #    RequiresCompatibilities:
+  #    - FARGATE
+  #    NetworkMode: awsvpc
+  #    ExecutionRoleArn: !Ref TaskExecutionRole
+  #    Cpu: 256
+  #    Memory: 512
 
-  RedisServiceDiscovery:
-    Type: AWS::ServiceDiscovery::Service
-    Properties:
-      Name: redis
-      NamespaceId: !Ref PrivateDnsNamespace
-      DnsConfig:
-        DnsRecords:
-        - TTL: 60
-          Type: SRV
-        RoutingPolicy: MULTIVALUE
+  #RedisServiceDiscovery:
+  #  Type: AWS::ServiceDiscovery::Service
+  #  Properties:
+  #    Name: redis
+  #    NamespaceId: !Ref PrivateDnsNamespace
+  #    DnsConfig:
+  #      DnsRecords:
+  #      - TTL: 60
+  #        Type: SRV
+  #      RoutingPolicy: MULTIVALUE
   
   #ECSALB:
   #  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
