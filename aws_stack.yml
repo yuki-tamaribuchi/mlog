@@ -141,10 +141,25 @@ Resources:
         - !Ref SubnetB
         - !Ref SubnetC
 
-  ElastiCacheSecurityGroup:
-    Type: AWS::ElastiCache::SecurityGroup
+  #EastiCacheSecurityGroup:
+  #  Type: AWS::ElastiCache::SecurityGroup
+  #  Properties:
+  #    Description: Security group for elasticache
+
+  ElastiCacheEC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
     Properties:
-      Description: Security group for elasticache
+      GroupDescription: EC2 Security group for ElastiCache.
+      VpcId: !Ref VPC
+
+  ElastiCacheEC2SecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref ElastiCacheEC2SecurityGroup
+      IpProtocol: tcp
+      ToPort: 6379
+      FromPort: 6379
+      CidrIp: 0.0.0.0/0
 
   ElastiCacheCluster:
     Type: AWS::ElastiCache::CacheCluster
@@ -156,7 +171,7 @@ Resources:
       Engine: redis
       NumCacheNodes: 1
       VpcSecurityGroupIds:
-        - !GetAtt ECSSecurityGroup.GroupId
+        - !GetAtt ElastiCacheEC2SecurityGroup.GroupId
 
 
   TaskExecutionRole:
@@ -201,6 +216,7 @@ Resources:
       Protocol: HTTP
       TargetType: ip
       VpcId: !Ref VPC
+      HealthCheckPath: /nginx-health
 
   AppLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -334,6 +350,10 @@ Resources:
           Value: '{{resolve:ssm:MLOG_DEFAULT_FROM_EMAIL}}'
         - Name: SELECT2_DEFAULT
           Value: select2_elasticache
+        - Name: MLOG_SPOTIFY_CLIENT_ID
+          Value: '{{resolve:ssm:MLOG_SPOTIFY_CLIENT_ID}}'
+        - Name: MLOG_SPOTIFY_CLIENT_SECRET
+          Value: '{{resolve:ssm:MLOG_SPOTIFY_CLIENT_SECRET}}'
 
       - Name: nginx
         Essential: true
