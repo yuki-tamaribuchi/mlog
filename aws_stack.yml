@@ -3,72 +3,72 @@ Description: Cloudformation stack for mlog project
 
 
 Resources:
-  VPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: 172.31.0.0/16
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
+  #VPC:
+  #  Type: AWS::EC2::VPC
+  #  Properties:
+  #    CidrBlock: 172.31.0.0/16
+  #    EnableDnsSupport: true
+  #    EnableDnsHostnames: true
 
-  InternetGateway:
-    Type: AWS::EC2::InternetGateway
+  #InternetGateway:
+  #  Type: AWS::EC2::InternetGateway
 
-  VPCGatewayAttachment:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref VPC
+  #VPCGatewayAttachment:
+  #  Type: AWS::EC2::VPCGatewayAttachment
+  #  Properties:
+  #    InternetGatewayId: !Ref InternetGateway
+  #    VpcId: !Ref VPC
 
-  RouteTable:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref VPC
+  #RouteTable:
+  #  Type: AWS::EC2::RouteTable
+  #  Properties:
+  #    VpcId: !Ref VPC
 
-  RouteToGateway:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref RouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref InternetGateway
+  #RouteToGateway:
+  #  Type: AWS::EC2::Route
+  #  Properties:
+  #    RouteTableId: !Ref RouteTable
+  #    DestinationCidrBlock: 0.0.0.0/0
+  #    GatewayId: !Ref InternetGateway
 
-  SubnetA:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone: ap-northeast-1a
-      CidrBlock: 172.31.0.0/20
-      VpcId: !Ref VPC
+  #SubnetA:
+  #  Type: AWS::EC2::Subnet
+  #  Properties:
+  #    AvailabilityZone: ap-northeast-1a
+  #    CidrBlock: 172.31.0.0/20
+  #    VpcId: !Ref VPC
 
-  SubnetB:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone: ap-northeast-1c
-      CidrBlock: 172.31.16.0/20
-      VpcId: !Ref VPC
+  #SubnetB:
+  #  Type: AWS::EC2::Subnet
+  #  Properties:
+  #    AvailabilityZone: ap-northeast-1c
+  #    CidrBlock: 172.31.16.0/20
+  #    VpcId: !Ref VPC
   
-  SubnetC:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone: ap-northeast-1d
-      CidrBlock: 172.31.32.0/20
-      VpcId: !Ref VPC
+  #SubnetC:
+  #  Type: AWS::EC2::Subnet
+  #  Properties:
+  #    AvailabilityZone: ap-northeast-1d
+  #    CidrBlock: 172.31.32.0/20
+  #    VpcId: !Ref VPC
   
-  SubnetARouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref RouteTable
-      SubnetId: !Ref SubnetA
+  #SubnetARouteTableAssociation:
+  #  Type: AWS::EC2::SubnetRouteTableAssociation
+  #  Properties:
+  #    RouteTableId: !Ref RouteTable
+  #    SubnetId: !Ref SubnetA
 
-  SubnetBRouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref RouteTable
-      SubnetId: !Ref SubnetB
+  #SubnetBRouteTableAssociation:
+  #  Type: AWS::EC2::SubnetRouteTableAssociation
+  #  Properties:
+  #    RouteTableId: !Ref RouteTable
+  #    SubnetId: !Ref SubnetB
 
-  SubnetCRouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref RouteTable
-      SubnetId: !Ref SubnetC
+  #SubnetCRouteTableAssociation:
+  #  Type: AWS::EC2::SubnetRouteTableAssociation
+  #  Properties:
+  #    RouteTableId: !Ref RouteTable
+  #    SubnetId: !Ref SubnetC
 
   #SecretManagerSecurityGroup:
   #  Type: AWS::EC2::SecurityGroup
@@ -102,7 +102,7 @@ Resources:
     Type: AWS::ServiceDiscovery::PrivateDnsNamespace
     Properties:
       Name: mlog.local
-      Vpc: !Ref VPC
+      Vpc: vpc-05b190e09029f0a40
 
   ECSCluster:
     Type: AWS::ECS::Cluster
@@ -112,7 +112,7 @@ Resources:
     Properties:
       GroupDescription: SecurityGroup for mlog
       GroupName: ECSSecurityGroup
-      VpcId: !Ref VPC
+      VpcId: vpc-05b190e09029f0a40
 
   ECSSecurityGroupHTTPinbound:
     Type: AWS::EC2::SecurityGroupIngress
@@ -137,9 +137,9 @@ Resources:
     Properties:
       Description: Subnet groups for elasticache
       SubnetIds:
-        - !Ref SubnetA
-        - !Ref SubnetB
-        - !Ref SubnetC
+        - subnet-07d0ecd5900ed3295
+        - subnet-0ff855dcf8cdebb91
+        - subnet-08275bd29250bd0d7
 
   #EastiCacheSecurityGroup:
   #  Type: AWS::ElastiCache::SecurityGroup
@@ -150,7 +150,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: EC2 Security group for ElastiCache.
-      VpcId: !Ref VPC
+      VpcId: vpc-05b190e09029f0a40
 
   ElastiCacheEC2SecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
@@ -202,9 +202,9 @@ Resources:
       Name: AppLoadBalancer
       Scheme: internet-facing
       Subnets: 
-        - !Ref SubnetA
-        - !Ref SubnetB
-        - !Ref SubnetC
+        - subnet-07d0ecd5900ed3295
+        - subnet-0ff855dcf8cdebb91
+        - subnet-08275bd29250bd0d7
       SecurityGroups: 
         - !Ref ECSSecurityGroup
       Type: application
@@ -215,7 +215,7 @@ Resources:
       Port: 80
       Protocol: HTTP
       TargetType: ip
-      VpcId: !Ref VPC
+      VpcId: vpc-05b190e09029f0a40
       HealthCheckPath: /nginx-health
 
   AppLoadBalancerListener:
@@ -272,9 +272,9 @@ Resources:
           SecurityGroups:
           - !Ref ECSSecurityGroup
           Subnets:
-          - !Ref SubnetA
-          - !Ref SubnetB
-          - !Ref SubnetC
+          - subnet-07d0ecd5900ed3295
+          - subnet-0ff855dcf8cdebb91
+          - subnet-08275bd29250bd0d7
       PlatformVersion: 1.4.0
       TaskDefinition: !Ref AppTaskDefinition
       SchedulingStrategy: REPLICA
@@ -413,9 +413,9 @@ Resources:
           SecurityGroups:
             - !Ref ECSSecurityGroup
           Subnets:
-            - !Ref SubnetA
-            - !Ref SubnetB
-            - !Ref SubnetC
+          - subnet-07d0ecd5900ed3295
+          - subnet-0ff855dcf8cdebb91
+          - subnet-08275bd29250bd0d7
       PlatformVersion: 1.4.0
       TaskDefinition: !Ref CeleryTaskDefinition
       SchedulingStrategy: REPLICA
