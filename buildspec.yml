@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - $(aws ecr get-login-password --region $AWS_DEFAULT_REGION --no-include-email)
+      - MLOG_PYTHON_REPOSITORY_URI=978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python
+      - MLOG_PYTHON_COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - MLOG_PYTHON_IMAGE_TAG=${MLOG_PYTHON_COMMIT_HASH:=latest}
+      - MLOG_NGINX_REPOSITORY=978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_nginx
+      - MLOG_NGINX_COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - MLOG_NGINX_IMAGE_TAG=${MLOG_NGINX_COMMIT_HASH:=latest}
+
+  build:
+    commands:
+      - docker build -f docker/python/Dockerfile.production -t $MLOG_PYTHON_REPOSITORY_URI:latest .
+      - docker tag $MLOG_PYTHON_REPOSITORY_URI:latest $MLOG_PYTHON_REPOSITORY_URI:$MLOG_PYTHON_IMAGE_TAG
+      - docker build -f docker/nginx/Dockerfile.production -t $MLOG_NGINX_REPOSITORY_URI:latest .
+      - docker tag $MLOG_NGINX_REPOSITORY_URI:latest $MLOG_NGINX_REPOSITORY_URI:$MLOG_NGINX_IMAGE_TAG
+
+  post_build:
+    commands:
+      - docker push $MLOG_PYTHON_REPOSITORY_URI:latest
+      - docker push $MLOG_PYTHON_REPOSITORY_URI:$MLOG_PYTHON_IMAGE_TAG
+      - docker push $MLOG_NGINX_REPOSITORY_URI:latest
+      - docker push $MLOG_NGINX_REPOSITORY_URI:$MLOG_NGINX_IMAGE_TAG
