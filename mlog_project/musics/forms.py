@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 
 from django_select2 import forms as s2forms
+from concurrency.forms import ConcurrentForm
 
 from .models import Artist, Song, Genre
 
@@ -25,20 +26,20 @@ class GenreWidget(s2forms.ModelSelect2MultipleWidget):
 	]
 
 
-class ArtsitForm(ModelForm):
+class ArtsitForm(ConcurrentForm):
 	class Meta:
 		model = Artist
-		fields = ('artist_name', 'genre', 'slug', 'artist_biograph', 'belong_to')
+		fields = ('artist_name', 'genre', 'slug', 'artist_biograph', 'belong_to', 'version')
 		widgets = {
 			'genre':GenreWidget,
 			'belong_to':ArtistBelongToWidget,
 		}
 
 
-class SongForm(ModelForm):
+class SongForm(ConcurrentForm):
 	class Meta:
 		model = Song
-		fields = ('song_name', 'artist', 'genre', 'spotify_link', 'spotify_preview_url', 'artwork_url')
+		fields = ('song_name', 'artist', 'genre', 'spotify_link', 'spotify_preview_url', 'artwork_url', 'version')
 		widgets = {
 			'artist':ArtistWidget,
 			'genre':GenreWidget,

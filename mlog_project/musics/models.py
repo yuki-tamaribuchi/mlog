@@ -1,5 +1,7 @@
 from django.db import models
 
+from concurrency.fields import AutoIncVersionField
+
 
 class Genre(models.Model):
     genre_name = models.CharField(max_length=20)
@@ -14,6 +16,7 @@ class Artist(models.Model):
     artist_biograph = models.TextField(max_length=200, blank=True)
     belong_to = models.ForeignKey("self", on_delete=models.PROTECT, blank=True, null=True)
     slug = models.SlugField(verbose_name='Unique Artist ID')
+    version = AutoIncVersionField()
     
     def __str__(self):
         return self.artist_name
@@ -27,6 +30,7 @@ class Song(models.Model):
     spotify_link = models.URLField(blank=True)
     spotify_preview_url = models.URLField(blank=True)
     artwork_url = models.URLField(blank=True)
+    version = AutoIncVersionField()
 
     def __str__(self):
         names=', '.join(str(artist) for artist in self.artist.all())

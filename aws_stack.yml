@@ -1,0 +1,757 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Cloudformation stack for mlog project
+
+
+Resources:
+  #VPC:
+  #  Type: AWS::EC2::VPC
+  #  Properties:
+  #    CidrBlock: 172.31.0.0/16
+  #    EnableDnsSupport: true
+  #    EnableDnsHostnames: true
+
+  #InternetGateway:
+  #  Type: AWS::EC2::InternetGateway
+
+  #VPCGatewayAttachment:
+  #  Type: AWS::EC2::VPCGatewayAttachment
+  #  Properties:
+  #    InternetGatewayId: !Ref InternetGateway
+  #    VpcId: !Ref VPC
+
+  #RouteTable:
+  #  Type: AWS::EC2::RouteTable
+  #  Properties:
+  #    VpcId: !Ref VPC
+
+  #RouteToGateway:
+  #  Type: AWS::EC2::Route
+  #  Properties:
+  #    RouteTableId: !Ref RouteTable
+  #    DestinationCidrBlock: 0.0.0.0/0
+  #    GatewayId: !Ref InternetGateway
+
+  #SubnetA:
+  #  Type: AWS::EC2::Subnet
+  #  Properties:
+  #    AvailabilityZone: ap-northeast-1a
+  #    CidrBlock: 172.31.0.0/20
+  #    VpcId: !Ref VPC
+
+  #SubnetB:
+  #  Type: AWS::EC2::Subnet
+  #  Properties:
+  #    AvailabilityZone: ap-northeast-1c
+  #    CidrBlock: 172.31.16.0/20
+  #    VpcId: !Ref VPC
+  
+  #SubnetC:
+  #  Type: AWS::EC2::Subnet
+  #  Properties:
+  #    AvailabilityZone: ap-northeast-1d
+  #    CidrBlock: 172.31.32.0/20
+  #    VpcId: !Ref VPC
+  
+  #SubnetARouteTableAssociation:
+  #  Type: AWS::EC2::SubnetRouteTableAssociation
+  #  Properties:
+  #    RouteTableId: !Ref RouteTable
+  #    SubnetId: !Ref SubnetA
+
+  #SubnetBRouteTableAssociation:
+  #  Type: AWS::EC2::SubnetRouteTableAssociation
+  #  Properties:
+  #    RouteTableId: !Ref RouteTable
+  #    SubnetId: !Ref SubnetB
+
+  #SubnetCRouteTableAssociation:
+  #  Type: AWS::EC2::SubnetRouteTableAssociation
+  #  Properties:
+  #    RouteTableId: !Ref RouteTable
+  #    SubnetId: !Ref SubnetC
+
+  #SecretManagerSecurityGroup:
+  #  Type: AWS::EC2::SecurityGroup
+  #  Properties:
+  #    GroupDescription: Inbound for ecs
+  #    SecurityGroupIngress:
+  #    - IpProtocol: tcp
+  #      FromPort: 443
+  #      ToPort: 443
+  #      SourceSecurityGroupId: !Ref ECSSecurityGroup
+  #    VpcId: !Ref VPC
+
+  #SecretManagerVPCEndpoint:
+  #  Type: AWS::EC2::VPCEndpoint
+  #  Properties:
+  #    ServiceName: com.amazonaws.ap-northeast-1.secretsmanager
+  #    VpcId: !Ref VPC
+  #    SubnetIds:
+  #      - !Ref SubnetA
+  #      - !Ref SubnetB
+  #      - !Ref SubnetC
+  #    PrivateDnsEnabled: true
+  #    SecurityGroupIds:
+  #      - !Ref SecretManagerSecurityGroup
+
+
+
+#https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/quickref-ecs.html
+
+  PrivateDnsNamespace:
+    Type: AWS::ServiceDiscovery::PrivateDnsNamespace
+    Properties:
+      Name: mlog.local
+      Vpc: vpc-05b190e09029f0a40
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+  
+  ECSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SecurityGroup for mlog
+      GroupName: ECSSecurityGroup
+      VpcId: vpc-05b190e09029f0a40
+
+  ECSSecurityGroupHTTPinbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref ECSSecurityGroup
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+      CidrIp: 0.0.0.0/0
+
+  #DBNetworkInbound:
+  #  Type: AWS::EC2::SecurityGroupIngress
+  #  Properties: 
+  #    GroupId: sg-0e1223973d84589bd
+  #    IpProtocol: tcp
+  #    SourceSecurityGroupId: !Ref ECSSecurityGroup
+  #    FromPort: 3306
+  #    ToPort: 3306
+
+  ElastiCacheSubnetGroup:
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties:
+      Description: Subnet groups for elasticache
+      SubnetIds:
+        - subnet-07d0ecd5900ed3295
+        - subnet-0ff855dcf8cdebb91
+        - subnet-08275bd29250bd0d7
+
+  #EastiCacheSecurityGroup:
+  #  Type: AWS::ElastiCache::SecurityGroup
+  #  Properties:
+  #    Description: Security group for elasticache
+
+  ElastiCacheEC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: EC2 Security group for ElastiCache.
+      VpcId: vpc-05b190e09029f0a40
+
+  ElastiCacheEC2SecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref ElastiCacheEC2SecurityGroup
+      IpProtocol: tcp
+      ToPort: 6379
+      FromPort: 6379
+      CidrIp: 0.0.0.0/0
+
+  ElastiCacheCluster:
+    Type: AWS::ElastiCache::CacheCluster
+    Properties:
+      CacheNodeType: cache.t2.micro
+      #CacheSecurityGroupNames:
+      #  - !Ref ElastiCacheSecurityGroup
+      CacheSubnetGroupName: !Ref ElastiCacheSubnetGroup
+      Engine: redis
+      NumCacheNodes: 1
+      VpcSecurityGroupIds:
+        - !GetAtt ElastiCacheEC2SecurityGroup.GroupId
+
+
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+  CloudwatchLogsGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join ['-', [ECSLogGroup, !Ref AWS::StackName]]
+      RetentionInDays: 14
+
+  AppLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: AppLoadBalancer
+      Scheme: internet-facing
+      Subnets: 
+        - subnet-07d0ecd5900ed3295
+        - subnet-0ff855dcf8cdebb91
+        - subnet-08275bd29250bd0d7
+      SecurityGroups: 
+        - !Ref ECSSecurityGroup
+      Type: application
+
+  AppTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Port: 80
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: vpc-05b190e09029f0a40
+      HealthCheckPath: /nginx-health
+
+  AppLoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn: !Ref AppTargetGroup
+        Type: forward
+      LoadBalancerArn: !Ref AppLoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+  AppLoadBalancerListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    DependsOn: AppLoadBalancerListener
+    Properties:
+      Actions:
+      - Type: forward
+        TargetGroupArn: !Ref AppTargetGroup
+      Conditions:
+      - Field: path-pattern
+        Values: [/]
+      ListenerArn: !Ref AppLoadBalancerListener
+      Priority: 1
+
+  AppService:
+    Type: AWS::ECS::Service
+    DependsOn:
+    - AppLoadBalancerListener
+    #- RedisService
+    - CeleryService
+    #- DBNetworkInbound
+    Properties:
+      Cluster: !GetAtt ECSCluster.Arn
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: nginx
+        ContainerPort: 80
+        TargetGroupArn: !Ref AppTargetGroup
+      DeploymentConfiguration:
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - !Ref ECSSecurityGroup
+          Subnets:
+          - subnet-07d0ecd5900ed3295
+          - subnet-0ff855dcf8cdebb91
+          - subnet-08275bd29250bd0d7
+      PlatformVersion: 1.4.0
+      TaskDefinition: !Ref AppTaskDefinition
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn: !GetAtt AppServiceDiscovery.Arn
+
+  AppTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Join ['', [!Ref AWS::StackName, -app]]
+      ContainerDefinitions:
+      - Name: app
+        Essential: false
+        Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
+        PortMappings:
+        - ContainerPort: 8001
+          HostPort: 8001
+          Protocol: TCP
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref CloudwatchLogsGroup
+            awslogs-region: !Ref AWS::Region
+            awslogs-stream-prefix: ecs-mlog-app
+        Command:
+          - bash
+          - -c
+          - cd /usr/src/app && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1
+        #Command:
+        #  - bash
+        #  - -c
+        #  - cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1
+        Environment: 
+        - Name: MLOG_DEBUG_STATE
+          Value: 'False'
+        - Name: CELERY_BROKER_DEFAULT
+          Value: aws_elasticache
+        - Name: CELERY_RESULT_BACKENDS_DEFAULT
+          Value: aws_elasticache
+        #- Name: MLOG_REDIS_LB_DNS
+        #  Value: !GetAtt RedisLoadBalancer.DNSName
+        - Name: MLOG_AWS_ELASTICACHE_DNS
+          Value: !GetAtt ElastiCacheCluster.RedisEndpoint.Address
+        - Name: MLOG_USE_REDIS_DNS_RESOLVER
+          Value: 'False'
+        - Name: MLOG_DATABASE
+          Value: production
+        - Name: MLOG_AWS_RDS_DATABASE_NAME
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_DATABASE_NAME}}'
+        - Name: MLOG_AWS_RDS_HOST
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_HOST}}'
+        - Name: MLOG_AWS_RDS_PASSWORD
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_PASSWORD}}'
+        - Name: MLOG_AWS_RDS_PORT
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_PORT}}'
+        - Name: MLOG_AWS_RDS_USER
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_USER}}'
+        - Name: MLOG_AWS_S3_ACCESS_KEY_ID
+          Value: '{{resolve:ssm:MLOG_AWS_S3_ACCESS_KEY_ID}}'
+        - Name: MLOG_AWS_S3_SECRET_ACCESS_KEY
+          Value: '{{resolve:ssm:MLOG_AWS_S3_SECRET_ACCESS_KEY}}'
+        - Name: MLOG_AWS_S3_STORAGE_BUCKET_NAME
+          Value: '{{resolve:ssm:MLOG_AWS_S3_STORAGE_BUCKET_NAME}}'
+        - Name: MLOG_AWS_SES_ACCESS_KEY_ID
+          Value: '{{resolve:ssm:MLOG_AWS_SES_ACCESS_KEY_ID}}'
+        - Name: MLOG_AWS_SES_SECRET_ACCESS_KEY
+          Value: '{{resolve:ssm:MLOG_AWS_SES_SECRET_ACCESS_KEY}}'
+        - Name: MLOG_S3_CUSTOM_DOMAIN
+          Value: '{{resolve:ssm:MLOG_S3_CUSTOM_DOMAIN}}'
+        - Name: MLOG_SECRET_KEY
+          Value: '{{resolve:ssm:MLOG_SECRET_KEY}}'
+        - Name: MLOG_DEFAULT_FROM_EMAIL
+          Value: '{{resolve:ssm:MLOG_DEFAULT_FROM_EMAIL}}'
+        - Name: SELECT2_DEFAULT
+          Value: select2_elasticache
+        - Name: MLOG_SPOTIFY_CLIENT_ID
+          Value: '{{resolve:ssm:MLOG_SPOTIFY_CLIENT_ID}}'
+        - Name: MLOG_SPOTIFY_CLIENT_SECRET
+          Value: '{{resolve:ssm:MLOG_SPOTIFY_CLIENT_SECRET}}'
+
+      - Name: nginx
+        Essential: true
+        DependsOn:
+        - ContainerName: app
+          Condition: START
+
+        Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_nginx:latest
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref CloudwatchLogsGroup
+            awslogs-region: !Ref AWS::Region
+            awslogs-stream-prefix: ecs-mlog-app
+        PortMappings:
+        - ContainerPort: 80
+          HostPort: 80
+          Protocol: tcp
+
+      RequiresCompatibilities:
+      - FARGATE
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      Cpu: 256
+      Memory: 512
+
+  AppServiceDiscovery:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: app
+      NamespaceId: !Ref PrivateDnsNamespace
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+
+  CeleryService:
+    Type: AWS::ECS::Service
+    #DependsOn:
+    #- RedisService
+    Properties:
+      Cluster: !GetAtt ECSCluster.Arn
+      LaunchType: FARGATE
+      DeploymentConfiguration:
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref ECSSecurityGroup
+          Subnets:
+          - subnet-07d0ecd5900ed3295
+          - subnet-0ff855dcf8cdebb91
+          - subnet-08275bd29250bd0d7
+      PlatformVersion: 1.4.0
+      TaskDefinition: !Ref CeleryTaskDefinition
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn: !GetAtt CeleryServiceDiscovery.Arn
+
+  CeleryTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Join ['', [!Ref AWS::StackName, -celery]]
+      ContainerDefinitions:
+      - Name: celery
+        Essential: true
+        Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python:latest
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref CloudwatchLogsGroup
+            awslogs-region: !Ref AWS::Region
+            awslogs-stream-prefix: ecs-mlog-app
+        Command: 
+          - bash
+          - -c
+          - apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker
+        Environment:
+        - Name: MLOG_DEBUG_STATE
+          Value: 'False'
+        - Name: CELERY_BROKER_DEFAULT
+          Value: aws_elasticache
+        - Name: CELERY_RESULT_BACKENDS_DEFAULT
+          Value: aws_elasticache
+        #- Name: MLOG_REDIS_LB_DNS
+        #  Value: !GetAtt RedisLoadBalancer.DNSName
+        - Name: MLOG_AWS_ELASTICACHE_DNS
+          Value: !GetAtt ElastiCacheCluster.RedisEndpoint.Address
+        - Name: MLOG_USE_REDIS_DNS_RESOLVER
+          Value: 'False'
+        - Name: MLOG_DATABASE
+          Value: production
+        - Name: MLOG_AWS_RDS_DATABASE_NAME
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_DATABASE_NAME}}'
+        - Name: MLOG_AWS_RDS_HOST
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_HOST}}'
+        - Name: MLOG_AWS_RDS_PASSWORD
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_PASSWORD}}'
+        - Name: MLOG_AWS_RDS_PORT
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_PORT}}'
+        - Name: MLOG_AWS_RDS_USER
+          Value: '{{resolve:ssm:MLOG_AWS_RDS_USER}}'
+        - Name: MLOG_AWS_S3_ACCESS_KEY_ID
+          Value: '{{resolve:ssm:MLOG_AWS_S3_ACCESS_KEY_ID}}'
+        - Name: MLOG_AWS_S3_SECRET_ACCESS_KEY
+          Value: '{{resolve:ssm:MLOG_AWS_S3_SECRET_ACCESS_KEY}}'
+        - Name: MLOG_AWS_S3_STORAGE_BUCKET_NAME
+          Value: '{{resolve:ssm:MLOG_AWS_S3_STORAGE_BUCKET_NAME}}'
+        - Name: MLOG_AWS_SES_ACCESS_KEY_ID
+          Value: '{{resolve:ssm:MLOG_AWS_SES_ACCESS_KEY_ID}}'
+        - Name: MLOG_AWS_SES_SECRET_ACCESS_KEY
+          Value: '{{resolve:ssm:MLOG_AWS_SES_SECRET_ACCESS_KEY}}'
+        - Name: MLOG_S3_CUSTOM_DOMAIN
+          Value: '{{resolve:ssm:MLOG_S3_CUSTOM_DOMAIN}}'
+        - Name: MLOG_SECRET_KEY
+          Value: '{{resolve:ssm:MLOG_SECRET_KEY}}'
+      RequiresCompatibilities:
+      - FARGATE
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      Cpu: 256
+      Memory: 512
+
+  CeleryServiceDiscovery:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: celery
+      NamespaceId: !Ref PrivateDnsNamespace
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+
+  #NginxLoadBalancer:
+  #  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  #  Properties:
+  #    Name: NginxLoadBalancer
+  #    Scheme: internet-facing
+  #    Subnets: 
+  #      - !Ref SubnetA
+  #      - !Ref SubnetB
+  #      - !Ref SubnetC
+  #    SecurityGroups: 
+  #      - !Ref ECSSecurityGroup
+  #    Type: application
+
+  #NginxTargetGroup:
+  #  Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  #  Properties:
+  #    Port: 80
+  #    Protocol: HTTP
+  #    TargetType: ip
+  #    VpcId: !Ref VPC
+      
+
+  #NginxLoadBalancerListener:
+  #  Type: AWS::ElasticLoadBalancingV2::Listener
+  #  Properties:
+  #    DefaultActions:
+  #    - ForwardConfig:
+  #        TargetGroups:
+  #        - TargetGroupArn: !Ref NginxTargetGroup
+  #      Type: forward
+  #    LoadBalancerArn: !Ref NginxLoadBalancer
+  #    Port: 80
+  #    Protocol: HTTP
+
+  #NginxLoadBalancerListenerRule:
+  #  Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  #  DependsOn: NginxLoadBalancerListener
+  #  Properties:
+  #    Actions:
+  #    - Type: forward
+  #      TargetGroupArn: !Ref NginxTargetGroup
+  #    Conditions:
+  #    - Field: path-pattern
+  #      Values: [/]
+  #    ListenerArn: !Ref NginxLoadBalancerListener
+  #    Priority: 1
+
+
+  #NginxService:
+  #  Type: AWS::ECS::Service
+  #  DependsOn: 
+  #  - NginxLoadBalancerListener
+  #  - AppService
+  #  Properties:
+  #    Cluster: !GetAtt ECSCluster.Arn
+  #    LaunchType: FARGATE
+  #    LoadBalancers:
+  #    - ContainerName: nginx
+  #      ContainerPort: 80
+  #      TargetGroupArn: !Ref NginxTargetGroup
+  #      #LoadBalancerName: NginxLoadBalancer
+  #    DeploymentConfiguration:
+  #      DeploymentCircuitBreaker:
+  #        Enable: true
+  #        Rollback: true
+  #      MaximumPercent: 200
+  #      MinimumHealthyPercent: 100
+  #    DesiredCount: 1
+  #    NetworkConfiguration:
+  #      AwsvpcConfiguration:
+  #        AssignPublicIp: ENABLED
+  #        SecurityGroups:
+  #          - !Ref ECSSecurityGroup
+  #        Subnets:
+  #          - !Ref SubnetA
+  #          - !Ref SubnetB
+  #          - !Ref SubnetC
+  #    PlatformVersion: 1.4.0
+  #    TaskDefinition: !Ref NginxTaskDefinition
+  #    SchedulingStrategy: REPLICA
+  #    ServiceRegistries:
+  #    - RegistryArn: !GetAtt NginxServiceDiscovery.Arn
+
+  #NginxTaskDefinition:
+  #  Type: AWS::ECS::TaskDefinition
+  #  Properties:
+  #    Family: !Join ['', [!Ref AWS::StackName, -nginx]]
+  #    ContainerDefinitions:
+  #    - Name: nginx
+  #      Essential: true
+  #      Image: 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_nginx:latest
+  #      LogConfiguration:
+  #        LogDriver: awslogs
+  #        Options:
+  #          awslogs-group: !Ref CloudwatchLogsGroup
+  #          awslogs-region: !Ref AWS::Region
+  #          awslogs-stream-prefix: ecs-mlog-app
+  #      PortMappings:
+  #      - ContainerPort: 80
+  #        HostPort: 80
+  #        Protocol: tcp
+  #    RequiresCompatibilities:
+  #    - FARGATE
+  #    NetworkMode: awsvpc
+  #    ExecutionRoleArn: !Ref TaskExecutionRole
+  #    Cpu: 256
+  #    Memory: 512
+
+  #NginxServiceDiscovery:
+  #  Type: AWS::ServiceDiscovery::Service
+  #  Properties:
+  #    Name: nginx
+  #    NamespaceId: !Ref PrivateDnsNamespace
+  #    DnsConfig:
+  #      DnsRecords:
+  #      - TTL: 60
+  #        Type: A
+  #      NamespaceId: !Ref PrivateDnsNamespace
+  #      RoutingPolicy: MULTIVALUE
+
+  #RedisLoadBalancer:
+  #  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  #  Properties:
+  #    Name: RedisLoadBalancer
+  #    Scheme: internal
+  #    Subnets: 
+  #      - !Ref SubnetA
+  #      - !Ref SubnetB
+  #      - !Ref SubnetC
+  #    Type: network
+
+  #RedisTargetGroup:
+  #  Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  #  Properties:
+  #    HealthCheckPort: 6379
+  #    Port: 6379
+  #    Protocol: TCP
+  #    TargetType: ip
+  #    VpcId: !Ref VPC
+
+  #RedisLoadBalancerListener:
+  #  Type: AWS::ElasticLoadBalancingV2::Listener
+  #  Properties:
+  #    DefaultActions:
+  #    - ForwardConfig:
+  #        TargetGroups:
+  #        - TargetGroupArn: !Ref RedisTargetGroup
+  #      Type: forward
+  #    LoadBalancerArn: !Ref RedisLoadBalancer
+  #    Port: 6379
+  #    Protocol: TCP
+
+  #RedisService:
+  #  Type: AWS::ECS::Service
+  #  DependsOn:
+  #  - RedisLoadBalancerListener
+  #  Properties:
+  #    Cluster: !GetAtt ECSCluster.Arn
+  #    LaunchType: FARGATE
+  #    DeploymentConfiguration:
+  #      DeploymentCircuitBreaker:
+  #        Enable: true
+  #        Rollback: true
+  #      MaximumPercent: 200
+  #      MinimumHealthyPercent: 100
+  #    DesiredCount: 1
+  #    NetworkConfiguration:
+  #      AwsvpcConfiguration:
+  #        AssignPublicIp: ENABLED
+  #        SecurityGroups:
+  #          - !Ref ECSSecurityGroup
+  #        Subnets:
+  #          - !Ref SubnetA
+  #          - !Ref SubnetB
+  #          - !Ref SubnetC
+  #    LoadBalancers:
+  #    - ContainerName: redis
+  #      ContainerPort: 6379
+  #      TargetGroupArn: !Ref RedisTargetGroup
+  #    PlatformVersion: 1.4.0
+  #    TaskDefinition: !Ref RedisTaskDefinition
+  #    SchedulingStrategy: REPLICA
+  #    ServiceRegistries:
+  #    - ContainerName: redis
+  #      ContainerPort: 6379
+  #      RegistryArn: !GetAtt RedisServiceDiscovery.Arn
+
+  #RedisTaskDefinition:
+  #  Type: AWS::ECS::TaskDefinition
+  #  Properties:
+  #    Family: !Join ['', [!Ref AWS::StackName, -redis]]
+  #    ContainerDefinitions:
+  #    - Name: redis
+  #      Essential: true
+  #      Image: docker.io/library/redis:6.2
+  #      LogConfiguration:
+  #        LogDriver: awslogs
+  #        Options:
+  #          awslogs-group: !Ref CloudwatchLogsGroup
+  #          awslogs-region: !Ref AWS::Region
+  #          awslogs-stream-prefix: ecs-mlog-app
+  #      PortMappings:
+  #      - ContainerPort: 6379
+  #        HostPort: 6379
+  #        Protocol: tcp
+  #    RequiresCompatibilities:
+  #    - FARGATE
+  #    NetworkMode: awsvpc
+  #    ExecutionRoleArn: !Ref TaskExecutionRole
+  #    Cpu: 256
+  #    Memory: 512
+
+  #RedisServiceDiscovery:
+  #  Type: AWS::ServiceDiscovery::Service
+  #  Properties:
+  #    Name: redis
+  #    NamespaceId: !Ref PrivateDnsNamespace
+  #    DnsConfig:
+  #      DnsRecords:
+  #      - TTL: 60
+  #        Type: SRV
+  #      RoutingPolicy: MULTIVALUE
+  
+  #ECSALB:
+  #  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  #  Properties:
+  #    Name: ECSALB
+  #    Scheme: internet-facing
+  #    Subnets: 
+  #      - !Ref SubnetA
+  #      - !Ref SubnetB
+  #      - !Ref SubnetC
+  #    SecurityGroups: [!Ref ECSSecurityGroup]
+
+  #ALBListener:
+  #  Type: AWS::ElasticLoadBalancingV2::Listener
+  #  #DependsOn: ECSServiceRole
+  #  Properties:
+  #    DefaultActions:
+  #    - Type: forward
+  #      TargetGroupArn: !Ref NginxTargetGroup
+  #    LoadBalancerArn: !Ref ECSALB
+  #    Port: 80
+  #    Protocol: HTTP
+  
+
+  #ECSALBListenerRule:
+  #  Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  #  DependsOn: ALBListener
+  #  Properties:
+  #    Actions:
+  #    - Type: forward
+  #      TargetGroupArn: !Ref NginxTargetGroup
+  #    Conditions:
+  #    - Field: path-pattern
+  #      Values: [/]
+  #    ListenerArn: !Ref ALBListener
+  #    Priority: 1

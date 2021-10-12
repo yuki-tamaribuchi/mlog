@@ -18,3 +18,4 @@ django-debug-toolbar==3.2.2
 django-storages==1.11.1
 boto3==1.18.36
 django-ses==2.2.1
+django-concurrency==2.3

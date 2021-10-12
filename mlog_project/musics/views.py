@@ -140,19 +140,18 @@ class ArtistDetailView(DetailView):
 
 
 class ArtistUpdateView(UpdateView):
+	model = Artist
 	form_class = ArtsitForm
 	template_name = 'musics/artist_form.html'
 
-	def get_object(self):
-		return Artist.objects.get(slug=self.kwargs['slug'])
+	def get_success_url(self):
+		return reverse_lazy('musics:artist_detail', kwargs={'slug':self.object.slug})
 
 
 class SongUpdateView(UpdateView):
+	model = Song
 	form_class = SongForm
 	template_name = 'musics/song_form.html'
-
-	def get_object(self):
-		return Song.objects.get(pk=self.kwargs['pk'])
 
 	def get_success_url(self):
 		return reverse_lazy('musics:song_detail', kwargs={'pk':self.object.id})
