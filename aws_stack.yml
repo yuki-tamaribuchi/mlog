@@ -123,14 +123,14 @@ Resources:
       ToPort: 80
       CidrIp: 0.0.0.0/0
 
-  #DBNetworkInbound:
-  #  Type: AWS::EC2::SecurityGroupIngress
-  #  Properties: 
-  #    GroupId: sg-0e1223973d84589bd
-  #    IpProtocol: tcp
-  #    SourceSecurityGroupId: !Ref ECSSecurityGroup
-  #    FromPort: 3306
-  #    ToPort: 3306
+  DBNetworkInbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: sg-0a9b1c4333e94d1a9
+      IpProtocol: tcp
+      SourceSecurityGroupId: !Ref ECSSecurityGroup
+      FromPort: 3306
+      ToPort: 3306
 
   ElastiCacheSubnetGroup:
     Type: AWS::ElastiCache::SubnetGroup
