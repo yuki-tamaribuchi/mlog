@@ -1,4 +1,4 @@
-FROM nginx:1.20
+FROM docker.io/library/redis:6.2
 
 COPY ./nginx/conf/app_nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./nginx/uwsgi_params /etc/nginx/uwsgi_params
