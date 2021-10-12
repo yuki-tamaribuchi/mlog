@@ -3,7 +3,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - $(aws ecr get-login-password --region $AWS_DEFAULT_REGION --no-include-email)
+      - $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 978584353258.dkr.ecr.ap-northeast-1.amazonaws.com)
       - MLOG_PYTHON_REPOSITORY_URI=978584353258.dkr.ecr.ap-northeast-1.amazonaws.com/mlog_python
       - MLOG_PYTHON_COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - MLOG_PYTHON_IMAGE_TAG=${MLOG_PYTHON_COMMIT_HASH:=latest}
