@@ -12,7 +12,11 @@ workflows:
             - build
           dockerfile: docker/python/Dockerfile.production
           repo: "${AWS_RESOURCE_NAME_PREFIX_PYTHON}"
-          tag: "${CIRCLE_SHA1}"
+      - aws-ecr/build-and-push-image:
+          requires:
+            - build
+          dockerfile: docker/nginx/Dockerfile.production
+          repo: "${AWS_RESOURCE_NAME_PREFIX_NGINX}"
 
 
 jobs:
