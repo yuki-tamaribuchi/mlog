@@ -196,6 +196,16 @@ Resources:
       LogGroupName: !Join ['-', [ECSLogGroup, !Ref AWS::StackName]]
       RetentionInDays: 14
 
+  LBRecordSet:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z05792841BVWVXP07OSZ8
+      Name: mlog.tamaribuchi-yuki.com
+      AliasTarget:
+        HostedZoneId: !GetAtt AppLoadBalancer.CanonicalHostedZoneID
+        DNSName: !GetAtt AppLoadBalancer.DNSName
+      Type: A
+
   AppLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
