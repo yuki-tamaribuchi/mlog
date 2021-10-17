@@ -10,11 +10,19 @@ workflows:
       - aws-ecr/build-and-push-image:
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - master
           dockerfile: docker/python/Dockerfile.production
           repo: "${AWS_RESOURCE_NAME_PREFIX_PYTHON}"
       - aws-ecr/build-and-push-image:
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - master
           dockerfile: docker/nginx/Dockerfile.production
           repo: "${AWS_RESOURCE_NAME_PREFIX_NGINX}"
 
@@ -22,26 +30,25 @@ workflows:
 jobs:
   build:
     docker:
-      - image: cimg/python:3.9
+      - image: uktmbc/mlog_test:latest
     environment:
       MLOG_DATABASE: test
     steps:
       - run: set -x #Output all executed commands
-      #- checkout
-      #- restore_cache:
-      #    key: v1-{{ .Branch }}-{{ checksum "mlog_project/requirements.txt" }}
-      #- run:
-      #    name: Install requirements
-      #    command: |
-      #        pip install -r mlog_project/requirements.txt
-      #- save_cache:
-      #    key: v1-{{ .Branch }}-{{ checksum "mlog_project/requirements.txt" }}
-      #    paths:
-      #      - "pip_deps"
-      #- run:
-      #    name: Run test
-      #    command: |
-      #      cd mlog_project
-      #      coverage run --source='.' manage.py test
-    
-
+      - checkout
+      - restore_cache:
+          key: v1-{{ .Branch }}-{{ checksum "mlog_project/requirements.txt" }}
+      - run:
+          name: Install requirements
+          command: |
+              pip install -r mlog_project/requirements.txt
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ checksum "mlog_project/requirements.txt" }}
+          paths:
+            - "pip_deps"
+      - run:
+          name: Run test
+          command: |
+            redis-server &
+            cd mlog_project
+            coverage run --source='.' manage.py test
