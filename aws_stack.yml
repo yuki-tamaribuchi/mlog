@@ -114,13 +114,13 @@ Resources:
       GroupName: ECSSecurityGroup
       VpcId: vpc-05b190e09029f0a40
 
-  ECSSecurityGroupHTTPinbound:
+  ECSSecurityGroupHTTPSinbound:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref ECSSecurityGroup
       IpProtocol: tcp
-      FromPort: 80
-      ToPort: 80
+      FromPort: 443
+      ToPort: 443
       CidrIp: 0.0.0.0/0
 
   DBNetworkInbound:
@@ -228,21 +228,21 @@ Resources:
       VpcId: vpc-05b190e09029f0a40
       HealthCheckPath: /nginx-health
 
-  AppLoadBalancerListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-      - ForwardConfig:
-          TargetGroups:
-          - TargetGroupArn: !Ref AppTargetGroup
-        Type: forward
-      LoadBalancerArn: !Ref AppLoadBalancer
-      Port: 80
-      Protocol: HTTP
+  #AppLoadBalancerListener:
+  #  Type: AWS::ElasticLoadBalancingV2::Listener
+  #  Properties:
+  #    DefaultActions:
+  #    - ForwardConfig:
+  #        TargetGroups:
+  #        - TargetGroupArn: !Ref AppTargetGroup
+  #      Type: forward
+  #    LoadBalancerArn: !Ref AppLoadBalancer
+  #    Port: 80
+  #    Protocol: HTTP
 
   AppLoadBalancerListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    DependsOn: AppLoadBalancerListener
+    DependsOn: AppLoadBalancerHTTPSListener
     Properties:
       Actions:
       - Type: forward
@@ -250,13 +250,42 @@ Resources:
       Conditions:
       - Field: path-pattern
         Values: [/]
-      ListenerArn: !Ref AppLoadBalancerListener
+      ListenerArn: !Ref AppLoadBalancerHTTPSListener
       Priority: 1
+
+  AppLoadBalancerHTTPSListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Certificates:
+        - CertificateArn: arn:aws:acm:ap-northeast-1:978584353258:certificate/9244bdfb-a664-494c-9567-ad4ee4b3b188
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref AppTargetGroup
+      LoadBalancerArn: !Ref AppLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+      SslPolicy: ELBSecurityPolicy-2016-08
+  
+  AppServiceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SecurityGroup for app service
+      GroupName: AppServiceSecurityGroup
+      VpcId: vpc-05b190e09029f0a40
+
+  AppServiceSecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref AppServiceSecurityGroup
+      IpProtocol: tcp
+      ToPort: 443
+      FromPort: 80
+      SourceSecurityGroupId: !Ref ECSSecurityGroup
 
   AppService:
     Type: AWS::ECS::Service
     DependsOn:
-    - AppLoadBalancerListener
+    - AppLoadBalancerHTTPSListener
     #- RedisService
     - CeleryService
     #- DBNetworkInbound
@@ -281,6 +310,7 @@ Resources:
           AssignPublicIp: ENABLED
           SecurityGroups:
           - !Ref ECSSecurityGroup
+          - !Ref AppServiceSecurityGroup
           Subnets:
           - subnet-07d0ecd5900ed3295
           - subnet-0ff855dcf8cdebb91
