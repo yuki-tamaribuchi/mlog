@@ -17,6 +17,13 @@ CACHES={
         'OPTIONS':{
             'CLIENT_CLASS':'django_redis.client.DefaultClient',
         }
+    },
+    'select2_elasticache':{
+        'BACKEND':'django_redis.cache.RedisCache',
+        'LOCATION':'redis://'+os.environ.get('MLOG_AWS_ELASTICACHE_DNS', ''),
+        'OPTIONS':{
+            'CLIENT_CLASS':'django_redis.client.DefaultClient',
+        }
     }
 }
 

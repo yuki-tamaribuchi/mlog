@@ -129,6 +129,14 @@ DATABASES_LIST = {
             'charset': 'utf8mb4',
         }
     },
+    'test': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'sqlite3.db',              
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '', 
+    },
     'docker':{
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mlog_db',

@@ -2,14 +2,16 @@ import os
 
 CELERY_BROKER_URLS={
     'local':"redis://127.0.0.1:6379/1",
-    'docker':"redis://redis:6379"
+    'docker':"redis://redis:6379",
+    'aws_elasticache': 'redis://'+os.environ.get('MLOG_AWS_ELASTICACHE_DNS', '')
 }
 
 CELERY_BROKER_URL = CELERY_BROKER_URLS[os.environ.get('CELERY_BROKER_DEFAULT','local')]
 
 CELERY_RESULT_BACKENDS={
     'local':"redis://127.0.0.1:6379",
-    'docker':"redis://redis:6379"
+    'docker':"redis://redis:6379",
+    'aws_elasticache': 'redis://'+os.environ.get('MLOG_AWS_ELASTICACHE_DNS', '')
 }
 
 CELERY_RESULT_BACKEND = CELERY_RESULT_BACKENDS[os.environ.get('CELERY_RESULT_BACKENDS_DEFAULT','local')]

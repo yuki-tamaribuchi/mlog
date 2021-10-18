@@ -1,45 +1,54 @@
 version: 2.1
+
+orbs:
+  aws-ecr: circleci/aws-ecr@7.2.0
+
+workflows:
+  run-test-build-push:
+    jobs:
+      - build
+      - aws-ecr/build-and-push-image:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+          dockerfile: docker/python/Dockerfile.production
+          repo: "${AWS_RESOURCE_NAME_PREFIX_PYTHON}"
+      - aws-ecr/build-and-push-image:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+          dockerfile: docker/nginx/Dockerfile.production
+          repo: "${AWS_RESOURCE_NAME_PREFIX_NGINX}"
+
+
 jobs:
   build:
-    docker: 
-      - image: cimg/base:2021.07
-
+    docker:
+      - image: uktmbc/mlog_test:latest
+    environment:
+      MLOG_DATABASE: test
     steps:
-      - run: set -x
-      - setup_remote_docker
+      - run: set -x #Output all executed commands
       - checkout
-#      - run:
-#          name: Make Directory for result
-#          command: mkdir mlog_project/result/
+      - restore_cache:
+          key: v1-{{ .Branch }}-{{ checksum "mlog_project/requirements.txt" }}
       - run:
-          name: Set environment variables
+          name: Install requirements
           command: |
-              echo $MLOG_OAUTH_GOOGLE_CLIENT_ID
-              echo $MLOG_OAUTH_GOOGLE_KEY
-              echo $MLOG_OAUTH_GOOGLE_SECRET
-              echo $MLOG_SECRET_KEY
+              pip install -r mlog_project/requirements.txt
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ checksum "mlog_project/requirements.txt" }}
+          paths:
+            - "pip_deps"
       - run:
-          name: Copy app source to app container
+          name: Run test
           command: |
-              docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml up --no-start app
-              docker cp . docker_app_1:.
-      - run: 
-          name: Test
-          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml run --name app_test app bash -c "sleep 60 && coverage run --source='mlog_project' mlog_project/manage.py test --noinput mlog_project/ && coverage html"
-#      - run:
-#          name: Copy test results from container
-#          command: |
-#              docker cp app_test:/mlog_project/result/unittest.xml mlog_project/result/
-#      - run: ls -la mlog_project/result
-#      - store_test_results:
-#          path: mlog_project/result
-
-      - run:
-          name: Copy htmlcov
-          command: |
-              docker cp app_test:htmlcov/ htmlcov/
-      - store_artifacts:
-          path: htmlcov/
-      - run: 
-          name: Down containers
-          command: docker-compose -f docker/docker-compose.yml -f docker/docker-compose.test.yml down
+            redis-server &
+            cd mlog_project
+            coverage run --source='.' manage.py test

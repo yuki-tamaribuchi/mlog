@@ -114,23 +114,23 @@ Resources:
       GroupName: ECSSecurityGroup
       VpcId: vpc-05b190e09029f0a40
 
-  ECSSecurityGroupHTTPinbound:
+  ECSSecurityGroupHTTPSinbound:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !Ref ECSSecurityGroup
       IpProtocol: tcp
-      FromPort: 80
-      ToPort: 80
+      FromPort: 443
+      ToPort: 443
       CidrIp: 0.0.0.0/0
 
-  #DBNetworkInbound:
-  #  Type: AWS::EC2::SecurityGroupIngress
-  #  Properties: 
-  #    GroupId: sg-0e1223973d84589bd
-  #    IpProtocol: tcp
-  #    SourceSecurityGroupId: !Ref ECSSecurityGroup
-  #    FromPort: 3306
-  #    ToPort: 3306
+  DBNetworkInbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: sg-0a9b1c4333e94d1a9
+      IpProtocol: tcp
+      SourceSecurityGroupId: !Ref ECSSecurityGroup
+      FromPort: 3306
+      ToPort: 3306
 
   ElastiCacheSubnetGroup:
     Type: AWS::ElastiCache::SubnetGroup
@@ -196,6 +196,16 @@ Resources:
       LogGroupName: !Join ['-', [ECSLogGroup, !Ref AWS::StackName]]
       RetentionInDays: 14
 
+  LBRecordSet:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z05792841BVWVXP07OSZ8
+      Name: mlog.tamaribuchi-yuki.com
+      AliasTarget:
+        HostedZoneId: !GetAtt AppLoadBalancer.CanonicalHostedZoneID
+        DNSName: !GetAtt AppLoadBalancer.DNSName
+      Type: A
+
   AppLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -218,21 +228,21 @@ Resources:
       VpcId: vpc-05b190e09029f0a40
       HealthCheckPath: /nginx-health
 
-  AppLoadBalancerListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-      - ForwardConfig:
-          TargetGroups:
-          - TargetGroupArn: !Ref AppTargetGroup
-        Type: forward
-      LoadBalancerArn: !Ref AppLoadBalancer
-      Port: 80
-      Protocol: HTTP
+  #AppLoadBalancerListener:
+  #  Type: AWS::ElasticLoadBalancingV2::Listener
+  #  Properties:
+  #    DefaultActions:
+  #    - ForwardConfig:
+  #        TargetGroups:
+  #        - TargetGroupArn: !Ref AppTargetGroup
+  #      Type: forward
+  #    LoadBalancerArn: !Ref AppLoadBalancer
+  #    Port: 80
+  #    Protocol: HTTP
 
   AppLoadBalancerListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    DependsOn: AppLoadBalancerListener
+    DependsOn: AppLoadBalancerHTTPSListener
     Properties:
       Actions:
       - Type: forward
@@ -240,13 +250,42 @@ Resources:
       Conditions:
       - Field: path-pattern
         Values: [/]
-      ListenerArn: !Ref AppLoadBalancerListener
+      ListenerArn: !Ref AppLoadBalancerHTTPSListener
       Priority: 1
+
+  AppLoadBalancerHTTPSListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Certificates:
+        - CertificateArn: arn:aws:acm:ap-northeast-1:978584353258:certificate/9244bdfb-a664-494c-9567-ad4ee4b3b188
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref AppTargetGroup
+      LoadBalancerArn: !Ref AppLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+      SslPolicy: ELBSecurityPolicy-2016-08
+  
+  AppServiceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SecurityGroup for app service
+      GroupName: AppServiceSecurityGroup
+      VpcId: vpc-05b190e09029f0a40
+
+  AppServiceSecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref AppServiceSecurityGroup
+      IpProtocol: tcp
+      ToPort: 443
+      FromPort: 80
+      SourceSecurityGroupId: !Ref ECSSecurityGroup
 
   AppService:
     Type: AWS::ECS::Service
     DependsOn:
-    - AppLoadBalancerListener
+    - AppLoadBalancerHTTPSListener
     #- RedisService
     - CeleryService
     #- DBNetworkInbound
@@ -271,6 +310,7 @@ Resources:
           AssignPublicIp: ENABLED
           SecurityGroups:
           - !Ref ECSSecurityGroup
+          - !Ref AppServiceSecurityGroup
           Subnets:
           - subnet-07d0ecd5900ed3295
           - subnet-0ff855dcf8cdebb91
