@@ -60,6 +60,7 @@ class EntryDetailView(DetailView):
 
 
 class EntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+	raise_exception = True
 	model = Entry
 	form_class = EntryForm
 	template_name = 'entry/entry_form.html'
@@ -73,6 +74,7 @@ class EntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class EntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+	raise_exception = True
 	model = Entry
 	template_name = 'entry/delete_confirm.html'
 
