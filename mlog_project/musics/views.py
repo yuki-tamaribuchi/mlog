@@ -214,7 +214,7 @@ def select_spotify_tracks(request):
 		return render(request, 'musics/spotify_track_select.html')
 
 	if request.method=='POST':
-		selected_track = json.loads(request.POST['selected_track'])
+		selected_track = json.loads(request.POST.get('selected_track'))
 		spotify_link = selected_track['spotify_link']
 		preview_url = selected_track['preview_url']
 		artwork_url = selected_track['artwork_url']
