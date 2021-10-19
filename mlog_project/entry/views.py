@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 from activity.models import EntryReadActivity
 from accounts.models import User
