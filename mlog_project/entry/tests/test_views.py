@@ -1,4 +1,4 @@
-from django.http import response
+from django.http import request, response
 from django.template import context
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
@@ -80,6 +80,11 @@ class EntryDetailViewTest(TestCase):
 			slug='testartist',
 			genre_name='test genre'
 		)
+		self.user_for_request = utils_for_test.create_test_user(
+			username='userforrequest',
+			handle='user for request',
+			biograph='biograph for user for request'
+		)
 		self.user_for_like = utils_for_test.create_test_user(
 			username='userforlike',
 			handle='user for like',
@@ -144,15 +149,25 @@ class EntryDetailViewTest(TestCase):
 			entry=self.entry
 		)
 		request = self.factory.get(reverse('entry:detail', kwargs={'pk':self.entry.id}))
-		request.user = self.user_for_like
+		request.user = self.user_for_request
 		response = EntryDetailView.as_view()(request, pk=self.entry.id)
 		self.assertEqual(response.context_data['like_count'], 1)
 
 	def test_like_count_zero(self):
 		request = self.factory.get(reverse('entry:detail', kwargs={'pk':self.entry.id}))
-		request.user = self.user_for_like
+		request.user = self.user_for_request
 		response = EntryDetailView.as_view()(request, pk=self.entry.id)
 		self.assertEqual(response.context_data['like_count'], 0)
+
+	def test_get_inactive_users_entry_raised_404(self):
+		from django.http import Http404
+		self.entry_user = self.entry.writer
+		self.entry_user.is_active = False
+		self.entry_user.save()
+		request = self.factory.get(reverse('entry:detail', kwargs={'pk':self.entry.id}))
+		request.user = self.user_for_request
+		with self.assertRaises(Http404):
+			EntryDetailView.as_view()(request, pk=self.entry.id)
 
 
 class EntryUpdateViewTest(TestCase):
@@ -170,16 +185,28 @@ class EntryUpdateViewTest(TestCase):
 			genre_name='test genre'
 		)
 
-		self.user = User.objects.get(username='testuser')
+		self.writer = self.entry.writer
+		self.user_for_request = utils_for_test.create_test_user(
+			username='userforrequest',
+			handle='user for request',
+			biograph='biograph for user for request'
+		)
 		self.factory = RequestFactory()
 
 	def test_template(self):
 		request = self.factory.get(reverse('entry:update', kwargs={'pk':self.entry.id}))
-		request.user = self.user
+		request.user = self.writer
 		response = EntryUpdateView.as_view()(request, pk=self.entry.id)
 		self.assertEqual(response.status_code, 200)
 		with self.assertTemplateUsed('entry/entry_form.html'):
 			response.render()
+	
+	def test_not_writer_try_update_entry_raise_403(self):
+		from django.core.exceptions import PermissionDenied
+		request = self.factory.get(reverse('entry:update', kwargs={'pk':self.entry.id}))
+		request.user = self.user_for_request
+		with self.assertRaises(PermissionDenied):
+			EntryUpdateView.as_view()(request, pk=self.entry.id)
 
 	'''
 	def test_success_url(self):
@@ -218,17 +245,28 @@ class EntryDeleteViewTest(TestCase):
 			genre_name='test genre'
 		)
 
-		self.user = User.objects.get(username='testuser')
-
+		self.writer = self.entry.writer
+		self.user_for_request = utils_for_test.create_test_user(
+			username='userforrequest',
+			handle='user for request',
+			biograph='biograph for user for request'
+		)
 		self.factory = RequestFactory()
 
 	def test_template(self):
 		request = self.factory.get(reverse('entry:update', kwargs={'pk':self.entry.id}))
-		request.user = self.user
+		request.user = self.writer
 		response = EntryDeleteView.as_view()(request, pk=self.entry.id)
 		self.assertEqual(response.status_code, 200)
 		with self.assertTemplateUsed('entry/delete_confirm.html'):
 			response.render()
+
+	def test_not_writer_try_delete_entry_raise_403(self):
+		from django.core.exceptions import PermissionDenied
+		request = self.factory.get(reverse('entry:update', kwargs={'pk':self.entry.id}))
+		request.user = self.user_for_request
+		with self.assertRaises(PermissionDenied):
+			EntryDeleteView.as_view()(request, pk=self.entry.id)
 
 
 class EntryListBySongViewTest(TestCase):
