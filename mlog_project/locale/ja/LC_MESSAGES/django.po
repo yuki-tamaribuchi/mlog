@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-17 11:18+0900\n"
+"POT-Creation-Date: 2021-10-20 08:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,11 +87,11 @@ msgstr "アーティスト"
 msgid "follower"
 msgstr "フォロワー"
 
-#: mlog_project/settings.py:198
+#: mlog_project/settings.py:207
 msgid "English"
 msgstr "英語"
 
-#: mlog_project/settings.py:199
+#: mlog_project/settings.py:208
 msgid "Japanese"
 msgstr "日本語"
 
@@ -117,14 +117,18 @@ msgstr "キャンセル"
 msgid "Logged out"
 msgstr "ログアウトしました"
 
-#: templates/accounts/login.html:3 templates/accounts/login.html:11
-#: templates/base.html:57
+#: templates/accounts/loggedout.html:9 templates/accounts/login.html:3
+#: templates/accounts/login.html:11 templates/base.html:57
 msgid "Login"
 msgstr "ログイン"
 
 #: templates/accounts/login.html:13
 msgid "Reset Password"
 msgstr "パスワードをリセット"
+
+#: templates/accounts/login.html:15
+msgid "Login as sample user"
+msgstr "サンプルユーザとしてログイン"
 
 #: templates/accounts/signup.html:3 templates/accounts/signup.html:36
 msgid "Sign Up"
