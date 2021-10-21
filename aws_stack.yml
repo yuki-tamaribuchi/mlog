@@ -106,6 +106,9 @@ Resources:
 
   ECSCluster:
     Type: AWS::ECS::Cluster
+    Properties:
+      CapacityProviders: 
+      - FARGATE_SPOT
   
   ECSSecurityGroup:
     Type: AWS::EC2::SecurityGroup
