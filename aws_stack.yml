@@ -394,6 +394,8 @@ Resources:
           Value: '{{resolve:ssm:MLOG_SPOTIFY_CLIENT_ID}}'
         - Name: MLOG_SPOTIFY_CLIENT_SECRET
           Value: '{{resolve:ssm:MLOG_SPOTIFY_CLIENT_SECRET}}'
+        - Name: MLOG_SITE_ID
+          Value: 3
 
       - Name: nginx
         Essential: true
@@ -519,6 +521,8 @@ Resources:
           Value: '{{resolve:ssm:MLOG_S3_CUSTOM_DOMAIN}}'
         - Name: MLOG_SECRET_KEY
           Value: '{{resolve:ssm:MLOG_SECRET_KEY}}'
+        - Name: MLOG_SITE_ID
+          Value: 3
       RequiresCompatibilities:
       - FARGATE
       NetworkMode: awsvpc
