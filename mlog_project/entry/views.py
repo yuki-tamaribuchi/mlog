@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 from activity.models import EntryReadActivity
 from accounts.models import User
@@ -59,6 +60,7 @@ class EntryDetailView(DetailView):
 
 
 class EntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+	raise_exception = True
 	model = Entry
 	form_class = EntryForm
 	template_name = 'entry/entry_form.html'
@@ -72,6 +74,7 @@ class EntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class EntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+	raise_exception = True
 	model = Entry
 	template_name = 'entry/delete_confirm.html'
 

@@ -11,7 +11,7 @@ from follow.models import Follow
 from favorite_artists.models import FavoriteArtist
 
 
-def login_with_sample_user(request):
+def login_as_sample_user(request):
 	if request.method=='GET':
 		sample_user = User.objects.get(username='sampleuser')
 		login(request, sample_user)
@@ -59,7 +59,7 @@ class TimelineView(LoginRequiredMixin, ListView):
 				writer__username=self.request.user.username
 			).order_by(
 				'created_at'
-			).reverse()
+			).reverse().distinct()
 
 		except ObjectDoesNotExist:
 			return qs.none()
