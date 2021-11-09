@@ -9,7 +9,7 @@ class BaseSeachListView(ListView):
 	template_name = 'search/list.html'
 
 	def get_queryset(self):
-		self.keyword = self.request.GET['keyword']
+		self.keyword = self.request.GET.get('keyword')
 		qs = super().get_queryset()
 		if not self.keyword:
 			qs = self.model.objects.none()
@@ -17,7 +17,7 @@ class BaseSeachListView(ListView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['keyword'] = self.request.GET['keyword']
+		context['keyword'] = self.request.GET.get('keyword')
 		return context
 
 
