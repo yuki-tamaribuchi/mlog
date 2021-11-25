@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView
 from django.urls import reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -45,30 +45,40 @@ class CommentListView(ListView):
 
 
 
-def get_comment_object(pk, username):
-	obj = get_object_or_404(Comment, pk=pk, author__username=username, author__is_active=True)
+def get_comment_object(pk):
+	obj = get_object_or_404(Comment, pk=pk, author__is_active=True)
 	entry_pk = obj.entry.id
 	return (obj, entry_pk)
 
 
-class CommentUpdateView(LoginRequiredMixin, UpdateView):
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	form_class = CommentForm
 	template_name = 'comments/comment_form.html'
 
+	def test_func(self):
+		obj = self.get_object()
+		return obj.author == self.request.user
+
 	def get_object(self):
-		obj, self.entry_pk = get_comment_object(self.kwargs['pk'], self.request.user.username)
+		obj, self.entry_pk = get_comment_object(self.kwargs['pk'])
 		return obj
 
 	def get_success_url(self):
 		return reverse('comments:list', kwargs={'pk':self.entry_pk})
 
 
-class CommentDeleteView(LoginRequiredMixin, DeleteView):
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 	context_object_name = 'comment'
 	template_name = 'comments/delete_confirm.html'
 
+	def test_func(self):
+		comment_object = self.get_object()
+		entry_object = Entry.objects.get(pk=comment_object.entry.id)
+		
+		return comment_object.author == self.request.user or entry_object.writer == self.request.user
+
 	def get_object(self):
-		obj, self.entry_pk = get_comment_object(self.kwargs['pk'], self.request.user.username)
+		obj, self.entry_pk = get_comment_object(self.kwargs['pk'])
 		return obj
 
 	def get_success_url(self):
