@@ -2,16 +2,16 @@
 
 <div class="logos">
     <a href="https://www.python.org/">
-        <img src="readme_resouces/../readme_resources/img/python.svg" class="logo" title="パイソン。メインの開発言語。">
+        <img src="readme_resouces/../readme_resources/img/python.svg" class="logo" title="パイソン。メインの開発言語。" height="40px" style="margin-right:30px;">
     </a>
     <a href="https://www.djangoproject.com/">
-        <img src="readme_resouces/../readme_resources/img/django.svg" class="logo" title="重量Webフレームワーク。">
+        <img src="readme_resouces/../readme_resources/img/django.svg" class="logo" title="重量Webフレームワーク。" height="40px" style="margin-right:30px;">
     </a>
     <a href="https://docs.celeryproject.org/en/stable/index.html">
-        <img src="readme_resouces/../readme_resources/img/celery.svg" class="logo" title="セロリ。非同期タスクの実行環境。">
+        <img src="readme_resouces/../readme_resources/img/celery.svg" class="logo" title="セロリ。非同期タスクの実行環境。" height="40px" style="margin-right:30px;">
     </a>
     <a href="https://aws.amazon.com/">
-        <img src="readme_resouces/../readme_resources/img/aws.svg" class="logo" title="本番環境用インフラ。">
+        <img src="readme_resouces/../readme_resources/img/aws.svg" class="logo" title="本番環境用インフラ。" height="40px">
     </a>
 </div>
 <br>
@@ -319,20 +319,3 @@ Select2を用いて検索機能を実現
 2021年10月17日: HTTPS対応
 
 2021年10月18日: Circle CI整備完了(テスト・dockerイメージのbuildとpush)
-
-
-
-<style>
-.logos {
-    margin: 15px 0px;
-}
-
-.logo {
-    margin-right: 18px ;
-    height: 40px;
-}
-
-.badges {
-    margin: 15px 0px;
-}
-</style>
