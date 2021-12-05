@@ -1,16 +1,16 @@
 # mlog (読み：エムログ)
 
 <div class="logos">
-    <a href="https://www.python.org/">
-        <img src="readme_resouces/../readme_resources/img/python.svg" class="logo" title="パイソン。メインの開発言語。" height="40px" style="margin-right:30px;">
-    </a>
-    <a href="https://www.djangoproject.com/">
-        <img src="readme_resouces/../readme_resources/img/django.svg" class="logo" title="重量Webフレームワーク。" height="40px" style="margin-right:30px;">
-    </a>
-    <a href="https://docs.celeryproject.org/en/stable/index.html">
-        <img src="readme_resouces/../readme_resources/img/celery.svg" class="logo" title="セロリ。非同期タスクの実行環境。" height="40px" style="margin-right:30px;">
-    </a>
-    <a href="https://aws.amazon.com/">
+    <a href="https://www.python.org/" target="_blank">
+        <img src="readme_resouces/../readme_resources/img/python.svg" class="logo" title="パイソン。メインの開発言語。" height="40px">
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.djangoproject.com/" target="_blank">
+        <img src="readme_resouces/../readme_resources/img/django.svg" class="logo" title="重量Webフレームワーク。" height="40px">
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://docs.celeryproject.org/en/stable/index.html"  target="_blank">
+        <img src="readme_resouces/../readme_resources/img/celery.svg" class="logo" title="セロリ。非同期タスクの実行環境。" height="40px">
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://aws.amazon.com/" target="_blank">
         <img src="readme_resouces/../readme_resources/img/aws.svg" class="logo" title="本番環境用インフラ。" height="40px">
     </a>
 </div>
