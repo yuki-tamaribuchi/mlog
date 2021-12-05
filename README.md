@@ -5,13 +5,13 @@
         <img src="readme_resouces/../readme_resources/img/python.svg" class="logo" title="パイソン。メインの開発言語。">
     </a>
     <a href="https://www.djangoproject.com/">
-        <img src="readme_resouces/../readme_resources/img/django.png" class="logo" title="重量Webフレームワーク。">
+        <img src="readme_resouces/../readme_resources/img/django.svg" class="logo" title="重量Webフレームワーク。">
     </a>
     <a href="https://docs.celeryproject.org/en/stable/index.html">
-        <img src="readme_resouces/../readme_resources/img/celery.png" class="logo" title="セロリ。非同期タスクの実行環境。">
+        <img src="readme_resouces/../readme_resources/img/celery.svg" class="logo" title="セロリ。非同期タスクの実行環境。">
     </a>
     <a href="https://aws.amazon.com/">
-        <img src="readme_resouces/../readme_resources/img/aws.png" class="logo" title="本番環境用インフラ。">
+        <img src="readme_resouces/../readme_resources/img/aws.svg" class="logo" title="本番環境用インフラ。">
     </a>
 </div>
 <br>
