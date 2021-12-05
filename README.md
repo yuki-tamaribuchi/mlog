@@ -2,16 +2,16 @@
 
 <div class="logos">
     <a href="https://www.python.org/" target="_blank">
-        <img src=".github/readme_resouces/../readme_resources/img/python.svg" class="logo" title="パイソン。メインの開発言語。" height="40px">
+        <img src=".github/readme_resources/img/python.svg" class="logo" title="パイソン。メインの開発言語。" height="40px">
     </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="https://www.djangoproject.com/" target="_blank">
-        <img src=".github/readme_resouces/../readme_resources/img/django.svg" class="logo" title="重量Webフレームワーク。" height="40px">
+        <img src=".github/readme_resources/img/django.svg" class="logo" title="重量Webフレームワーク。" height="40px">
     </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="https://docs.celeryproject.org/en/stable/index.html"  target="_blank">
-        <img src=".github/readme_resouces/../readme_resources/img/celery.svg" class="logo" title="セロリ。非同期タスクの実行環境。" height="40px">
+        <img src=".github/readme_resources/img/celery.svg" class="logo" title="セロリ。非同期タスクの実行環境。" height="40px">
     </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="https://aws.amazon.com/" target="_blank">
-        <img src=".github/readme_resouces/../readme_resources/img/aws.svg" class="logo" title="本番環境用インフラ。" height="40px">
+        <img src=".github/readme_resources//img/aws.svg" class="logo" title="本番環境用インフラ。" height="40px">
     </a>
 </div>
 <br>
@@ -161,7 +161,7 @@ Select2を用いて検索機能を実現
 
 記事投稿画面で曲を検索している例
 
-![](readme_resources/img/select2_sample.png "PUNPEEが好き")
+![](.github/readme_resources/img/select2_sample.png "PUNPEEが好き")
 
 
 <br><br>
@@ -261,7 +261,7 @@ Select2を用いて検索機能を実現
 
 ## アーキテクチャ
 
-![](readme_resources/img/mlog_arch.jpg)
+![](.github/readme_resources/img/mlog_arch.jpg)
 ※セキュリティグループは省略しております。
 
 <br>
@@ -270,15 +270,15 @@ Select2を用いて検索機能を実現
 
 ### エントリ関連
 
-![](readme_resources/img/mlog_entry_erd.png)
+![](.github/readme_resources/img/mlog_entry_erd.png)
 
 ### 音楽コンテンツ関連
 
-![](readme_resources/img/mlog_musics_erd.png)
+![](.github/readme_resources/img/mlog_musics_erd.png)
 
 ### その他(通知・フォロー・お問い合わせ関連)
 
-![](readme_resources/img/mlog_etc_erd.png)
+![](.github/readme_resources/img/mlog_etc_erd.png)
 
 <br><br>
 
