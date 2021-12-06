@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   aws-ecr: circleci/aws-ecr@7.2.0 
-  coveralls: coveralls/coveralls@1.0.6
 
 workflows:
   run-test-build-push:
@@ -53,5 +52,5 @@ jobs:
             redis-server &
             cd mlog_project
             coverage run --source='.' manage.py test
-      - coveralls/upload:
-          path_to_lcov: ./.coverage
+            COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN} python -m coveralls
+      
