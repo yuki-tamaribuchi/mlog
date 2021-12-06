@@ -33,6 +33,7 @@ jobs:
       - image: uktmbc/mlog_test:latest
     environment:
       MLOG_DATABASE: test
+      COVERALLS_REPO_TOKEN: ${COVERALLS_REPO_TOKEN}
     steps:
       - run: set -x #Output all executed commands
       - checkout
@@ -52,5 +53,5 @@ jobs:
             redis-server &
             cd mlog_project
             coverage run --source='.' manage.py test
-            COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN python -m coveralls
+            python -m coveralls
       
