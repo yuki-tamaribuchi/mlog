@@ -54,4 +54,3 @@ jobs:
             cd mlog_project
             coverage run --source='.' manage.py test
       - coveralls/upload
-          path_to_lcov: ./coverage
