@@ -53,4 +53,5 @@ jobs:
             redis-server &
             cd mlog_project
             coverage run --source='.' manage.py test
-      - coveralls/upload
+      - coveralls/upload:
+          path_to_lcov: ./.coverage
