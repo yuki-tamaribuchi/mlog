@@ -6,10 +6,15 @@
         <h1><a href="{% url 'entry:detail' entry.id %}">{{entry.title}}</a>へのコメント</h1>
 	    {% if comment_list%}
             {% for comment in comment_list %}
-            <p>{{comment.comment}} by <a href="{% url 'accounts:detail' comment.author.username %}">{{comment.author}}</a>
-                {% if comment.author.username == user.username %}<a href="{% url 'comments:update' comment.id %}"> 更新</a>{% endif %}
-                {% if comment.author.username == user.username or comment.entry.writer == user %}<a href="{% url 'comments:delete' comment.id %}"> 削除</a>{% endif %}
-            </p>
+            <div class="col-lg-8 comment">
+                <div class="card comment-card">
+                    <div class="card-body">
+                        <p>{{comment.comment}} by <a href="{% url 'accounts:detail' comment.author.username %}">{{comment.author}}</a></p>
+                        {% if comment.author.username == user.username %}<a href="{% url 'comments:update' comment.id %}"> 更新</a>{% endif %}
+                        {% if comment.author.username == user.username or comment.entry.writer == user %}<a href="{% url 'comments:delete' comment.id %}"> 削除</a>{% endif %}
+                    </div>
+                </div>
+            </div>
             {% endfor %}
         {% else %}
         コメントはありません。
