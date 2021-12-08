@@ -10,24 +10,24 @@ play_preview_element.addEventListener('click', play_pause, false);
 
 function play_pause(){
 	if (sound.playing()){
-		$('#id_artwork_for_preview_in_entry_detail').removeClass('artwork_circle');
+		$('#id-artwork-for-preview-in-entry-detail').removeClass('artwork-circle');
 		sound.pause();
 		$('.circle-wrap .circle .mask.full, .circle-wrap .circle .fill').css("animation-play-state", "paused");
-		$('.pause_icon').remove();
-		$('.inside-circle').append('<i class="fas fa-play fa-2x play_icon"></i>');
+		$('.pause-icon').remove();
+		$('.inside-circle').append('<i class="fas fa-play fa-2x play-icon"></i>');
 	}else{
-		$('#id_artwork_for_preview_in_entry_detail').addClass('artwork_circle');
+		$('#id-artwork-for-preview-in-entry-detail').addClass('artwork-circle');
 		sound.play();
 		$('.circle-wrap .circle .mask.full, .circle-wrap .circle .fill').css("animation-play-state", "running");
-		$('.play_icon').remove();
-		$('.inside-circle').append('<i class="fas fa-pause fa-2x pause_icon"></i>');
+		$('.play-icon').remove();
+		$('.inside-circle').append('<i class="fas fa-pause fa-2x pause-icon"></i>');
 
 	}
 
 	sound.on('end', function(){
 		$('.circle-wrap .circle .mask.full, .circle-wrap .circle .fill').css("animation-play-state", "paused");
-		$('.pause_icon').remove();
-		$('.inside-circle').append('<i class="fas fa-play fa-2x play_icon"></i>');
-		$('#id_artwork_for_preview_in_entry_detail').removeClass('artwork_circle');
+		$('.pause-icon').remove();
+		$('.inside-circle').append('<i class="fas fa-play fa-2x play-icon"></i>');
+		$('#id-artwork-for-preview-in-entry-detail').removeClass('artwork-circle');
 	})
 }

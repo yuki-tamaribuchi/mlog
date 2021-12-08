@@ -8,7 +8,7 @@
 <div class="container">
 	<p>ジャンルは、"test genre"というジャンルが登録されているので、そちらをお使いください。</p>
 	<p>また、新しくジャンルを登録することも可能です。</p>
-	<div class="row mt-5 select2_form">
+	<div class="row mt-5 select2-form">
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
