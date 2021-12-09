@@ -76,5 +76,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% load static %}
 <script src="{% static 'js/ajax_csrf.js' %}"></script>
-<script src="{% static 'js/like-handler.js' %}" like_url="{% url 'likes:like' %}" entry_id="{{entry.id}}" is_loggedin="{{user.is_authenticated}}"></script>
+<script src="{% static 'js/liker_handler.js' %}" like_url="{% url 'likes:like' %}" entry_id="{{entry.id}}" is_loggedin="{{user.is_authenticated}}"></script>
 {% endblock content %}
