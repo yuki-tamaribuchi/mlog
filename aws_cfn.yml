@@ -476,7 +476,7 @@ Resources:
         Command: 
           - bash
           - -c
-          - apt install -y python-celery && cd /usr/src/app && celery -A mlog_project worker
+          - apt install -y python3-celery && cd /usr/src/app && celery -A mlog_project worker
         Environment:
         - Name: MLOG_DEBUG_STATE
           Value: 'False'
