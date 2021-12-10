@@ -317,8 +317,8 @@ Resources:
       PlatformVersion: 1.4.0
       TaskDefinition: !Ref AppTaskDefinition
       SchedulingStrategy: REPLICA
-      ServiceRegistries:
-      - RegistryArn: !GetAtt AppServiceDiscovery.Arn
+      #ServiceRegistries:
+      #- RegistryArn: !GetAtt AppServiceDiscovery.Arn
 
   AppTaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -456,8 +456,8 @@ Resources:
       PlatformVersion: 1.4.0
       TaskDefinition: !Ref CeleryTaskDefinition
       SchedulingStrategy: REPLICA
-      ServiceRegistries:
-      - RegistryArn: !GetAtt CeleryServiceDiscovery.Arn
+      #ServiceRegistries:
+      #- RegistryArn: !GetAtt CeleryServiceDiscovery.Arn
 
   CeleryTaskDefinition:
     Type: AWS::ECS::TaskDefinition
