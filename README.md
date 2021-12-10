@@ -39,7 +39,7 @@
 
 [https://mlog.tamaribuchi-yuki.com/login_as_sample_user/](https://mlog.tamaribuchi-yuki.com/login_as_sample_user/) 
 
-上記URLは、通常はアンデプロイしているため接続できません。ご確認の際は、[Twitterアカウント](https://twitter.com/yuki_t9i)に連絡をいだだければデプロイいたします。
+上記URLは、通常はアンデプロイしているため接続できません。ご確認の際は、[こちらのメールアドレス](mailto:yuki_t9i@tamaribuchi-yuki.com?subject=ポートフォリオのデプロイについて)に連絡をいだだければデプロイいたします。
 
 また、サンプルユーザで自動ログインされるようにしています。
 
@@ -227,6 +227,7 @@ Select2を用いて検索機能を実現
 - Celery
 - Spotify API
 - Circle CI
+- GitHub Actions
 - GNU gettext
 
 <br><br>
