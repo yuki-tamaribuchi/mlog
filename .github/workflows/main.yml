@@ -15,4 +15,4 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-1
     - name: Deploy cloudformation template to S3 bucket
-      run: aws s3 sync aws_cfn.yml s3://mlog.cfn.template --delete
+      run: aws s3 cp aws_cfn.yml s3://mlog.cfn.template --delete
