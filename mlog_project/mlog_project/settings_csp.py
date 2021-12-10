@@ -2,6 +2,7 @@ CSP_DEFAULT_SRC = [
     "'self'",
     "https://ka-f.fontawesome.com",
     "https://p.scdn.co",
+    "https://fonts.googleapis.com",
     ]
 CSP_SCRIPT_SRC = [
     "'self'",
@@ -21,6 +22,7 @@ CSP_STYLE_SRC = [
     "https://cdnjs.cloudflare.com",
     "https://mlog-s3.s3.amazonaws.com",
     "https://d3uz1xyl9ewfg.cloudfront.net",
+    "https://fonts.googleapis.com",
     ]
 CSP_IMG_SRC = [
     "'self'",
@@ -33,6 +35,8 @@ CSP_FONT_SRC = [
     "'self'",
     "https://cdnjs.cloudflare.com",
     "https://ka-f.fontawesome.com",
+    #"https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
 ]
 CSP_FRAME_SRC = [
     "https://*.spotify.com",

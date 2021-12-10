@@ -1,14 +1,50 @@
 # mlog (読み：エムログ)
 
-音楽コンテンツ専用ブログサービス。
+<div class="logos">
+    <a href="https://www.python.org/" target="_blank">
+        <img src=".github/readme_resources/img/python.svg" class="logo" title="パイソン。メインの開発言語。" height="40px">
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.djangoproject.com/" target="_blank">
+        <img src=".github/readme_resources/img/django.svg" class="logo" title="重量Webフレームワーク。" height="40px">
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://docs.celeryproject.org/en/stable/index.html"  target="_blank">
+        <img src=".github/readme_resources/img/celery.svg" class="logo" title="セロリ。非同期タスクの実行環境。" height="40px">
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://aws.amazon.com/" target="_blank">
+        <img src=".github/readme_resources//img/aws.svg" class="logo" title="本番環境用インフラ。" height="40px">
+    </a>
+</div>
+<br>
+<div class="badges">
+    <a href='https://coveralls.io/github/yuki-tamaribuchi/mlog_project?branch=master' ><img src='https://coveralls.io/repos/github/yuki-tamaribuchi/mlog_project/badge.svg?branch=master' alt='Coverage Status' /></a>
+</div>
+
+<br>
+
+
+# 概要
+
+**音楽コンテンツ専用ブログサービス**です。
 
 曲に対して考えたことや感じたこと、裏話等を共有することができます。
 
+曲のどの部分が好きなのか、どんな思い出があるのか、どんな時に聴きたくなるのか、リリックに対してどう考えたのか、
+何でもあなたの好きなことを綴ってください。
+
+30秒プレビュー機能を使って読者に曲を聴いてもらうこともできます。
+
+また、同じ曲に対して他の人はどんな風に感じているのか等、様々な方向性から記事にアクセスすることができます。
+
+<br>
+
 [https://mlog.tamaribuchi-yuki.com/login_as_sample_user/](https://mlog.tamaribuchi-yuki.com/login_as_sample_user/) 
 
-上記URLはサンプルユーザで自動ログインされるようにしています。
+上記URLは、通常はアンデプロイしているため接続できません。ご確認の際は、[こちらのメールアドレス](mailto:yuki_t9i@tamaribuchi-yuki.com?subject=ポートフォリオのデプロイについて)に連絡をいだだければデプロイいたします。
 
-- サンプルユーザのユーザネームとパスワードはこちらです。
+また、サンプルユーザで自動ログインされるようにしています。
+
+ログアウトした際に、再度ログインするには上記URLからアクセスするか、
+下記のユーザネームとパスワードでログインしてください。
 
     ユーザネーム: sampleuser
 
@@ -44,7 +80,7 @@
 
 - 曲・アーティスト詳細ページ
 - お気に入りアーティスト登録・解除
-- Spotify APIを用いたSpotifyリンクURL取得・アートワーク取得・30秒プレビュー音源URL取得機能
+- Spotify APIを用いたSpotifyリンクURL取得・アートワークURL取得・30秒プレビュー音源URL取得機能
 
 ## 全体
 
@@ -125,7 +161,7 @@ Select2を用いて検索機能を実現
 
 記事投稿画面で曲を検索している例
 
-![](readme_resources/img/select2_sample.png)
+![](.github/readme_resources/img/select2_sample.png "PUNPEEが好き")
 
 
 <br><br>
@@ -134,15 +170,16 @@ Select2を用いて検索機能を実現
 
 ## 言語・フレームワーク
 
-- Python 3.9.7
+- Python 3.9.9 (開発環境)
+- Python 3.8 (本番環境)
 - Django 3.2.4
 
 ## ミドルウェア
 
 ### RDB
 
-- MariaDB 5.1(開発環境)
-- MySQL 8.0.23(本番環境)
+- MariaDB 5.1 (開発環境)
+- MySQL 8.0.23 (本番環境)
 
 ### Webサーバ
 
@@ -190,16 +227,12 @@ Select2を用いて検索機能を実現
 - Celery
 - Spotify API
 - Circle CI
+- GitHub Actions
+- GNU gettext
 
 <br><br>
 
 # テスト
-
-## カバレッジ
-
-85% (2021年10月18日現在)
-
-<br>
 
 ## ユニットテスト
 
@@ -229,13 +262,24 @@ Select2を用いて検索機能を実現
 
 ## アーキテクチャ
 
-![](readme_resources/img/mlog_arch.jpg)
+![](.github/readme_resources/img/mlog_arch.jpg)
+※セキュリティグループは省略しております。
 
 <br>
 
 ## データベースERD
 
-![](readme_resources/img/mlog_db_erd.jpeg)
+### エントリ関連
+
+![](.github/readme_resources/img/mlog_entry_erd.png)
+
+### 音楽コンテンツ関連
+
+![](.github/readme_resources/img/mlog_musics_erd.png)
+
+### その他(通知・フォロー・お問い合わせ関連)
+
+![](.github/readme_resources/img/mlog_etc_erd.png)
 
 <br><br>
 

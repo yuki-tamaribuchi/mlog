@@ -12,9 +12,6 @@ class CreateContactThreadAndContentView(LoginRequiredMixin, CreateView):
 	form_class = ContactThreadAndContentForm
 	template_name = 'contacts/contact_thread_form.html'
 
-	def get_queryset(self):
-		return super().get_queryset()
-
 	def form_valid(self, form):
 		form.instance.user = self.request.user
 

@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Cloudformation stack for mlog project
+Description: Cloudformation template for mlog project stack
 
 
 Resources:
@@ -168,8 +168,6 @@ Resources:
     Type: AWS::ElastiCache::CacheCluster
     Properties:
       CacheNodeType: cache.t2.micro
-      #CacheSecurityGroupNames:
-      #  - !Ref ElastiCacheSecurityGroup
       CacheSubnetGroupName: !Ref ElastiCacheSubnetGroup
       Engine: redis
       NumCacheNodes: 1
@@ -289,9 +287,7 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn:
     - AppLoadBalancerHTTPSListener
-    #- RedisService
     - CeleryService
-    #- DBNetworkInbound
     Properties:
       Cluster: !GetAtt ECSCluster.Arn
       LaunchType: FARGATE
@@ -342,14 +338,14 @@ Resources:
             awslogs-group: !Ref CloudwatchLogsGroup
             awslogs-region: !Ref AWS::Region
             awslogs-stream-prefix: ecs-mlog-app
-        Command:
-          - bash
-          - -c
-          - cd /usr/src/app && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1
         #Command:
         #  - bash
         #  - -c
-        #  - cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1
+        #  - cd /usr/src/app && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1
+        Command:
+          - bash
+          - -c
+          - cd /usr/src/app && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py compilemessages && uwsgi --socket :8001 --module mlog_project.wsgi --py-autoreload 1
         Environment: 
         - Name: MLOG_DEBUG_STATE
           Value: 'False'
@@ -357,8 +353,6 @@ Resources:
           Value: aws_elasticache
         - Name: CELERY_RESULT_BACKENDS_DEFAULT
           Value: aws_elasticache
-        #- Name: MLOG_REDIS_LB_DNS
-        #  Value: !GetAtt RedisLoadBalancer.DNSName
         - Name: MLOG_AWS_ELASTICACHE_DNS
           Value: !GetAtt ElastiCacheCluster.RedisEndpoint.Address
         - Name: MLOG_USE_REDIS_DNS_RESOLVER
@@ -425,21 +419,19 @@ Resources:
       Cpu: 256
       Memory: 512
 
-  AppServiceDiscovery:
-    Type: AWS::ServiceDiscovery::Service
-    Properties:
-      Name: app
-      NamespaceId: !Ref PrivateDnsNamespace
-      DnsConfig:
-        DnsRecords:
-        - TTL: 60
-          Type: A
-        RoutingPolicy: MULTIVALUE
+  #AppServiceDiscovery:
+  #  Type: AWS::ServiceDiscovery::Service
+  #  Properties:
+  #    Name: app
+  #    NamespaceId: !Ref PrivateDnsNamespace
+  #    DnsConfig:
+  #      DnsRecords:
+  #      - TTL: 60
+  #        Type: A
+  #      RoutingPolicy: MULTIVALUE
 
   CeleryService:
     Type: AWS::ECS::Service
-    #DependsOn:
-    #- RedisService
     Properties:
       Cluster: !GetAtt ECSCluster.Arn
       LaunchType: FARGATE
@@ -492,8 +484,6 @@ Resources:
           Value: aws_elasticache
         - Name: CELERY_RESULT_BACKENDS_DEFAULT
           Value: aws_elasticache
-        #- Name: MLOG_REDIS_LB_DNS
-        #  Value: !GetAtt RedisLoadBalancer.DNSName
         - Name: MLOG_AWS_ELASTICACHE_DNS
           Value: !GetAtt ElastiCacheCluster.RedisEndpoint.Address
         - Name: MLOG_USE_REDIS_DNS_RESOLVER
@@ -533,16 +523,16 @@ Resources:
       Cpu: 256
       Memory: 512
 
-  CeleryServiceDiscovery:
-    Type: AWS::ServiceDiscovery::Service
-    Properties:
-      Name: celery
-      NamespaceId: !Ref PrivateDnsNamespace
-      DnsConfig:
-        DnsRecords:
-        - TTL: 60
-          Type: A
-        RoutingPolicy: MULTIVALUE
+  #CeleryServiceDiscovery:
+  #  Type: AWS::ServiceDiscovery::Service
+  #  Properties:
+  #    Name: celery
+  #    NamespaceId: !Ref PrivateDnsNamespace
+  #    DnsConfig:
+  #      DnsRecords:
+  #      - TTL: 60
+  #        Type: A
+  #      RoutingPolicy: MULTIVALUE
 
   #NginxLoadBalancer:
   #  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -663,142 +653,3 @@ Resources:
   #        Type: A
   #      NamespaceId: !Ref PrivateDnsNamespace
   #      RoutingPolicy: MULTIVALUE
-
-  #RedisLoadBalancer:
-  #  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-  #  Properties:
-  #    Name: RedisLoadBalancer
-  #    Scheme: internal
-  #    Subnets: 
-  #      - !Ref SubnetA
-  #      - !Ref SubnetB
-  #      - !Ref SubnetC
-  #    Type: network
-
-  #RedisTargetGroup:
-  #  Type: AWS::ElasticLoadBalancingV2::TargetGroup
-  #  Properties:
-  #    HealthCheckPort: 6379
-  #    Port: 6379
-  #    Protocol: TCP
-  #    TargetType: ip
-  #    VpcId: !Ref VPC
-
-  #RedisLoadBalancerListener:
-  #  Type: AWS::ElasticLoadBalancingV2::Listener
-  #  Properties:
-  #    DefaultActions:
-  #    - ForwardConfig:
-  #        TargetGroups:
-  #        - TargetGroupArn: !Ref RedisTargetGroup
-  #      Type: forward
-  #    LoadBalancerArn: !Ref RedisLoadBalancer
-  #    Port: 6379
-  #    Protocol: TCP
-
-  #RedisService:
-  #  Type: AWS::ECS::Service
-  #  DependsOn:
-  #  - RedisLoadBalancerListener
-  #  Properties:
-  #    Cluster: !GetAtt ECSCluster.Arn
-  #    LaunchType: FARGATE
-  #    DeploymentConfiguration:
-  #      DeploymentCircuitBreaker:
-  #        Enable: true
-  #        Rollback: true
-  #      MaximumPercent: 200
-  #      MinimumHealthyPercent: 100
-  #    DesiredCount: 1
-  #    NetworkConfiguration:
-  #      AwsvpcConfiguration:
-  #        AssignPublicIp: ENABLED
-  #        SecurityGroups:
-  #          - !Ref ECSSecurityGroup
-  #        Subnets:
-  #          - !Ref SubnetA
-  #          - !Ref SubnetB
-  #          - !Ref SubnetC
-  #    LoadBalancers:
-  #    - ContainerName: redis
-  #      ContainerPort: 6379
-  #      TargetGroupArn: !Ref RedisTargetGroup
-  #    PlatformVersion: 1.4.0
-  #    TaskDefinition: !Ref RedisTaskDefinition
-  #    SchedulingStrategy: REPLICA
-  #    ServiceRegistries:
-  #    - ContainerName: redis
-  #      ContainerPort: 6379
-  #      RegistryArn: !GetAtt RedisServiceDiscovery.Arn
-
-  #RedisTaskDefinition:
-  #  Type: AWS::ECS::TaskDefinition
-  #  Properties:
-  #    Family: !Join ['', [!Ref AWS::StackName, -redis]]
-  #    ContainerDefinitions:
-  #    - Name: redis
-  #      Essential: true
-  #      Image: docker.io/library/redis:6.2
-  #      LogConfiguration:
-  #        LogDriver: awslogs
-  #        Options:
-  #          awslogs-group: !Ref CloudwatchLogsGroup
-  #          awslogs-region: !Ref AWS::Region
-  #          awslogs-stream-prefix: ecs-mlog-app
-  #      PortMappings:
-  #      - ContainerPort: 6379
-  #        HostPort: 6379
-  #        Protocol: tcp
-  #    RequiresCompatibilities:
-  #    - FARGATE
-  #    NetworkMode: awsvpc
-  #    ExecutionRoleArn: !Ref TaskExecutionRole
-  #    Cpu: 256
-  #    Memory: 512
-
-  #RedisServiceDiscovery:
-  #  Type: AWS::ServiceDiscovery::Service
-  #  Properties:
-  #    Name: redis
-  #    NamespaceId: !Ref PrivateDnsNamespace
-  #    DnsConfig:
-  #      DnsRecords:
-  #      - TTL: 60
-  #        Type: SRV
-  #      RoutingPolicy: MULTIVALUE
-  
-  #ECSALB:
-  #  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-  #  Properties:
-  #    Name: ECSALB
-  #    Scheme: internet-facing
-  #    Subnets: 
-  #      - !Ref SubnetA
-  #      - !Ref SubnetB
-  #      - !Ref SubnetC
-  #    SecurityGroups: [!Ref ECSSecurityGroup]
-
-  #ALBListener:
-  #  Type: AWS::ElasticLoadBalancingV2::Listener
-  #  #DependsOn: ECSServiceRole
-  #  Properties:
-  #    DefaultActions:
-  #    - Type: forward
-  #      TargetGroupArn: !Ref NginxTargetGroup
-  #    LoadBalancerArn: !Ref ECSALB
-  #    Port: 80
-  #    Protocol: HTTP
-  
-
-  #ECSALBListenerRule:
-  #  Type: AWS::ElasticLoadBalancingV2::ListenerRule
-  #  DependsOn: ALBListener
-  #  Properties:
-  #    Actions:
-  #    - Type: forward
-  #      TargetGroupArn: !Ref NginxTargetGroup
-  #    Conditions:
-  #    - Field: path-pattern
-  #      Values: [/]
-  #    ListenerArn: !Ref ALBListener
-  #    Priority: 1

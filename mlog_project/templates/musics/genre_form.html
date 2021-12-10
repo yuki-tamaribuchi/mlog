@@ -6,7 +6,7 @@
 {% endblock head %}
 {% block content %}
 <div class="container">
-	<div class="row mt-5 select2_form">
+	<div class="row mt-5 select2-form">
 		<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}

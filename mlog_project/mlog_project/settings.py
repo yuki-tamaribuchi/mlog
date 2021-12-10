@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'django_select2',
     'django_nose',
     'storages',
+    'django_extensions',
 ]
 
 SITE_ID = 1

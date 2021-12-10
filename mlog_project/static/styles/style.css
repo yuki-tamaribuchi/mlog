@@ -9,15 +9,13 @@ body {
 	left:50%;
 	margin-left: -50px !important;
 	display:block;
+	font-family: 'Pattaya', sans-serif;
+	font-size: 30px;
 }
 
 .song-card {
 	background-color: snow;
 	width: 15rem;
-}
-
-.song-card-with-artist {
-	
 }
 
 .artist-card {
@@ -87,16 +85,16 @@ body {
 	height: 300px;
 }
 
-.spotify_logo {
+.spotify-logo {
 	width: 150px;
 }
 
-.artwork_for_preview {
+.artwork-for-preview {
 	position: relative;
 	width: 250px;
 }
 
-.artwork_circle {
+.artwork-circle {
 	border-radius: 50% !important;
 	animation: rotate_artwork 5s linear infinite;
 }
@@ -106,13 +104,13 @@ body {
 	100% { transform: rotate(360deg); }
   }
 
-#id_artwork_for_preview_in_entry_detail {
+#id-artwork-for-preview-in-entry-detail {
 	border-radius: 0%;
 	transition: border-radius 0.3s ease;
 }
 
 
-.div_for_preview {
+.div-for-preview {
 	position: relative;
 	width: 250px;
 	height: 250px;
@@ -174,7 +172,7 @@ body {
 }
 
 
-.play_icon, .pause_icon {
+.play-icon, .pause-icon {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -186,10 +184,10 @@ body {
 	height: auto;
 }
 
-.select2_form select, .select2_form input {
+.select2-form select, .select2-form input {
 	width: 50%;
 }
 
-.fav_btn {
+.fav-btn {
 	width: 25%;
 }

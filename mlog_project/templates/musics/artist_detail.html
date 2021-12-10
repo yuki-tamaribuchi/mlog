@@ -31,7 +31,7 @@
 	</div>
 
 	<div class="row mt-5">
-		<input type="button" id="favorite-btn" value="{% if fav_status %}お気に入り解除{% else %}お気に入り登録{% endif %}" class="fav_btn">
+		<input type="button" id="favorite-btn" value="{% if fav_status %}お気に入り解除{% else %}お気に入り登録{% endif %}" class="fav-btn">
 		<p><a href="{% url 'favorite_artists:user_list_by_favorited_artist' artist.slug %}">{% trans 'Users favorited this artist.' %}</a></p>
 	</div>
 
@@ -63,5 +63,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% load static %}
 <script src="{% static 'js/ajax_csrf.js' %}"></script>
-<script src="{% static 'js/favorite-handler.js' %}" favorite_url="{% url 'favorite_artists:favorite' %}" artist_slug="{{artist.slug}}" is_loggedin="{{ user.is_authenticated }}"></script>
+<script src="{% static 'js/favorite_handler.js' %}" favorite_url="{% url 'favorite_artists:favorite' %}" artist_slug="{{artist.slug}}" is_loggedin="{{ user.is_authenticated }}"></script>
 {% endblock content %}

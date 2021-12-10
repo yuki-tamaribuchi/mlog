@@ -9,19 +9,24 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>-->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="https://kit.fontawesome.com/e7f7c15297.js" crossorigin="anonymous"></script>
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'styles/style.css' %}">
 	{% block head %}
 	{% endblock head%}
-
 	{% load i18n %}
-
 </head>
+
 <body>
 	<nav class="navbar navbar-dark bg-dark fixed-top">
 		<a class="navbar-brand brand text-white" href="{% if user.is_authenticated %}{% url 'mlog:timeline' %}{% else %}{% url 'mlog:top' %}{% endif %}">mlog</a>
+
+		<div>
+			<a href="{% url 'entry:create' %}"><button class="btn btn-primary text-white" type="button" title="{% trans 'Post Entry' %}"><i class="fa fa-pencil" aria-hidden="true"></i></button></a>
+		</div>
+
 		<div class="dropdown ms-auto">
-			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownSearchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Search' %}</button>
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownSearchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{% trans 'Search' %}"><i class="fas fa-search"></i></button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownSearchButton">
 				<form method="GET">
 					<input type="search" placeholder="{% trans 'Search' %}" name="keyword">
@@ -32,9 +37,10 @@
 				
 			</div>
 		</div>
+
 		{% if user.is_authenticated %}
 		<div class="dropdown">
-			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Notifications' %}{% if unread_notifications_count != 0 %}({{unread_notifications_count}}){% endif %}</button>
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{% trans 'Notifications' %}">{% if unread_notifications_count == 0 %}<i class="far fa-bell"></i>{% else %}<i class="fas fa-bell"></i>({{unread_notifications_count}}){% endif %}</button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownNotificationButton">
 				{% for notification in unread_notifications_list %}
 				<li><a class="dropdown-item" href="{% url 'notifications:redirect' pk=notification.id username=notification.user_from.username %}">{{notification.content}}</a></li>
@@ -44,22 +50,21 @@
 			</div>
 		</div>
 		{% endif %}
+		
 		<div class="dropdown">
-			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans 'Menu' %}</button>
+			<button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{% trans 'Menu' %}"><i class="fas fa-bars"></i></button>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-				{% if user.is_authenticated %}
-				<a class="dropdown-item" href="{% url 'entry:create' %}">{% trans 'Post Entry' %}</a>		
+				{% if user.is_authenticated %}	
 				<a class="dropdown-item" href="{% url 'accounts:detail' user.username %}">{% trans 'Logged in as' %}:{{user.handle}} ({{user.username}})</a>
 				<a class="dropdown-item" href="{% url 'accounts:update' %}">{% trans 'Account Manage' %}</a>
 				<a class="dropdown-item" href="{% url 'accounts:logout' %}">{% trans 'Logout' %}</a>
 				{% else %}
 				<a class="dropdown-item" href="{% url 'accounts:signup' %}">{% trans 'Signup' %}</a>
-				<a class="dropdown-item" href="{% url 'accounts:login' %}">{% trans 'Login' %}</a>
+				<a class="dropdown-item" href="{% url 'accounts:login' %}?next={{ request.path }}">{% trans 'Login' %}</a>
 				{% endif %}
 			</div>
 		</div>
 	</nav>
-
 	
 	<div class='mt-5'>
 	{% block content %}
@@ -90,6 +95,8 @@
 		</div>
 	</footer>
 	
-
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">  
 </body>
 </html>
