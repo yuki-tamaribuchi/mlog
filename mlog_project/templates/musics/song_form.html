@@ -6,9 +6,11 @@
 {% endblock head %}
 {% block content %}
 <div class="container">
+	{% if not object %}
 	<p>アーティストは、"test artist"というアーティストが登録されているので、そちらをお使いください。</p>
 	<p>ジャンルは、"test genre"というジャンルが登録されているので、そちらをお使いください。</p>
 	<p>また、新しくアーティストやジャンルを登録することも可能です。</p>
+	{% endif %}
 	<div class="row mt-5 select2-form">
 		<form id="song_form" method="POST">
 			{% csrf_token %}

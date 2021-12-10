@@ -11,9 +11,11 @@
 	<div class="row mt-5 select2-form">
 		<form method="POST">
 		{% csrf_token %}
-		{{form.as_p}}
+		{{form.as_p}} 
+		{% if not object %}
 		<p>"test song"という曲が登録されているので、そちらをお使いください。</p>
 		<p>また、新しく曲を登録することも可能です。</p>
+		{% endif %}
 		<input type="submit" value="{% if object %}{% trans 'Update' %}{% else %}{% trans 'Post' %}{% endif %}">
 		</form>
 		<a href="#" id="add_song_link">{% trans 'Add song' %}</a>
