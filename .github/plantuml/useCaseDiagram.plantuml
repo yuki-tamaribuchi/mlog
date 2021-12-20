@@ -1,0 +1,14 @@
+@startuml useCaseDiagram
+left to right direction
+skinparam packageStyle rectangle
+actor ユーザ
+actor 管理者
+rectangle ブログシステム {
+	ユーザ -- (記事管理)
+	ユーザ -- (音楽コンテンツ管理)
+	ユーザ -- (アカウント管理)
+	(記事管理) -- 管理者
+	(音楽コンテンツ管理) -- 管理者
+	(アカウント管理) -- 管理者
+}
+@enduml
