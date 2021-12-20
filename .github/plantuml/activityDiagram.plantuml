@@ -1,0 +1,38 @@
+@startuml activityDiagram
+(*) --> "ログイン"
+if "認証" then
+	-->[true] "新規記事作成"
+	if "楽曲登録済" then
+		-->[true] "記事入力"
+		--> "楽曲選択"
+		--> "投稿"
+		--> (*)
+	else
+		-->[false] "楽曲登録"
+		if "アーティスト登録済" then
+			-->[true] "アーティスト選択"
+			--> "楽曲登録"
+			--> "記事入力"
+		else
+			-->[false] "アーティスト登録"
+			if "ジャンル登録済" then
+				-->[true] "ジャンル選択"
+				--> "アーティスト登録"
+				--> "楽曲登録"
+			else
+				--> "ジャンル登録"
+				--> "楽曲登録"
+			endif
+		endif
+		if "ジャンル登録済" then
+			-->[true] "ジャンル選択"
+			--> "楽曲登録"
+		else
+			-->[false] "ジャンル登録"
+			--> "ジャンル選択"
+		endif
+	endif
+else
+	-->[false](*)
+endif
+@enduml
